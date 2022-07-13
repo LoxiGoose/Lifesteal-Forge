@@ -16,7 +16,7 @@ import org.slf4j.Logger;
 @Mod(LifeSteal.MOD_ID)
 public class LifeSteal
 {
-
+    //Hi
     public static final String MOD_ID = "lifesteal";
 
     private static final Logger LOGGER = LogUtils.getLogger();
