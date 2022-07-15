@@ -14,6 +14,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.Mod;
 
 public class CapabilityRegistry {
 
@@ -26,20 +27,22 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
-
-    @SubscribeEvent
-    public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player) {
-            HeartCapAttacher.attach(event);
-        }
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        event.register(IHeartCap.class);
-    }
-
+    @SuppressWarnings("unused")
+    @Mod.EventBusSubscriber(modid = "lifesteal")
     public static class EventHandler{
+
+        @SubscribeEvent
+        public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
+            if (event.getObject() instanceof Player) {
+                HeartCapAttacher.attach(event);
+            }
+        }
+
+        @SubscribeEvent
+        public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
+            event.register(IHeartCap.class);
+        }
+
         @SubscribeEvent
         public static void PlayerCloneEvent(PlayerEvent.Clone event){
 
