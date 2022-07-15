@@ -12,6 +12,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
+import java.nio.channels.SelectionKey;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LifeSteal.MOD_ID)
 public class LifeSteal
@@ -26,6 +28,7 @@ public class LifeSteal
 
         modEventBus.addListener(this::commonSetup);
 
+        MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
@@ -41,8 +44,6 @@ public class LifeSteal
     {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
-        {
-
-        }
+        {}
     }
 }
