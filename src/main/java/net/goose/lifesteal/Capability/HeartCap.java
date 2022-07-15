@@ -29,21 +29,17 @@ public class HeartCap implements IHeartCap {
 
     @Override
     public int getHeartDifference() {
-        System.out.println(livingEntity.getName().getString()+"'s current heart difference is "+HeartDifference);
-
         return HeartDifference;
     }
 
     @Override
     public void setHeartDifference(int hearts) {
         this.HeartDifference = hearts;
-        System.out.println(livingEntity.getName().getString()+"'s heart difference is now "+HeartDifference);
-        refreshhearts();
     }
 
     @Override
     public void refreshhearts(){
-        System.out.println("Refreshing "+livingEntity.getName().getString()+"'s Hearts.");
+
         var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
         Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
@@ -57,7 +53,7 @@ public class HeartCap implements IHeartCap {
                 AttributeModifier attributeModifier = attributeModifierIterator.next();
                 if (attributeModifier != null && attributeModifier.getName().equals("LifeStealHealthModifier")) {
                     FoundAttribute = true;
-                    System.out.println("Found "+attributeModifier.getName());
+
                     Attribute.removeModifier(attributeModifier);
 
                     AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", HeartDifference, AttributeModifier.Operation.ADDITION);
@@ -67,20 +63,16 @@ public class HeartCap implements IHeartCap {
             }
 
             if(FoundAttribute == false){
-                System.out.println("No attributes found");
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", HeartDifference, AttributeModifier.Operation.ADDITION);
 
                 Attribute.addPermanentModifier(attributeModifier);
             }
         }else{
-            System.out.println("No attributes found");
             AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", HeartDifference, AttributeModifier.Operation.ADDITION);
 
             Attribute.addPermanentModifier(attributeModifier);
         }
-        System.out.println("Checking MaxHealth and HeartDifference to determine if Player has lost all hearts");
-        System.out.println(livingEntity.getMaxHealth());
-        System.out.println(HeartDifference);
+
         if(livingEntity.getMaxHealth() <= 1 && HeartDifference <= -20){
 
             if (livingEntity instanceof ServerPlayer serverPlayer){

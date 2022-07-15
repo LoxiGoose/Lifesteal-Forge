@@ -2,11 +2,6 @@ package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Capability.HeartCap;
-import net.goose.lifesteal.Capability.HeartCapAttacher;
-import net.goose.lifesteal.api.IHeartCap;
-import net.minecraft.commands.Commands;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -14,7 +9,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 import org.slf4j.Logger;
 
 import java.nio.channels.SelectionKey;
@@ -40,8 +34,7 @@ public class LifeSteal
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         // Some common setup code
-        LOGGER.info("HELLO FROM COMMON SETUP");
-        LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        LOGGER.info("Lifestealers are on the loose!");
     }
 
     @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)

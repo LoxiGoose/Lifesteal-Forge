@@ -43,59 +43,70 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
-        public static void PlayerCloneEvent(PlayerEvent.Clone event){
+        public static void playerCloneEvent(PlayerEvent.Clone event){
 
+            boolean wasDeath = event.isWasDeath();
 
-            boolean WasDeath = event.isWasDeath();
+            var oldPlayer = event.getOriginal();
+            oldPlayer.revive();
+            var newPlayer = event.getEntity();
 
-            var OldPlayer = event.getOriginal();
-            OldPlayer.revive();
-            var NewPlayer = event.getEntity();
+            if(wasDeath) {
 
-            if(WasDeath) {
-
-                getHeart(OldPlayer).ifPresent(oldHeartDifference -> getHeart(NewPlayer).ifPresent(newHeartDifference ->
+                getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                         newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - 2)
                 ));
-            }else{
-                getHeart(OldPlayer).ifPresent(oldHeartDifference -> getHeart(NewPlayer).ifPresent(newHeartDifference ->
-                        newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference())
-                ));
+
+                getHeart(newPlayer).ifPresent(newHeartDifference ->
+                        newHeartDifference.refreshhearts()
+                );
             }
         }
 
         @SubscribeEvent
-        public static void DeathEvent(LivingDeathEvent event){
+        public static void deathEvent(LivingDeathEvent event){
 
-            var KilledEntity = event.getEntity();
+            var killedEntity = event.getEntity();
 
-            Capability<IHeartCap> HeartCapability = CapabilityManager.get(new CapabilityToken<>(){});
+            String killedEntityType = killedEntity.getType().toString();
+            String expectedEntityType = "entity.minecraft.player";
 
 
-            var PlayerCapability = KilledEntity.getCapability(HeartCapability);
+            if(killedEntityType.matches(expectedEntityType)){
+                var killerEntity = killedEntity.getLastHurtByMob();
+                var damageSource = killedEntity.getLastDamageSource();
 
-            String KilledEntityType = KilledEntity.getType().toString();
-            String ExpectedEntityType = "entity.minecraft.player";
+                if(killerEntity != null){
 
-            //if(KilledEntityType.matches(ExpectedEntityType)){
-                var DamageSource = KilledEntity.getLastDamageSource();
-                var KillerEntity = KilledEntity.getLastHurtByMob();
+                    var killerEntityType = killerEntity.getType().toString();
 
-                if(DamageSource != null && KillerEntity != null){
+                    if(killerEntityType.matches(expectedEntityType)){
 
-                    var LastMobToAttackType = KillerEntity.getType().toString();
+                        if(damageSource == null){
+                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
-                    if(LastMobToAttackType.matches(ExpectedEntityType)){
+                            getHeart(killerEntity).ifPresent(newHeartDifference ->
+                                    newHeartDifference.refreshhearts()
+                            );
+                        }else if(damageSource.getEntity() == killerEntity){
+                                getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
-                        getHeart(KillerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
+                                getHeart(killerEntity).ifPresent(newHeartDifference ->
+                                        newHeartDifference.refreshhearts()
+                                );
+                            }
 
+                        }else if(damageSource.getEntity() == null){
+                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 1));
+
+                            getHeart(killerEntity).ifPresent(newHeartDifference ->
+                                newHeartDifference.refreshhearts()
+                            );
+
+                        }
                     }
 
                 }
-
-
-            //}
-
         }
     }
 }
