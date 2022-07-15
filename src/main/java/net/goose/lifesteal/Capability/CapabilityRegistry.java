@@ -96,13 +96,6 @@ public class CapabilityRegistry {
                                 );
                             }
 
-                        }else if(damageSource.getEntity() == null){
-                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 1));
-
-                            getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                newHeartDifference.refreshhearts()
-                            );
-
                         }
                     }
 

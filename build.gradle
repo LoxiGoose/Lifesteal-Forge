@@ -51,6 +51,8 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             property 'forge.enabledGameTestNamespaces', 'lifesteal'
 
+            args "--username", "DevGoose###"
+
             mods {
                 lifesteal {
                     source sourceSets.main
