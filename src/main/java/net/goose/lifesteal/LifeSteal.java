@@ -1,6 +1,11 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
+import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.Capability.HeartCap;
+import net.goose.lifesteal.Capability.HeartCapAttacher;
+import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.commands.Commands;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

@@ -1,6 +1,5 @@
-package net.goose.lifesteal;
+package net.goose.lifesteal.Capability;
 
-import net.goose.lifesteal.api.HeartCapAttacher;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -50,10 +49,10 @@ public class CapabilityRegistry {
             boolean WasDeath = event.isWasDeath();
 
             var OldPlayer = event.getOriginal();
+            OldPlayer.revive();
             var NewPlayer = event.getEntity();
 
-            if(WasDeath == true) {
-                System.out.println("Worked");
+            if(WasDeath) {
 
                 getHeart(OldPlayer).ifPresent(oldHeartDifference -> getHeart(NewPlayer).ifPresent(newHeartDifference ->
                         newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - 2)
@@ -78,7 +77,7 @@ public class CapabilityRegistry {
             String KilledEntityType = KilledEntity.getType().toString();
             String ExpectedEntityType = "entity.minecraft.player";
 
-            if(KilledEntityType.matches(ExpectedEntityType)){
+            //if(KilledEntityType.matches(ExpectedEntityType)){
                 var DamageSource = KilledEntity.getLastDamageSource();
                 var KillerEntity = KilledEntity.getLastHurtByMob();
 
@@ -88,14 +87,14 @@ public class CapabilityRegistry {
 
                     if(LastMobToAttackType.matches(ExpectedEntityType)){
 
-
+                        getHeart(KillerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
                     }
 
                 }
 
 
-            }
+            //}
 
         }
     }
