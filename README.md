@@ -29,20 +29,18 @@ There's currently no config at the moment as this is a very early version of the
 
 - How many hearts should be taken away when a player dies. (This also means that if a player killed them, they'll gain the amount of hearts you lost)
 
- 
-
 At the moment, you won't get hearts if you kill another player from natural causes, for example if you set them on fire and they burn by death. This may change in the future depending on how much better I get at coding in Java and Forge.
-
  
 
 Important Info
 
-NO CONFIG YET
-Server-side only capability (Only the server needs to have the mod, clients can play without. You can also play singleplayer with this mod however gaining hearts will be impossible from this mod.)
-No commands at the moment
-Forge only, might port to Fabric in the future
+- NO CONFIG YET
+- Server-side only capability (Only the server needs to have the mod, clients can play without. You can also play singleplayer with this mod however gaining hearts will be impossible from this mod.)
+- No commands at the moment
+-Forge only, might port to Fabric in the future
+
 Basic Features
 
-Lose hearts when you die at all
-Gain hearts by killing another player
-Upon losing all hearts, enter spectator mode
+- Lose hearts when you die at all
+- Gain hearts by killing another player
+- Upon losing all hearts, enter spectator mode
