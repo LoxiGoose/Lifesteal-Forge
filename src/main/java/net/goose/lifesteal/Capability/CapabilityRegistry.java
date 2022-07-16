@@ -57,6 +57,11 @@ public class CapabilityRegistry {
                         newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - 2)
                 ));
 
+                getHeart(oldPlayer).ifPresent(oldLives -> getHeart(newPlayer).ifPresent(newLives ->
+                        newLives.setLives(oldLives.getLives())
+                ));
+
+
                 getHeart(newPlayer).ifPresent(newHeartDifference ->
                         newHeartDifference.refreshhearts()
                 );
@@ -99,7 +104,7 @@ public class CapabilityRegistry {
                         }
                     }
 
-                }
+           }
         }
     }
 }
