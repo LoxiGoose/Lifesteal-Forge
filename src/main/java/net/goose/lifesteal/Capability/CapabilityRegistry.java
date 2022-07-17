@@ -1,5 +1,9 @@
 package net.goose.lifesteal.Capability;
 
+import net.goose.lifesteal.Commands.getHitPointDifference;
+import net.goose.lifesteal.Commands.getLives;
+import net.goose.lifesteal.Commands.setHitPointDifference;
+import net.goose.lifesteal.Commands.setLives;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.world.entity.Entity;
@@ -11,10 +15,12 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.server.command.ConfigCommand;
 
 public class CapabilityRegistry {
 
@@ -27,9 +33,28 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
+    public static LazyOptional<IHeartCap> getHeart(final Entity entity) {
+        if (entity == null)
+            return LazyOptional.empty();
+        return entity.getCapability(HEART_CAP_CAPABILITY);
+    }
+
+
+
     @SuppressWarnings("unused")
     @Mod.EventBusSubscriber(modid = "lifesteal")
-    public static class EventHandler{
+
+    public static class EventHandler {
+
+        @SubscribeEvent
+        public static void OnCommandsRegister(RegisterCommandsEvent event){
+            new getHitPointDifference(event.getDispatcher());
+            new setHitPointDifference(event.getDispatcher());
+            new getLives(event.getDispatcher());
+            new setLives(event.getDispatcher());
+
+            ConfigCommand.register(event.getDispatcher());
+        }
 
         @SubscribeEvent
         public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {

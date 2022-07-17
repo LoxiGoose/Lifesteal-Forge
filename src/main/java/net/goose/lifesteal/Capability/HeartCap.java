@@ -34,99 +34,108 @@ public class HeartCap implements IHeartCap {
     }
 
     @Override
-    public void setHeartDifference(int hearts) {this.heartDifference = hearts;}
+    public void setHeartDifference(int hearts) { if (!livingEntity.level.isClientSide){ this.heartDifference = hearts;}}
 
     @Override
     public void refreshHearts(){
-        var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-        Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-        if(this.heartDifference - defaultheartDifference > maximumheartsGainable && maximumheartsGainable > 0){
-            this.heartDifference = maximumheartsGainable + defaultheartDifference;
+        if(!livingEntity.level.isClientSide){
+            var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-        }
+            if(this.heartDifference - defaultheartDifference > maximumheartsGainable && maximumheartsGainable > 0){
+                this.heartDifference = maximumheartsGainable + defaultheartDifference;
 
-        if(!attributemodifiers.isEmpty()){
-            Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
-
-            boolean FoundAttribute = false;
-
-            while (attributeModifierIterator.hasNext()) {
-
-                AttributeModifier attributeModifier = attributeModifierIterator.next();
-                if (attributeModifier != null && attributeModifier.getName().equals("LifeStealHealthModifier")) {
-                    FoundAttribute = true;
-
-                    Attribute.removeModifier(attributeModifier);
-
-                    AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
-
-                    Attribute.addPermanentModifier(newmodifier);
-                }
             }
 
-            if(!FoundAttribute){
+            if(!attributemodifiers.isEmpty()){
+                Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
+
+                boolean FoundAttribute = false;
+
+                while (attributeModifierIterator.hasNext()) {
+
+                    AttributeModifier attributeModifier = attributeModifierIterator.next();
+                    if (attributeModifier != null && attributeModifier.getName().equals("LifeStealHealthModifier")) {
+                        FoundAttribute = true;
+
+                        Attribute.removeModifier(attributeModifier);
+
+                        AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+
+                        Attribute.addPermanentModifier(newmodifier);
+                    }
+                }
+
+                if(!FoundAttribute){
+
+                    AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
+
+                    Attribute.addPermanentModifier(attributeModifier);
+                }
+            }else{
+
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
                 Attribute.addPermanentModifier(attributeModifier);
             }
-        }else{
-            AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
-            Attribute.addPermanentModifier(attributeModifier);
-        }
+            if(livingEntity.getHealth() > livingEntity.getMaxHealth()){
+                livingEntity.setHealth(livingEntity.getMaxHealth());
+            }
 
-        if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
+            if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
 
-            if(defaultLives > 0 && maximumheartsGainable <= 0){
-                if(this.lives <= 0){
+                if(defaultLives > 0 && maximumheartsGainable <= 0){
+                    if(this.lives <= 0){
+                        if (livingEntity instanceof ServerPlayer serverPlayer){
+                            if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                                serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
+
+                                Component component = Component.translatable("");
+                                livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead.", component));
+
+                                this.heartDifference = defaultheartDifference;
+                                this.lives = defaultLives;
+
+                                refreshHearts();
+                            }
+                        }
+                    }else{
+                        this.lives--;
+
+                        this.heartDifference = defaultheartDifference;
+                        refreshHearts();
+
+                        Component component = Component.translatable("");
+                        livingEntity.sendSystemMessage(Component.translatable("You have lost a life. Your lives count is now "+ this.lives, component));
+                    }
+                }else{
                     if (livingEntity instanceof ServerPlayer serverPlayer){
+
+                        this.heartDifference = defaultheartDifference;
+                        this.lives = defaultLives;
+
+                        refreshHearts();
+
                         if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
                             serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
 
                             Component component = Component.translatable("");
-                            livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead.", component));
-
-                            this.heartDifference = defaultheartDifference;
-                            this.lives = defaultLives;
-
-                            refreshHearts();
+                            livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead.", component));
                         }
                     }
-                }else{
-                    this.lives--;
-
-                    this.heartDifference = defaultheartDifference;
-                    refreshHearts();
-
-                    Component component = Component.translatable("");
-                    livingEntity.sendSystemMessage(Component.translatable("You have lost a life. Your lives count is now "+ this.lives, component));
                 }
-            }else{
-                if (livingEntity instanceof ServerPlayer serverPlayer){
 
-                    this.heartDifference = defaultheartDifference;
-                    this.lives = defaultLives;
+            }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable <= 0 ){
+                this.lives++;
 
-                    refreshHearts();
+                this.heartDifference = defaultheartDifference;
 
-                    if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                        serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
-
-                        Component component = Component.translatable("");
-                        livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead.", component));
-                    }
-                }
+                Component component = Component.translatable("");
+                livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives, component));
+                refreshHearts();
             }
-
-        }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable <= 0 ){
-            this.lives++;
-
-            this.heartDifference = defaultheartDifference;
-
-            Component component = Component.translatable("");
-            livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives, component));
-            refreshHearts();
         }
 
     }
@@ -137,7 +146,7 @@ public class HeartCap implements IHeartCap {
     }
 
     @Override
-    public void setLives(int lives) {this.lives = lives;}
+    public void setLives(int lives) {if(!livingEntity.level.isClientSide){this.lives = lives;}}
 
     @Override
     public CompoundTag serializeNBT() {
