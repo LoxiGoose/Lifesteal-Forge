@@ -1,24 +1,16 @@
 package net.goose.lifesteal.Capability;
 
-import com.mojang.authlib.GameProfile;
-import net.goose.lifesteal.Configurations.Config;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
-import net.minecraft.commands.arguments.MessageArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.UserBanList;
-import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameType;
-import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -26,11 +18,11 @@ public class HeartCap implements IHeartCap {
     private final LivingEntity livingEntity;
 
     //private boolean bannedUponFailure = ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get();
-    private int defaultheartDifference = ConfigHolder.SERVER.startingHeartDifference.get();
+    private final int defaultheartDifference = ConfigHolder.SERVER.startingHeartDifference.get();
     private int heartDifference = defaultheartDifference;
 
-    private int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
+    private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
+    private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
     private int lives = defaultLives;
     public HeartCap(@Nullable final LivingEntity entity) {
         this.livingEntity = entity;
@@ -72,7 +64,7 @@ public class HeartCap implements IHeartCap {
                 }
             }
 
-            if(FoundAttribute == false){
+            if(!FoundAttribute){
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
                 Attribute.addPermanentModifier(attributeModifier);

@@ -2,7 +2,6 @@ package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Configurations.Config;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

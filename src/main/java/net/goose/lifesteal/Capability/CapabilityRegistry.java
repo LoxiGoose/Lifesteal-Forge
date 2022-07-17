@@ -1,6 +1,5 @@
 package net.goose.lifesteal.Capability;
 
-import net.goose.lifesteal.Configurations.Config;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.world.entity.Entity;
