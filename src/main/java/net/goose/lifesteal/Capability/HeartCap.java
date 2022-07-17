@@ -49,6 +49,10 @@ public class HeartCap implements IHeartCap {
         var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
         Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
+        if(this.heartDifference > maximumheartsGainable && maximumheartsGainable > 0){
+            this.heartDifference = maximumheartsGainable;
+        }
+
         if(!attributemodifiers.isEmpty()){
             Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
 

@@ -80,9 +80,7 @@ public class CapabilityRegistry {
                 }
             }
 
-            getHeart(newPlayer).ifPresent(newHeartDifference ->
-                    newHeartDifference.refreshHearts()
-            );
+            getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
         }
 
         @SubscribeEvent
@@ -97,27 +95,18 @@ public class CapabilityRegistry {
 
                     if(killerEntity instanceof Player){
                         var damageSource = killedEntity.getLastDamageSource();
-                        int maximumHeartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
                         int amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
 
                         if(damageSource == null){
 
-                            if(maximumHeartsGainable > 0){
+                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                            }else{
-                                getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
-
-                                getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                        newHeartDifference.refreshHearts()
-                                );
-                            }
+                            getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
 
                         }else if(damageSource.getEntity() instanceof Player){
                                 getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                                getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                        newHeartDifference.refreshHearts()
-                                );
+                                getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
                             }
 
                         }
