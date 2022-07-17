@@ -58,6 +58,10 @@ public class CapabilityRegistry {
                     getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                             newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
                     ));
+
+                    getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+
+                    newPlayer.heal(newPlayer.getMaxHealth());
                 }else{
 
                     var KillerEntity = oldPlayer.getLastHurtByMob();
@@ -69,17 +73,20 @@ public class CapabilityRegistry {
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                                     newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
                             ));
+
+                            getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
                         }else if(damageSource.getEntity() instanceof Player){
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                                     newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
                             ));
+
+                            getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
                         }
                     }
 
                 }
             }
 
-            getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
         }
 
         @SubscribeEvent

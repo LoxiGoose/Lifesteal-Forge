@@ -119,7 +119,7 @@ public class HeartCap implements IHeartCap {
             }
 
 
-        }else if(this.heartDifference >= defaultheartDifference * 2 && defaultLives > 0 && maximumheartsGainable <= 0 ){
+        }else if(this.heartDifference >= livingEntity.getMaxHealth() + (defaultheartDifference * 2) && defaultLives > 0 && maximumheartsGainable <= 0 ){
             this.lives++;
 
             this.heartDifference = defaultheartDifference;
