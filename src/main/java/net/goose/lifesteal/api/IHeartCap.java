@@ -9,7 +9,7 @@ public interface IHeartCap extends INBTSerializable<CompoundTag> {
 
     void setHeartDifference(int hearts);
 
-    void refreshhearts();
+    void refreshHearts();
 
     int getLives();
 

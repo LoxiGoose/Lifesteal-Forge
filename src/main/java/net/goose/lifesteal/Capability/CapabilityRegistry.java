@@ -63,7 +63,11 @@ public class CapabilityRegistry {
 
 
                 getHeart(newPlayer).ifPresent(newHeartDifference ->
-                        newHeartDifference.refreshhearts()
+                        newHeartDifference.refreshHearts()
+                );
+            }else{
+                getHeart(newPlayer).ifPresent(newHeartDifference ->
+                        newHeartDifference.refreshHearts()
                 );
             }
         }
@@ -91,13 +95,13 @@ public class CapabilityRegistry {
                             getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
                             getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                    newHeartDifference.refreshhearts()
+                                    newHeartDifference.refreshHearts()
                             );
                         }else if(damageSource.getEntity() == killerEntity){
                                 getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
                                 getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                        newHeartDifference.refreshhearts()
+                                        newHeartDifference.refreshHearts()
                                 );
                             }
 
