@@ -41,8 +41,9 @@ public class HeartCap implements IHeartCap {
         var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
         Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-        if(this.heartDifference > maximumheartsGainable && maximumheartsGainable > 0){
-            this.heartDifference = maximumheartsGainable;
+        if(this.heartDifference - defaultheartDifference > maximumheartsGainable && maximumheartsGainable > 0){
+            this.heartDifference = maximumheartsGainable + defaultheartDifference;
+
         }
 
         if(!attributemodifiers.isEmpty()){
@@ -118,15 +119,14 @@ public class HeartCap implements IHeartCap {
                 }
             }
 
-
-        }else if(this.heartDifference >= livingEntity.getMaxHealth() + (defaultheartDifference * 2) && defaultLives > 0 && maximumheartsGainable <= 0 ){
+        }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable <= 0 ){
             this.lives++;
 
             this.heartDifference = defaultheartDifference;
-            refreshHearts();
 
             Component component = Component.translatable("");
-            livingEntity.sendSystemMessage(Component.translatable("You have earned an extra life. Your lives count is now "+ this.lives, component));
+            livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives, component));
+            refreshHearts();
         }
 
     }

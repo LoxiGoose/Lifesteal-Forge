@@ -44,6 +44,13 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
+        public static void playerJoinEvent(PlayerEvent.PlayerLoggedInEvent event){
+            var newPlayer = event.getEntity();
+
+            getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+        }
+
+        @SubscribeEvent
         public static void playerCloneEvent(PlayerEvent.Clone event){
 
             boolean wasDeath = event.isWasDeath();
@@ -73,19 +80,18 @@ public class CapabilityRegistry {
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                                     newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
                             ));
-
                             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
                         }else if(damageSource.getEntity() instanceof Player){
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
                                     newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
                             ));
-
                             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
                         }
                     }
 
                 }
             }
+
 
         }
 
