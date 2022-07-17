@@ -1,5 +1,7 @@
 package net.goose.lifesteal.Capability;
 
+import net.goose.lifesteal.Configurations.Config;
+import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -52,24 +54,35 @@ public class CapabilityRegistry {
             var newPlayer = event.getEntity();
 
             if(wasDeath) {
+                int amountOfHealthLossUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
+                if(!ConfigHolder.SERVER.loseHeartsOnlyWhenKilledByPlayer.get()){
+                    getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
+                            newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
+                    ));
+                }else{
 
-                getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
-                        newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - 2)
-                ));
+                    var KillerEntity = oldPlayer.getLastHurtByMob();
 
-                getHeart(oldPlayer).ifPresent(oldLives -> getHeart(newPlayer).ifPresent(newLives ->
-                        newLives.setLives(oldLives.getLives())
-                ));
+                    if(KillerEntity instanceof Player){
+                        var damageSource = oldPlayer.getLastDamageSource();
 
+                        if(damageSource == null){
+                            getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
+                                    newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
+                            ));
+                        }else if(damageSource.getEntity() instanceof Player){
+                            getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
+                                    newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLossUponLoss)
+                            ));
+                        }
+                    }
 
-                getHeart(newPlayer).ifPresent(newHeartDifference ->
-                        newHeartDifference.refreshHearts()
-                );
-            }else{
-                getHeart(newPlayer).ifPresent(newHeartDifference ->
-                        newHeartDifference.refreshHearts()
-                );
+                }
             }
+
+            getHeart(newPlayer).ifPresent(newHeartDifference ->
+                    newHeartDifference.refreshHearts()
+            );
         }
 
         @SubscribeEvent
@@ -77,28 +90,30 @@ public class CapabilityRegistry {
 
             var killedEntity = event.getEntity();
 
-            String killedEntityType = killedEntity.getType().toString();
-            String expectedEntityType = "entity.minecraft.player";
-
-
-            if(killedEntityType.matches(expectedEntityType)){
+            if(killedEntity instanceof Player || ConfigHolder.SERVER.shouldAllMobsGiveHearts.get()){
                 var killerEntity = killedEntity.getLastHurtByMob();
-                var damageSource = killedEntity.getLastDamageSource();
 
                 if(killerEntity != null){
 
-                    var killerEntityType = killerEntity.getType().toString();
-
-                    if(killerEntityType.matches(expectedEntityType)){
+                    if(killerEntity instanceof Player){
+                        var damageSource = killedEntity.getLastDamageSource();
+                        int maximumHeartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
+                        int amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
 
                         if(damageSource == null){
-                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
 
-                            getHeart(killerEntity).ifPresent(newHeartDifference ->
-                                    newHeartDifference.refreshHearts()
-                            );
-                        }else if(damageSource.getEntity() == killerEntity){
-                                getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + 2));
+                            if(maximumHeartsGainable > 0){
+
+                            }else{
+                                getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
+
+                                getHeart(killerEntity).ifPresent(newHeartDifference ->
+                                        newHeartDifference.refreshHearts()
+                                );
+                            }
+
+                        }else if(damageSource.getEntity() instanceof Player){
+                                getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
                                 getHeart(killerEntity).ifPresent(newHeartDifference ->
                                         newHeartDifference.refreshHearts()
