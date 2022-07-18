@@ -1,8 +1,10 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
+import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.Items.ModItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,11 +22,14 @@ public class LifeSteal
 {
     //Hi
     public static final String MOD_ID = "lifesteal";
-
     private static final Logger LOGGER = LogUtils.getLogger();
+
     public LifeSteal()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+
+        ModItems.register(modEventBus);
+        ModBlocks.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);

@@ -45,10 +45,6 @@ description='''
 A mod where killing other players steals their hearts. This is a forge interpretation of the Lifesteal SMP.
 
 This can be put on the serverside and players will be able to join without downloading the mod.
-
-There's currently no config at the moment as this is a very early version of the mod. EXPECT BUGS!
-
-You won't get hearts if you kill another player from natural causes, for example if you set them on fire and they burn by death.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.lifesteal]] #optional

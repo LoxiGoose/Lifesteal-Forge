@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 0.5,
+  "group": "heart_core",
+
+  "ingredient": {
+    "item": "lifesteal:raw_heart_core_ore"
+  },
+
+  "result": {
+    "item": "lifesteal:heart_core"
+  }
+}

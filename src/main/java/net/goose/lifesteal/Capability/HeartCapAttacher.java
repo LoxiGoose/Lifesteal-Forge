@@ -1,5 +1,6 @@
 package net.goose.lifesteal.Capability;
 
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +19,7 @@ public class HeartCapAttacher {
     public static void attach(final AttachCapabilitiesEvent<Entity> event) {
         class HeartCapProvider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
 
-            public static final ResourceLocation IDENTIFIER = new ResourceLocation("lifesteal", "healthdifference");
+            public static final ResourceLocation IDENTIFIER = new ResourceLocation(LifeSteal.MOD_ID, "healthdifference");
             private final IHeartCap backend = new HeartCap((LivingEntity) event.getObject());
             private final LazyOptional<IHeartCap> optionalData = LazyOptional.of(() -> backend);
 

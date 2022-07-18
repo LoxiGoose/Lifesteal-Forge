@@ -1,0 +1,6 @@
+{
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "lifesteal:block/raw_deepslate_heart_core_ore"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "ingredients":[
+    {
+      "item": "lifesteal:heart_core_block"
+    }
+  ],
+
+  "result": {
+    "item": "lifesteal:heart_core",
+    "count": 9
+  }
+}
