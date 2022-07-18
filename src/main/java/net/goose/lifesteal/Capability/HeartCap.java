@@ -22,7 +22,7 @@ public class HeartCap implements IHeartCap {
     private int heartDifference = defaultheartDifference;
 
     private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private final int maximumheartsLoseable = ConfigHolder.SERVER.maximumamountofheartscanloss.get();
+    private final int minimumamountofheartscanhave = ConfigHolder.SERVER.minimumamountofheartscanhave.get();
     private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
     private int lives = defaultLives;
     public HeartCap(@Nullable final LivingEntity entity) {
@@ -48,8 +48,10 @@ public class HeartCap implements IHeartCap {
                 this.heartDifference = maximumheartsGainable + defaultheartDifference;
             }
 
-            if(this.heartDifference < -maximumheartsLoseable){
-                this.heartDifference = defaultheartDifference - maximumheartsLoseable;
+            if(minimumamountofheartscanhave >= 0){
+                if(this.heartDifference < -minimumamountofheartscanhave){
+                    this.heartDifference = defaultheartDifference - minimumamountofheartscanhave;
+                }
             }
 
             if(!attributemodifiers.isEmpty()){
@@ -90,7 +92,7 @@ public class HeartCap implements IHeartCap {
 
             if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
 
-                if(defaultLives > 0 && maximumheartsGainable <= 0 && maximumheartsLoseable <= 0){
+                if(defaultLives > 0 && maximumheartsGainable <= 0 && minimumamountofheartscanhave < 0){
                     if(this.lives <= 0){
                         if (livingEntity instanceof ServerPlayer serverPlayer){
                             if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
@@ -131,7 +133,7 @@ public class HeartCap implements IHeartCap {
                     }
                 }
 
-            }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable <= 0 && maximumheartsLoseable <= 0 ){
+            }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable < 0 && minimumamountofheartscanhave <= 0 ){
                 this.lives++;
 
                 this.heartDifference = defaultheartDifference;

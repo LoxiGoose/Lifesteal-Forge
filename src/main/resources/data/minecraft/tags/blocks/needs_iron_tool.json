@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "lifesteal:raw_heart_core_ore",
+    "lifesteal:raw_deepslate_heart_core_ore",
+    "lifesteal:heart_core_block"
+  ]
+}

@@ -5,7 +5,7 @@
   "group": "heart_core",
 
   "ingredient": {
-    "item": "lifesteal:raw_heart_core_ore"
+    "item": "lifesteal:raw_heart_core"
   },
 
   "result": {
