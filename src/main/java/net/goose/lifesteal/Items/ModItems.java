@@ -18,7 +18,7 @@ public class ModItems {
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));
 
     public static final RegistryObject<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
-            () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.LIFE_TAB)));
+            () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().tab(ModCreativeModeTab.LIFE_TAB)));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

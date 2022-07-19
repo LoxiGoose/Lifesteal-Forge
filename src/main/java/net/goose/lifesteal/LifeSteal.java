@@ -3,7 +3,6 @@ package net.goose.lifesteal;
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Configurations.Config;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.world.feature.ModConfiguredFeatures;

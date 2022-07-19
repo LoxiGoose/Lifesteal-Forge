@@ -7,6 +7,7 @@ import net.goose.lifesteal.Commands.setLives;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -178,6 +179,8 @@ public class CapabilityRegistry {
                                             getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
                                         }
 
+                                    }else{
+                                        killerEntity.sendSystemMessage(Component.translatable("This player doesn't have any hearts you can steal."));
                                     }
                                 }else{
                                     if(damageSource == null){
