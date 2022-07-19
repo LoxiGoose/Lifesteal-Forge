@@ -24,7 +24,7 @@
                   }
                 }
               ],
-              "name": "lifesteal:raw_deepslate_heart_core_ore"
+              "name": "lifesteal:heart_ore"
             },
             {
               "type": "minecraft:item",
@@ -47,7 +47,7 @@
                   "function": "minecraft:explosion_decay"
                 }
               ],
-              "name": "lifesteal:raw_heart_core"
+              "name": "lifesteal:heart_fragment"
             }
           ]
         }

@@ -44,8 +44,7 @@ public class getHitPointDifference {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        Component component = Component.translatable("");
-        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference(), component)));
+        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference())));
 
 
         return 1;

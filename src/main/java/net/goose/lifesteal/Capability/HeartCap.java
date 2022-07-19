@@ -44,8 +44,12 @@ public class HeartCap implements IHeartCap {
             var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-            if(this.heartDifference - defaultheartDifference > maximumheartsGainable && maximumheartsGainable > 0){
-                this.heartDifference = maximumheartsGainable + defaultheartDifference;
+            if(maximumheartsGainable > 0){
+                if(this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
+                    this.heartDifference = maximumheartsGainable + defaultheartDifference;
+
+                    livingEntity.sendSystemMessage(Component.translatable("You have reached max hearts."));
+                }
             }
 
             if(minimumamountofheartscanhave >= 0){

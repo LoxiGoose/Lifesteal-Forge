@@ -44,8 +44,7 @@ public class getLives {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        Component component = Component.translatable("");
-        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives.", component)));
+        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives.")));
 
 
         return 1;

@@ -1,6 +1,6 @@
 {
   "parent": "block/cube_all",
   "textures": {
-    "all": "lifesteal:block/raw_heart_core_ore"
+    "all": "lifesteal:block/endstone_heart_ore"
   }
 }

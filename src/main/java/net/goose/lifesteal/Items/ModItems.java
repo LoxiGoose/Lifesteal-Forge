@@ -1,5 +1,6 @@
 package net.goose.lifesteal.Items;
 
+import net.goose.lifesteal.Items.custom.HeartCrystalItem;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -13,8 +14,11 @@ public class ModItems {
     public static final RegistryObject<Item> HEART_CORE = ITEMS.register("heart_core",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));
 
-    public static final RegistryObject<Item> RAW_HEARTCORE = ITEMS.register("raw_heart_core",
+    public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));
+
+    public static final RegistryObject<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
+            () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.LIFE_TAB)));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

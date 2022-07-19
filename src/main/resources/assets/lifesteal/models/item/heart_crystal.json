@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "lifesteal:item/raw_heart_core"
+    "layer0": "lifesteal:item/heart_crystal"
   }
 }
