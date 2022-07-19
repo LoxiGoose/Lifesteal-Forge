@@ -15,14 +15,15 @@ Important Info
 - At the moment, you won't get hearts if you kill another player from natural causes, for example if you set them on fire and they burn by death. This may change in the future depending on how much better I get at coding in Java and Forge.
 - ~~Server-side only capability (Only the server needs to have the mod, clients can play without. You can also play singleplayer with this mod however gaining hearts will be impossible from this mod.)~~ As of 2.0.0, ores and custom items have been added requiring clients to have this mod.
 - Forge only, might port to Fabric in the future
--Basic Features
 
--Lose hearts when you die at all
--Gain hearts by killing another player
--Upon losing all hearts, enter spectator mode
--Heart Crystals to increase your max health!
--Configuration to edit this mod for your needs :)
--Commands! (setHitPointDifference, getHitPointDifference, setLives, getLives)
+Basic Features
+
+- Lose hearts when you die at all
+- Gain hearts by killing another player
+- Upon losing all hearts, enter spectator mode
+- Heart Crystals to increase your max health!
+- Configuration to edit this mod for your needs :)
+- Commands! (setHitPointDifference, getHitPointDifference, setLives, getLives)
  
 
 Ores and Recipes
