@@ -32,7 +32,7 @@ public class ModConfiguredFeatures {
 
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> HEART_ORE = CONFIGURED_FEATURES.register("heart_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 8)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 10)));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> NETHER_HEART_ORE = CONFIGURED_FEATURES.register("nether_heart_ore",
             () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(NETHERRACK_HEART_ORES.get(), 12)));

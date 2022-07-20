@@ -1,5 +1,6 @@
 package net.goose.lifesteal.Items;
 
+import net.goose.lifesteal.Items.custom.HeartCoreItem;
 import net.goose.lifesteal.Items.custom.HeartCrystalItem;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.world.item.Item;
@@ -12,7 +13,7 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LifeSteal.MOD_ID);
 
     public static final RegistryObject<Item> HEART_CORE = ITEMS.register("heart_core",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));
+            () -> new HeartCoreItem(new Item.Properties().stacksTo(1).tab(ModCreativeModeTab.LIFE_TAB)));
 
     public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
             () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));

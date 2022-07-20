@@ -17,7 +17,7 @@ public class ModPlacedFeatures {
 
     public static final RegistryObject<PlacedFeature> HEART_ORE_PLACED = PLACED_FEATURES.register("heart_ore_placed",
             () -> new PlacedFeature(ModConfiguredFeatures.HEART_ORE.getHolder().get(),
-                    commonOrePlacement(9,
+                    commonOrePlacement(10,
                             HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))));
 
     public static final RegistryObject<PlacedFeature> NETHER_HEART_ORE_PLACED = PLACED_FEATURES.register("nether_heart_ore_placed",

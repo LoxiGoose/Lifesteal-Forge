@@ -2,7 +2,6 @@ package net.goose.lifesteal.Items.custom;
 
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -14,12 +13,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 
-public class HeartCrystalItem extends Item {
+public class HeartCoreItem extends Item {
 
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public HeartCrystalItem(Properties pProperties){
+    public HeartCoreItem(Properties pProperties){
         super(pProperties);
     }
 
@@ -28,16 +27,14 @@ public class HeartCrystalItem extends Item {
 
         if(!level.isClientSide()){
 
-            if(!ConfigHolder.SERVER.disableHeartCrystals.get()){
-                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + ConfigHolder.SERVER.amountOfHealthLostUponLoss.get()));
+            if(!ConfigHolder.SERVER.disableHeartCores.get()){
+                float MaxHealth = player.getMaxHealth();
 
-                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
-
-                player.heal(player.getMaxHealth());
+                player.heal((float) (MaxHealth * 0.35));
 
                 player.getInventory().removeItem(player.getItemInHand(Hand));
             }else{
-                player.sendSystemMessage(Component.translatable("Heart Crystals have been disabled in the configurations."));
+                player.sendSystemMessage(Component.translatable("Heart Cores have been disabled in the configurations."));
             }
         }
 

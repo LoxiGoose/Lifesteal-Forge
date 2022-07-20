@@ -1,17 +1,17 @@
 {
   "type": "minecraft:crafting_shaped",
   "pattern":[
-    "FTF",
-    "FCF",
-    "FFF"
+    "BCB",
+    "CTC",
+    "BCB"
   ],
 
   "key": {
     "C": {
       "item": "lifesteal:heart_core"
     },
-    "F": {
-      "item": "lifesteal:heart_fragment"
+    "B": {
+      "item": "lifesteal:heart_core_block"
     },
     "T": {
       "item": "minecraft:totem_of_undying"
