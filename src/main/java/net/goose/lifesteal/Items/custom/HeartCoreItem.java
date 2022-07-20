@@ -28,11 +28,15 @@ public class HeartCoreItem extends Item {
         if(!level.isClientSide()){
 
             if(!ConfigHolder.SERVER.disableHeartCores.get()){
+
+                ItemStack itemStackheld = player.getItemInHand(Hand);
+
                 float MaxHealth = player.getMaxHealth();
 
                 player.heal((float) (MaxHealth * 0.35));
 
-                player.getInventory().removeItem(player.getItemInHand(Hand));
+                itemStackheld.shrink(1);
+
             }else{
                 player.sendSystemMessage(Component.translatable("Heart Cores have been disabled in the configurations."));
             }
