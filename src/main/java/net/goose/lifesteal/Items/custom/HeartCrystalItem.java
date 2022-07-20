@@ -29,7 +29,7 @@ public class HeartCrystalItem extends Item {
         if(!level.isClientSide()){
 
             if(!ConfigHolder.SERVER.disableHeartCrystals.get()){
-                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + ConfigHolder.SERVER.amountOfHealthLostUponLoss.get()));
+                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + ConfigHolder.SERVER.HeartCrystalAmountGain.get()));
 
                 player.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
 

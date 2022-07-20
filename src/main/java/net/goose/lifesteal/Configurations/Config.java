@@ -16,6 +16,7 @@ public class Config {
     public final ForgeConfigSpec.BooleanValue disableHeartCores;
     public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
     public final ForgeConfigSpec.BooleanValue disableHeartLoss;
+    public final ForgeConfigSpec.IntValue HeartCrystalAmountGain;
 
     //public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHeartsOrLives;
 
@@ -29,6 +30,7 @@ public class Config {
         this.amountOfHealthLostUponLoss =  buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:",  2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This option changes the entire mod into more of a permanent heart gaining system. This makes it so nobody can gain hearts from lifestealing but ONLY through Heart Crystals. MOBS can still take your hearts away if they kill you though, UNLESS you have that option disabled.");
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
+        this.HeartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Gives:", 6, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal 25% of your health if right clicked. This value determines if they should be disabled.");
         this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave or disableHeartLoss settings");
         this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
