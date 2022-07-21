@@ -1,6 +1,6 @@
 This is a forge interpretation of the Lifesteal SMP. This mod was made as a learning experience for me to get better at Java and Forge.
 
-As of 2.0.0, this mod will only be getting minor updates, bug fixes and future ports.
+As of 2.0.0, this mod is required to be both on server-side and client-side. If you don't like this, you can play on 1.2.0 which completely removes ores allowing for only requiring server-side. (2 Configurations from the Config are not in this version however)
 
 Lifesteal
 
@@ -13,7 +13,7 @@ A mod where killing other players steals their hearts, dying will cause you to l
 Important Info
 
 - At the moment, you won't get hearts if you kill another player from natural causes, for example if you set them on fire and they burn by death. This may change in the future depending on how much better I get at coding in Java and Forge.
-- ~~Server-side only capability (Only the server needs to have the mod, clients can play without. You can also play singleplayer with this mod however gaining hearts will be impossible from this mod.)~~ As of 2.0.0, ores and custom items have been added requiring clients to have this mod.
+- Server-side only capability (1.2.0 ONLY! 2.0.0 adds in new ores and items that require the client to also have this mod. You are only missing 2 configuration options if you stay on this version.)
 - Forge only, might port to Fabric in the future
 
 Basic Features
