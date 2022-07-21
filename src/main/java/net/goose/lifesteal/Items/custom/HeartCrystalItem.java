@@ -4,9 +4,15 @@ import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -16,6 +22,8 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 
 public class HeartCrystalItem extends Item {
 
+    public static final FoodProperties HeartCrystal = (new FoodProperties.Builder()).alwaysEat().build();
+
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -24,23 +32,25 @@ public class HeartCrystalItem extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand Hand) {
+    public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
 
-        if(!level.isClientSide()){
+        if(!level.isClientSide() && entity instanceof ServerPlayer serverPlayer){
 
             if(!ConfigHolder.SERVER.disableHeartCrystals.get()){
-                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + ConfigHolder.SERVER.HeartCrystalAmountGain.get()));
 
-                player.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
+                serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + ConfigHolder.SERVER.HeartCrystalAmountGain.get()));
 
-                player.heal(player.getMaxHealth());
+                serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
 
-                player.getInventory().removeItem(player.getItemInHand(Hand));
+                serverPlayer.heal(serverPlayer.getMaxHealth());
+
             }else{
-                player.sendSystemMessage(Component.translatable("Heart Crystals have been disabled in the configurations."));
+                entity.sendSystemMessage(Component.translatable("Heart Crystals have been disabled in the configurations."));
+                    item.shrink(-1);
+                    serverPlayer.containerMenu.broadcastChanges();
+
             }
         }
-
-        return super.use(level, player, Hand);
+        return super.finishUsingItem(item, level, entity);
     }
 }
