@@ -34,7 +34,7 @@ public class Config {
 
         builder.comment("This category is the configuration for items in this mod");
         builder.push("Items");
-        this.HeartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 6, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
+        this.HeartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
         this.HeartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.25, 0.01, 1, "The percentage of max health a heart core should heal when used.");
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");

@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "pattern":[
     "BCB",
-    "CTC",
+    "CDC",
     "BCB"
   ],
 
@@ -13,8 +13,8 @@
     "B": {
       "item": "lifesteal:heart_core_block"
     },
-    "T": {
-      "item": "minecraft:totem_of_undying"
+    "D": {
+      "item": "minecraft:diamond_block"
     }
   },
 
