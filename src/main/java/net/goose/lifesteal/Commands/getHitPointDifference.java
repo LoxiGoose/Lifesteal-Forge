@@ -13,9 +13,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 public class getHitPointDifference {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -44,7 +47,11 @@ public class getHitPointDifference {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference())));
+        if(!source.isPlayer()){
+            getHeart(chosenentity).ifPresent(HeartCap -> LOGGER.info(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference() + "."));
+        }else{
+            getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference() + ".")));
+        }
 
 
         return 1;

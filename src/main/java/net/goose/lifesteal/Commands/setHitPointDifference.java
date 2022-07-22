@@ -1,5 +1,6 @@
 package net.goose.lifesteal.Commands;
 
+import com.mojang.logging.LogUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
@@ -15,8 +16,11 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 
+import org.slf4j.Logger;
+
 public class setHitPointDifference {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -47,16 +51,17 @@ public class setHitPointDifference {
         LivingEntity playerthatsentcommand = source.getPlayer();
 
         getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
-
+        getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
 
         Component component = Component.translatable("");
 
-        if(chosenentity != playerthatsentcommand){
+        if(chosenentity != playerthatsentcommand && source.isPlayer()){
             playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount, component));
+        }else if(!source.isPlayer()){
+            LOGGER.info("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount);
         }
 
         chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to "+amount, component));
-        getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
         return 1;
     }
 }

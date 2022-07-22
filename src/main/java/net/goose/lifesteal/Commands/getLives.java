@@ -13,9 +13,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 public class getLives {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -44,7 +47,11 @@ public class getLives {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives.")));
+        if(!source.isPlayer()){
+            getHeart(chosenentity).ifPresent(HeartCap -> LOGGER.info(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."));
+        }else{
+            getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives.")));
+        }
 
 
         return 1;

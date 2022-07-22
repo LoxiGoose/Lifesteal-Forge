@@ -14,9 +14,12 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
+import com.mojang.logging.LogUtils;
+import org.slf4j.Logger;
 
 public class setLives {
 
+    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -50,8 +53,10 @@ public class setLives {
 
         Component component = Component.translatable("");
 
-        if(chosenentity != playerthatsentcommand){
+        if(chosenentity != playerthatsentcommand && source.isPlayer()){
             playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s lives to "+amount, component));
+        }else if(!source.isPlayer()) {
+            LOGGER.info("Set " + chosenentity.getName().getString() + "'s lives to " + amount);
         }
 
         chosenentity.sendSystemMessage(Component.translatable("Your lives has been set to "+amount, component));
