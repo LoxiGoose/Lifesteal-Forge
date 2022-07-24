@@ -29,10 +29,6 @@ public class HeartCapAttacher {
                 return CapabilityRegistry.HEART_CAP_CAPABILITY.orEmpty(cap, this.optionalData);
             }
 
-            void invalidate() {
-                this.optionalData.invalidate();
-            }
-
             @Override
             public CompoundTag serializeNBT() {
                 return this.backend.serializeNBT();
