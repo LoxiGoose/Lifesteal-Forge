@@ -51,15 +51,13 @@ public class setLives {
 
         getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setLives(amount));
 
-        Component component = Component.translatable("");
-
         if(chosenentity != playerthatsentcommand && source.isPlayer()){
-            playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s lives to "+amount, component));
+            playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s lives to "+amount));
         }else if(!source.isPlayer()) {
             LOGGER.info("Set " + chosenentity.getName().getString() + "'s lives to " + amount);
         }
 
-        chosenentity.sendSystemMessage(Component.translatable("Your lives has been set to "+amount, component));
+        chosenentity.sendSystemMessage(Component.translatable("Your lives has been set to "+amount));
 
         return 1;
     }

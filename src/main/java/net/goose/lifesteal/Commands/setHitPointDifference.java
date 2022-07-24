@@ -53,15 +53,13 @@ public class setHitPointDifference {
         getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
         getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
 
-        Component component = Component.translatable("");
-
         if(chosenentity != playerthatsentcommand && source.isPlayer()){
-            playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount, component));
+            playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount));
         }else if(!source.isPlayer()){
             LOGGER.info("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount);
         }
 
-        chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to "+amount, component));
+        chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to "+amount));
         return 1;
     }
 }
