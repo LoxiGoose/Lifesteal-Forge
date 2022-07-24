@@ -43,8 +43,6 @@ displayTest="MATCH_VERSION" # MATCH_VERSION is the default if nothing is specifi
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 A mod where killing other players steals their hearts. This is a forge interpretation of the Lifesteal SMP.
-
-This can be put on the serverside and players will be able to join without downloading the mod.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.lifesteal]] #optional
