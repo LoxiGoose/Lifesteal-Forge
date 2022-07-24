@@ -3,7 +3,6 @@ package net.goose.lifesteal.Items;
 import net.goose.lifesteal.Items.custom.HeartCoreItem;
 import net.goose.lifesteal.Items.custom.HeartCrystalItem;
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
