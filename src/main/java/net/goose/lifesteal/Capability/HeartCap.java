@@ -102,8 +102,7 @@ public class HeartCap implements IHeartCap {
                             if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
                                 serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
 
-                                Component component = Component.translatable("");
-                                livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead.", component));
+                                livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead."));
 
                                 this.heartDifference = defaultheartDifference;
                                 this.lives = defaultLives;
@@ -117,8 +116,7 @@ public class HeartCap implements IHeartCap {
                         this.heartDifference = defaultheartDifference;
                         refreshHearts();
 
-                        Component component = Component.translatable("");
-                        livingEntity.sendSystemMessage(Component.translatable("You have lost a life. Your lives count is now "+ this.lives, component));
+                        livingEntity.sendSystemMessage(Component.translatable("You have lost a life. Your lives count is now "+ this.lives));
                     }
                 }else{
                     if (livingEntity instanceof ServerPlayer serverPlayer){
@@ -131,8 +129,7 @@ public class HeartCap implements IHeartCap {
                         if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
                             serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
 
-                            Component component = Component.translatable("");
-                            livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead.", component));
+                            livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead."));
                         }
                     }
                 }
@@ -142,8 +139,7 @@ public class HeartCap implements IHeartCap {
 
                 this.heartDifference = defaultheartDifference;
 
-                Component component = Component.translatable("");
-                livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives, component));
+                livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives));
                 refreshHearts();
             }
         }
