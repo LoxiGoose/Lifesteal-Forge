@@ -24,12 +24,6 @@ public class setHitPointDifference {
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    public static LazyOptional<IHeartCap> getHeart(final LivingEntity entity) {
-        if (entity == null)
-            return LazyOptional.empty();
-        return entity.getCapability(HEART_CAP_CAPABILITY);
-    }
-
     public static LazyOptional<IHeartCap> getHeart(final Entity entity) {
         if (entity == null)
             return LazyOptional.empty();
