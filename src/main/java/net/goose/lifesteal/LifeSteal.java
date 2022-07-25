@@ -34,9 +34,6 @@ public class LifeSteal
         // Register the enqueueIMC method for modloading
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
-        //ModConfiguredFeatures.register(modEventBus);
-        //ModPlacedFeatures.register(modEventBus);
-
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
         MinecraftForge.EVENT_BUS.register(this);
