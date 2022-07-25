@@ -37,14 +37,6 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
-    public static LazyOptional<IHeartCap> getHeart(final Entity entity) {
-        if (entity == null)
-            return LazyOptional.empty();
-        return entity.getCapability(HEART_CAP_CAPABILITY);
-    }
-
-
-
     @SuppressWarnings("unused")
     @Mod.EventBusSubscriber(modid = LifeSteal.MOD_ID)
 

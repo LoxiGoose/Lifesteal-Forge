@@ -9,11 +9,9 @@ import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
 import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -23,7 +21,6 @@ import org.slf4j.Logger;
 @Mod(LifeSteal.MOD_ID)
 public class LifeSteal
 {
-    //Hi
     public static final String MOD_ID = "lifesteal";
     private static final Logger LOGGER = LogUtils.getLogger();
 
@@ -53,11 +50,4 @@ public class LifeSteal
         LOGGER.info("Lifestealers are on the loose!");
     }
 
-    @Mod.EventBusSubscriber(modid = MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-    public static class ClientModEvents
-    {
-        @SubscribeEvent
-        public static void onClientSetup(FMLClientSetupEvent event)
-        {}
-    }
 }
