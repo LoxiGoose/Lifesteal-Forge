@@ -67,7 +67,7 @@ public class CapabilityRegistry {
 
         @SubscribeEvent
         public static void playerJoinEvent(PlayerEvent.PlayerLoggedInEvent event){
-            LivingEntity newPlayer = event.getEntity();
+            Player newPlayer = event.getEntity();
 
             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
         }
