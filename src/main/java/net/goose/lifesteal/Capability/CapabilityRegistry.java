@@ -8,6 +8,7 @@ import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -66,7 +67,7 @@ public class CapabilityRegistry {
 
         @SubscribeEvent
         public static void playerJoinEvent(PlayerEvent.PlayerLoggedInEvent event){
-            var newPlayer = event.getEntity();
+            LivingEntity newPlayer = event.getEntity();
 
             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
         }
@@ -76,9 +77,9 @@ public class CapabilityRegistry {
 
             boolean wasDeath = event.isWasDeath();
 
-            var oldPlayer = event.getOriginal();
+            LivingEntity oldPlayer = event.getOriginal();
             oldPlayer.revive();
-            var newPlayer = event.getEntity();
+            LivingEntity newPlayer = event.getEntity();
 
             if(wasDeath && !ConfigHolder.SERVER.disableHeartLoss.get()) {
                 int amountOfHealthLossUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
@@ -92,10 +93,10 @@ public class CapabilityRegistry {
                     newPlayer.heal(newPlayer.getMaxHealth());
                 }else if(!ConfigHolder.SERVER.disableLifesteal.get()){
 
-                    var KillerEntity = oldPlayer.getLastHurtByMob();
+                    LivingEntity KillerEntity = oldPlayer.getLastHurtByMob();
 
                     if(KillerEntity instanceof Player){
-                        var damageSource = oldPlayer.getLastDamageSource();
+                        DamageSource damageSource = oldPlayer.getLastDamageSource();
 
                         if(damageSource == null){
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
@@ -131,15 +132,15 @@ public class CapabilityRegistry {
         @SubscribeEvent
         public static void deathEvent(LivingDeathEvent event){
 
-            var killedEntity = event.getEntity();
+            LivingEntity killedEntity = event.getEntity();
 
             if(killedEntity instanceof Player || ConfigHolder.SERVER.shouldAllMobsGiveHearts.get()){
-                var killerEntity = killedEntity.getLastHurtByMob();
+                LivingEntity killerEntity = killedEntity.getLastHurtByMob();
 
                 if(killerEntity != null){
 
                     if(killerEntity instanceof Player && !ConfigHolder.SERVER.disableLifesteal.get()){
-                        var damageSource = killedEntity.getLastDamageSource();
+                        DamageSource damageSource = killedEntity.getLastDamageSource();
                         int amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
                         AtomicInteger HeartDifference = new AtomicInteger();
                         getHeart(killedEntity).ifPresent(HeartCap -> HeartDifference.set(HeartCap.getHeartDifference()));
