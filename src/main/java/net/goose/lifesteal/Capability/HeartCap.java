@@ -6,6 +6,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameType;
@@ -42,7 +43,7 @@ public class HeartCap implements IHeartCap {
     public void refreshHearts(){
 
         if(!livingEntity.level.isClientSide){
-            var Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
+            AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
             if(maximumheartsGainable > 0){
