@@ -98,10 +98,10 @@ public class CapabilityRegistry {
                         int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL.get(), _Attacker);
 
                         if(level > 0){
-                            System.out.println(damage);
+
                             damage *= ((float) level / (float) ModEnchantments.LIFESTEAL.get().getMaxLevel()) * 0.5f;
                             _Attacker.heal(damage);
-                            System.out.println(damage);
+
                         }
 
                     }
