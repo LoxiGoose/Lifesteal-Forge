@@ -7,10 +7,13 @@ import net.goose.lifesteal.Commands.setLives;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.enchantment.ModEnchantments;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -18,6 +21,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -80,13 +84,41 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
+        public static void livingDamageEvent(LivingDamageEvent event){
+
+            if(!ConfigHolder.SERVER.disableEnchantments.get()){
+                Entity Attacker = event.getSource().getEntity();
+
+                if(Attacker != null){
+
+                    if(Attacker instanceof LivingEntity _Attacker){
+
+                        float damage = event.getAmount();
+
+                        int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL.get(), _Attacker);
+
+                        if(level > 0){
+                            System.out.println(damage);
+                            damage *= ((float) level / (float) ModEnchantments.LIFESTEAL.get().getMaxLevel()) * 0.5f;
+                            _Attacker.heal(damage);
+                            System.out.println(damage);
+                        }
+
+                    }
+
+                }
+            }
+
+        }
+
+        @SubscribeEvent
         public static void playerCloneEvent(PlayerEvent.Clone event){
 
             boolean wasDeath = event.isWasDeath();
 
-            var oldPlayer = event.getOriginal();
+            Player oldPlayer = event.getOriginal();
             oldPlayer.revive();
-            var newPlayer = event.getEntityLiving();
+            LivingEntity newPlayer = event.getEntityLiving();
 
             if(wasDeath && !ConfigHolder.SERVER.disableHeartLoss.get()) {
                 int amountOfHealthLossUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
@@ -100,10 +132,10 @@ public class CapabilityRegistry {
                     newPlayer.setHealth(newPlayer.getMaxHealth());
                 }else if(!ConfigHolder.SERVER.disableLifesteal.get()){
 
-                    var KillerEntity = oldPlayer.getLastHurtByMob();
+                    LivingEntity KillerEntity = oldPlayer.getLastHurtByMob();
 
                     if(KillerEntity instanceof Player){
-                        var damageSource = oldPlayer.getLastDamageSource();
+                        DamageSource damageSource = oldPlayer.getLastDamageSource();
 
                         if(damageSource == null){
                             getHeart(oldPlayer).ifPresent(oldHeartDifference -> getHeart(newPlayer).ifPresent(newHeartDifference ->
@@ -133,16 +165,16 @@ public class CapabilityRegistry {
                 newPlayer.heal(newPlayer.getMaxHealth());
             }
 
-
+            oldPlayer.invalidateCaps();
         }
 
         @SubscribeEvent
         public static void deathEvent(LivingDeathEvent event){
 
-            var killedEntity = event.getEntityLiving();
+            LivingEntity killedEntity = event.getEntityLiving();
 
             if(killedEntity instanceof Player || ConfigHolder.SERVER.shouldAllMobsGiveHearts.get()){
-                var killerEntity = killedEntity.getLastHurtByMob();
+                LivingEntity killerEntity = killedEntity.getLastHurtByMob();
 
                 if(killerEntity != null){
 
