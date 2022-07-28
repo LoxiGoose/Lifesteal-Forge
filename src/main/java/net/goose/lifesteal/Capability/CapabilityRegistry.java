@@ -4,14 +4,18 @@ import net.goose.lifesteal.Commands.getHitPointDifference;
 import net.goose.lifesteal.Commands.getLives;
 import net.goose.lifesteal.Commands.setHitPointDifference;
 import net.goose.lifesteal.Commands.setLives;
+import net.goose.lifesteal.Configurations.Config;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.enchantment.LifeStealEnchantment;
+import net.goose.lifesteal.enchantment.ModEnchantments;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -19,6 +23,7 @@ import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -45,6 +50,7 @@ public class CapabilityRegistry {
 
         @SubscribeEvent
         public static void OnCommandsRegister(RegisterCommandsEvent event){
+            System.out.println();
             new getHitPointDifference(event.getDispatcher());
             new setHitPointDifference(event.getDispatcher());
             new getLives(event.getDispatcher());
@@ -70,6 +76,33 @@ public class CapabilityRegistry {
             Player newPlayer = event.getEntity();
 
             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+        }
+
+        @SubscribeEvent
+        public static void livingDamageEvent(LivingDamageEvent event){
+
+            if(!ConfigHolder.SERVER.disableEnchantments.get()){
+                System.out.println("not disabled");
+                Entity Attacker = event.getSource().getEntity();
+
+                if(Attacker != null){
+
+                    if(Attacker instanceof LivingEntity _Attacker){
+
+                        float damage = event.getAmount();
+
+                        int level = _Attacker.getMainHandItem().getEnchantmentLevel(ModEnchantments.LIFESTEAL.get());
+
+                        if(level > 0){
+                            damage *= ((float) level / (float) ModEnchantments.LIFESTEAL.get().getMaxLevel()) * 0.5f;
+                            _Attacker.heal(damage);
+                        }
+
+                    }
+
+                }
+            }
+
         }
 
         @SubscribeEvent
@@ -126,7 +159,7 @@ public class CapabilityRegistry {
                 newPlayer.heal(newPlayer.getMaxHealth());
             }
 
-
+            oldPlayer.invalidateCaps();
         }
 
         @SubscribeEvent

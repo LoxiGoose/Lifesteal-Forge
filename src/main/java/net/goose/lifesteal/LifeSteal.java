@@ -5,6 +5,8 @@ import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.enchantment.LifeStealEnchantment;
+import net.goose.lifesteal.enchantment.ModEnchantments;
 import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
 import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,13 +34,13 @@ public class LifeSteal
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModEnchantments.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
-
 
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
         MinecraftForge.EVENT_BUS.register(this);
