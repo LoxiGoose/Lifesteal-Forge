@@ -183,19 +183,23 @@ public class CapabilityRegistry {
                                 if(!ConfigHolder.SERVER.loseHeartsOnlyWhenKilledByMob.get() && ConfigHolder.SERVER.loseHeartsOnlyWhenKilledByPlayer.get()){
                                     if(killerEntity instanceof Player){
                                         getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
+                                        getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
                                     }
                                 }else{
                                     getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
+                                    getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
                                 }
                             }
                         }else{
                             getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
+                            getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
                         }
 
                     }
                 }else{
                     if (!ConfigHolder.SERVER.loseHeartsOnlyWhenKilledByMob.get() && !ConfigHolder.SERVER.loseHeartsOnlyWhenKilledByPlayer.get()) {
                         getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
+                        getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
                     }
                 }
 
