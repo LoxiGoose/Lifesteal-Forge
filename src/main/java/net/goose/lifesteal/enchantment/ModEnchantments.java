@@ -15,7 +15,8 @@ public class ModEnchantments {
 
     public static RegistryObject<Enchantment> LIFESTEAL =
             ENCHANTMENTS.register("lifesteal",
-                    ()-> new LifeStealEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND));
+                    ()-> new LifeStealEnchantment(Enchantment.Rarity.UNCOMMON, EnchantmentCategory.WEAPON, EquipmentSlot.MAINHAND) {
+                    });
 
     public static void register(IEventBus eventBus){
         ENCHANTMENTS.register(eventBus);

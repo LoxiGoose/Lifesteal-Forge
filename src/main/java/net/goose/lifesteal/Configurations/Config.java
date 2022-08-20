@@ -19,6 +19,7 @@ public class Config {
     public final ForgeConfigSpec.IntValue HeartCrystalAmountGain;
     public final ForgeConfigSpec.DoubleValue HeartCoreHeal;
     public final ForgeConfigSpec.BooleanValue disableEnchantments;
+    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByMob;
 
     //public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHeartsOrLives;
 
@@ -28,7 +29,8 @@ public class Config {
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:",  0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
         this.amountOfLives = buildInt(builder, "Starting Lives:",  -1, -1, Integer.MAX_VALUE,  "This introduces a new lives system where when a player loses all their max hearts, they will lose a life and their max hearts will reset. When they lose all their lives, they permanently die. You can gain a life if your max hearts are double your starting hearts. Setting this to -1 will disable this feature.");
-        this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:",  false, "When this is false, you will lose hearts when killed by anything. Otherwise, you can only lose max hearts when killed by a player.");
+        this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:",  false, "When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)");
+        this.loseHeartsOnlyWhenKilledByMob = buildBoolean(builder, "Lose Hearts Only When Killed By a Mob:",  false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss =  buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:",  2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
 
         builder.pop();
