@@ -165,10 +165,14 @@ public class CapabilityRegistry {
                                                 getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
                                                 getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
+                                            } else {
+                                                killerEntity.sendMessage(Component.nullToEmpty("This player doesn't have any hearts you can steal."), killerEntity.getUUID());
                                             }
 
                                         } else {
-                                            killerEntity.sendMessage(Component.nullToEmpty("This player doesn't have any hearts you can steal."), killerEntity.getUUID());
+                                            getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
+
+                                            getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
                                         }
                                     } else {
                                         getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
