@@ -6,26 +6,15 @@
 	#This introduces a new lives system where when a player loses all their max hearts, they will lose a life and their max hearts will reset. When they lose all their lives, they permanently die. You can gain a life if your max hearts are double your starting hearts. Setting this to -1 will disable this feature.
 	#Range: > -1
 	"Starting Lives:" = -1
-	#When this is false, you will lose hearts when killed by anything. Otherwise, you can only lose max hearts when killed by a player.
+	#When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)
 	"Lose Hearts Only When Killed By a Player:" = false
+	#When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.
+	"Lose Hearts Only When Killed By a Mob:" = false
 	#This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.
 	#Range: > 1
 	"Amount of HitPoints/Health Lost/Given Upon Death/Kill:" = 2
 	#This value determines if a PLAYER should lose HEARTS AT ALL.
 	"Disable Heart Loss:" = false
-
-#This category is the configuration for items in this mod
-[Items]
-	#This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.
-	#Range: > 1
-	"Amount of HitPoints Heart Crystal Permanently Gives:" = 6
-	#The percentage of max health a heart core should heal when used.
-	#Range: 0.01 ~ 1.0
-	"Percentage of max Health Heart Core Heals" = 0.25
-	#If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.
-	"Disable Heart Crystals:" = false
-	#Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.
-	"Disable Heart Cores:" = false
 
 #This category is everything related to life stealing from someone.
 ["Lifesteal Related"]
@@ -42,6 +31,21 @@
 	#WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can at least have, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.
 	#Range: > -1
 	"Minimum Amount Of Health/Hitpoints a Player can have:" = -1
+	
+#This category is the configuration for items and enchantments in this mod
+["Items and Enchantments"]
+	#This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.
+	#Range: > 1
+	"Amount of HitPoints Heart Crystal Permanently Gives:" = 2
+	#The percentage of max health a heart core should heal when used.
+	#Range: 0.01 ~ 1.0
+	"Percentage of max Health Heart Core Heals" = 0.25
+	#If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.
+	"Disable Heart Crystals:" = false
+	#Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.
+	"Disable Heart Cores:" = false
+	#This value determines whether modded enchantments from this mod should be disabled or not.
+	"Disable Enchantments:" = false
 
 #This category holds values that aren't intended for gameplay and aren't polished, but can be used to test certain aspects of the mod easily or just for good fun.
 ["MISC/FUN"]
