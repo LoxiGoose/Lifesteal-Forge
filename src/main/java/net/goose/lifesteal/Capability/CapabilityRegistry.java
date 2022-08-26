@@ -140,7 +140,13 @@ public class CapabilityRegistry {
             if(killedEntity instanceof Player || ConfigHolder.SERVER.shouldAllMobsGiveHearts.get()) {
                 LivingEntity killerEntity = killedEntity.getLastHurtByMob();
 
-                int amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
+                int amountOfHealthLostUponLoss;
+
+                if(killedEntity.getMaxHealth() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= 0){
+                    amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
+                }else{
+                    amountOfHealthLostUponLoss = (int) killedEntity.getMaxHealth();
+                }
 
                 if (killerEntity != null) {
 
