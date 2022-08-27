@@ -10,7 +10,7 @@ public class Config {
     public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByPlayer;
     public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
     public final ForgeConfigSpec.IntValue maximumamountofheartsgainable;
-    public final ForgeConfigSpec.IntValue minimumamountofheartscanhave;
+    public final ForgeConfigSpec.IntValue minimumamountofheartscanlose;
     public final ForgeConfigSpec.BooleanValue disableLifesteal;
     public final ForgeConfigSpec.BooleanValue disableHeartCrystals;
     public final ForgeConfigSpec.BooleanValue disableHeartCores;
@@ -53,7 +53,7 @@ public class Config {
         builder.comment("This category will hold the maximums for certain values");
         builder.push("Maximums and Minimums");
         this.maximumamountofheartsgainable = buildInt(builder, "Maximum Amount of Health/Hitpoints a Player can get:",  -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit SET after your Starting HitPoint Difference for how many hit points/hearts a player can get. 2 hit points = 1 heart. Set this to less than 1 to disable the feature.");
-        this.minimumamountofheartscanhave = buildInt(builder,"Minimum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
+        this.minimumamountofheartscanlose = buildInt(builder,"Minimum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
         builder.pop();
         builder.comment("This category holds values that aren't intended for gameplay and aren't polished, but can be used to test certain aspects of the mod easily or just for good fun.");
         builder.push("MISC/FUN");
