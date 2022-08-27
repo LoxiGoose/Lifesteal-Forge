@@ -21,10 +21,10 @@ public class Config {
     public final ForgeConfigSpec.BooleanValue disableEnchantments;
     public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByMob;
 
-    //public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHeartsOrLives;
+    public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHeartsOrLives;
 
     public Config(final ForgeConfigSpec.Builder builder) {
-        builder.comment("It's recommended to edit the config BEFORE you make/play a world. While editing the config in an already generated world is supported, there may be visual bugs or just bugs in general.");
+        builder.comment("It's recommended to edit the config BEFORE you make/play a world. While editing the config in an already generated world can work sometimes, there may be visual bugs or just bugs in general.");
         builder.comment("This category holds general values that will mostly be customized by most.");
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:",  0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
@@ -32,6 +32,7 @@ public class Config {
         this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:",  false, "When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)");
         this.loseHeartsOnlyWhenKilledByMob = buildBoolean(builder, "Lose Hearts Only When Killed By a Mob:",  false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss =  buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:",  2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
+        this.bannedUponLosingAllHeartsOrLives = buildBoolean(builder, "Should Players get Banned When They Lose all Lives/Hearts:", false, "When this is false, players that lose all lives/hearts will go into spectator mode. Otherwise, they'll be banned until unbanned.");
 
         builder.pop();
 
@@ -42,7 +43,6 @@ public class Config {
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
         this.disableEnchantments = buildBoolean(builder, "Disable Enchantments:", false, "This value determines whether modded enchantments from this mod should be disabled or not.");
-        //this.bannedUponLosingAllHeartsOrLives = buildBoolean(builder, "Should Players get Banned When They Lose all Lives/Hearts:", false, "When this is false, players will go into spectator mode. Otherwise, players will get banned.");
 
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");

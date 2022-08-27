@@ -3,10 +3,8 @@ package net.goose.lifesteal.Capability;
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
-import net.minecraft.commands.arguments.GameProfileArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.ComponentUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
@@ -24,7 +22,6 @@ import java.util.Set;
 public class HeartCap implements IHeartCap {
     private final LivingEntity livingEntity;
 
-    //private boolean bannedUponFailure = ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get();
     private final int defaultheartDifference = ConfigHolder.SERVER.startingHeartDifference.get();
     private int heartDifference = defaultheartDifference;
 
@@ -105,16 +102,34 @@ public class HeartCap implements IHeartCap {
 
                 if(defaultLives > 0 && maximumheartsGainable <= 0 && minimumamountofheartscanlose < 0){
                     if(this.lives <= 0){
+
+                        this.heartDifference = defaultheartDifference;
+                        this.lives = defaultLives;
+
+                        refreshHearts();
+
                         if (livingEntity instanceof ServerPlayer serverPlayer){
-                            if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                                serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
+
+                            if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
+
+                                @Nullable Component component = Component.translatable("You have lost all your lives and max hearts, you are now permanently banned till further notice.");
+
+                                UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
+
+                                serverPlayer.getGameProfile();
+
+                                GameProfile gameprofile = serverPlayer.getGameProfile();
+
+                                UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, (Date)null, "Lifesteal", (Date)null, component == null ? null : component.getString());
+                                userbanlist.add(userbanlistentry);
+
+                                if (serverPlayer != null) {
+                                    serverPlayer.connection.disconnect(Component.translatable("You have lost all your lives and max hearts, you are now permanently banned till further notice."));
+                                }
+                            }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                                serverPlayer.setGameMode(GameType.SPECTATOR);
 
                                 livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead."));
-
-                                this.heartDifference = defaultheartDifference;
-                                this.lives = defaultLives;
-
-                                refreshHearts();
                             }
                         }
                     }else{
@@ -133,11 +148,28 @@ public class HeartCap implements IHeartCap {
 
                         refreshHearts();
 
-                        if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                            serverPlayer.gameMode.changeGameModeForPlayer(GameType.SPECTATOR);
+                        if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
 
-                            livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead."));
+                            @Nullable Component component = Component.translatable("You have lost all max hearts, you are now permanently banned till further notice.");
+
+                            UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
+
+                            serverPlayer.getGameProfile();
+
+                            GameProfile gameprofile = serverPlayer.getGameProfile();
+
+                            UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, (Date)null, "Lifesteal", (Date)null, component == null ? null : component.getString());
+                            userbanlist.add(userbanlistentry);
+
+                            if (serverPlayer != null) {
+                                serverPlayer.connection.disconnect(Component.translatable("You have lost all max hearts, you are now permanently banned till further notice."));
+                            }
+                        }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                                serverPlayer.setGameMode(GameType.SPECTATOR);
+
+                                livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead."));
                         }
+
                     }
                 }
 
