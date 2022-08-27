@@ -34,9 +34,6 @@ public class ModBlocks {
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), ModCreativeModeTab.LIFE_TAB);
 
-    public static final RegistryObject<Block> ENDSTONE_HEART_ORE = registerBlock("endstone_heart_ore", () ->
-            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(10f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), ModCreativeModeTab.LIFE_TAB);
-
     public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, tab);
