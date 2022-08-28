@@ -5,8 +5,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.common.util.Lazy;
 
 public enum OreType {
-    HEART_ORE(Lazy.of(ModBlocks.HEART_ORE), 10, 12, 50, 10),
-    NETHERRACK_HEART_ORE(Lazy.of(ModBlocks.NETHERRACK_HEART_ORE), 12, 12, 50, 12);
+    HEART_ORE(Lazy.of(ModBlocks.HEART_ORE), 12, 10, 60, 12),
+    NETHERRACK_HEART_ORE(Lazy.of(ModBlocks.NETHERRACK_HEART_ORE), 14, 10, 80, 14);
 
 
     private final Lazy<Block> Block;
