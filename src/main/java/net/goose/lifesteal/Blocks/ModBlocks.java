@@ -28,7 +28,7 @@ public class ModBlocks {
             new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), ModCreativeModeTab.LIFE_TAB);
 
     public static final RegistryObject<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
-            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(8f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), ModCreativeModeTab.LIFE_TAB);
+            new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), ModCreativeModeTab.LIFE_TAB);
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), ModCreativeModeTab.LIFE_TAB);

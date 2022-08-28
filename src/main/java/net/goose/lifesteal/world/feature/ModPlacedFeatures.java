@@ -17,13 +17,13 @@ public class ModPlacedFeatures {
 
     public static final RegistryObject<PlacedFeature> HEART_ORE_PLACED = PLACED_FEATURES.register("heart_ore_placed",
             () -> new PlacedFeature(ModConfiguredFeatures.HEART_ORE.getHolder().get(),
-                    commonOrePlacement(10,
-                            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))));
+                    commonOrePlacement(12, // VeinsPerChunk
+                            HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70)))));
 
     public static final RegistryObject<PlacedFeature> NETHER_HEART_ORE_PLACED = PLACED_FEATURES.register("nether_heart_ore_placed",
             () -> new PlacedFeature(ModConfiguredFeatures.NETHER_HEART_ORE.getHolder().get(),
-                    commonOrePlacement(12,
-                            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))));
+                    commonOrePlacement(14, // VeinsPerChunk
+                            HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100)))));
 
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());

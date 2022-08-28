@@ -27,10 +27,10 @@ public class ModConfiguredFeatures {
             OreConfiguration.target(OreFeatures.NETHER_ORE_REPLACEABLES, ModBlocks.NETHERRACK_HEART_ORE.get().defaultBlockState())));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> HEART_ORE = CONFIGURED_FEATURES.register("heart_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 10)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 12))); // Vein Min-Max Size
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> NETHER_HEART_ORE = CONFIGURED_FEATURES.register("nether_heart_ore",
-            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(NETHERRACK_HEART_ORES.get(), 12)));
+            () -> new ConfiguredFeature<>(Feature.ORE, new OreConfiguration(NETHERRACK_HEART_ORES.get(), 14))); // Vein Min-Max Size
 
     public static void register(IEventBus eventbus){
         CONFIGURED_FEATURES.register(eventbus);
