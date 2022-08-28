@@ -21,9 +21,9 @@ public class ModConfiguredFeatures {
 
 
     public static final Holder<ConfiguredFeature<OreConfiguration, ?>> HEART_ORE = FeatureUtils.register("heart_ore",
-            Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES, 10));
+            Feature.ORE, new OreConfiguration(OVERWORLD_HEART_ORES, 12)); // Max Vein Size
 
     public static final Holder<ConfiguredFeature<OreConfiguration, ?>> NETHER_HEART_ORE = FeatureUtils.register("nether_heart_ore",
-            Feature.ORE, new OreConfiguration(NETHERRACK_HEART_ORES, 12));
+            Feature.ORE, new OreConfiguration(NETHERRACK_HEART_ORES, 14)); // Max Vein Size
 
 }
