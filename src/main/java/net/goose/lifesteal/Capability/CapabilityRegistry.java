@@ -138,15 +138,15 @@ public class CapabilityRegistry {
                 int amountOfHealthLostUponLoss;
 
                 if(ConfigHolder.SERVER.minimumamountofheartscanlose.get() < 0 ){
-                    if(killedEntity.getMaxHealth() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= 0 || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()){
+                    if(20 + HeartDifference.get() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= 0 || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()){
                         amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
                     }else{
-                        amountOfHealthLostUponLoss = (int) killedEntity.getMaxHealth();
+                        amountOfHealthLostUponLoss = 20 + HeartDifference.get();
                     }
-                }else{
-                    if(killedEntity.getMaxHealth() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= (20 + ConfigHolder.SERVER.startingHeartDifference.get()) - ConfigHolder.SERVER.minimumamountofheartscanlose.get() || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()){
+                }else {
+                    if (20 + HeartDifference.get() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= (20 + ConfigHolder.SERVER.startingHeartDifference.get()) - ConfigHolder.SERVER.minimumamountofheartscanlose.get() || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()) {
                         amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
-                    }else {
+                    } else {
                         amountOfHealthLostUponLoss = HeartDifference.get() + ConfigHolder.SERVER.minimumamountofheartscanlose.get();
                     }
                 }
