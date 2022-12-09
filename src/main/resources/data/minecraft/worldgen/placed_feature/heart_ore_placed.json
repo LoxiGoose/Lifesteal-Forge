@@ -1,9 +1,9 @@
 {
-  "feature": "lifesteal:nether_heart_ore_placed",
+  "feature": "lifesteal:ore_heart",
   "placement": [
     {
       "type": "minecraft:count",
-      "count": 14
+      "count": 12
     },
     {
       "type": "minecraft:in_square"
@@ -13,10 +13,10 @@
       "height": {
         "type": "minecraft:triangle",
         "max_inclusive": {
-          "absolute": 100
+          "absolute": 70
         },
         "min_inclusive": {
-          "absolute": 20
+          "absolute": -50
         }
       }
     },
