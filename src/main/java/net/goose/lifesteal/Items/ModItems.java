@@ -13,13 +13,13 @@ public class ModItems {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, LifeSteal.MOD_ID);
 
     public static final RegistryObject<Item> HEART_CORE = ITEMS.register("heart_core",
-            () -> new HeartCoreItem(new Item.Properties().food(HeartCoreItem.HeartCore).tab(ModCreativeModeTab.LIFE_TAB)));
+            () -> new HeartCoreItem(new Item.Properties().food(HeartCoreItem.HeartCore)));
 
     public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
-            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB)));
+            () -> new Item(new Item.Properties()));
 
     public static final RegistryObject<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
-            () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().food(HeartCrystalItem.HeartCrystal).tab(ModCreativeModeTab.LIFE_TAB)));
+            () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().food(HeartCrystalItem.HeartCrystal)));
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

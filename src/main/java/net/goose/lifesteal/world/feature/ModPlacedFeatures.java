@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ModPlacedFeatures {
 
-    public static final DeferredRegister<PlacedFeature> PLACED_FEATURES =
+    /*public static final DeferredRegister<PlacedFeature> PLACED_FEATURES =
             DeferredRegister.create(Registry.PLACED_FEATURE_REGISTRY, LifeSteal.MOD_ID);
 
     public static final RegistryObject<PlacedFeature> HEART_ORE_PLACED = PLACED_FEATURES.register("heart_ore_placed",
@@ -21,7 +21,7 @@ public class ModPlacedFeatures {
                             HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70)))));
 
     public static final RegistryObject<PlacedFeature> NETHER_HEART_ORE_PLACED = PLACED_FEATURES.register("nether_heart_ore_placed",
-            () -> new PlacedFeature(ModConfiguredFeatures.NETHER_HEART_ORE.getHolder().get(),
+            () -> new PlacedFeature(ModConfiguredFeatures.NETHER_HEART_ORE.getHolder().get(), 
                     commonOrePlacement(14, // VeinsPerChunk
                             HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100)))));
 
@@ -39,6 +39,6 @@ public class ModPlacedFeatures {
 
     public static void register(IEventBus eventbus){
             PLACED_FEATURES.register(eventbus);
-    }
+    }*/
 
 }

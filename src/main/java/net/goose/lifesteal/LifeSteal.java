@@ -4,9 +4,9 @@ import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
-import net.goose.lifesteal.enchantment.LifeStealEnchantment;
-import net.goose.lifesteal.enchantment.ModEnchantments;
+import net.goose.lifesteal.Enchantments.ModEnchantments;
 import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
 import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,14 +32,15 @@ public class LifeSteal
 
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        modEventBus.addListener(this::commonSetup);
+        modEventBus.addListener(ModCreativeModeTab::registerTabItems);
+
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEnchantments.register(modEventBus);
 
-        modEventBus.addListener(this::commonSetup);
-
-        ModConfiguredFeatures.register(modEventBus);
-        ModPlacedFeatures.register(modEventBus);
+        //ModConfiguredFeatures.register(modEventBus);
+        //ModPlacedFeatures.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
         MinecraftForge.EVENT_BUS.register(this);

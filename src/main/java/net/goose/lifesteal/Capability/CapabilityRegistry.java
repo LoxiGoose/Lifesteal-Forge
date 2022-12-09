@@ -7,7 +7,7 @@ import net.goose.lifesteal.Commands.setLives;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
-import net.goose.lifesteal.enchantment.ModEnchantments;
+import net.goose.lifesteal.Enchantments.ModEnchantments;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -68,14 +68,14 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
-        public static void playerJoinEvent(PlayerEvent.PlayerLoggedInEvent event){
+        public static void playerJoinEvent(final PlayerEvent.PlayerLoggedInEvent event){
             Player newPlayer = event.getEntity();
 
             getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
         }
 
         @SubscribeEvent
-        public static void livingDamageEvent(LivingDamageEvent event){
+        public static void livingDamageEvent(final LivingDamageEvent event){
 
             if(!ConfigHolder.SERVER.disableEnchantments.get()){
                 Entity Attacker = event.getSource().getEntity();
@@ -101,7 +101,7 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
-        public static void playerCloneEvent(PlayerEvent.Clone event){
+        public static void playerCloneEvent(final PlayerEvent.Clone event){
 
             boolean wasDeath = event.isWasDeath();
 
@@ -123,7 +123,7 @@ public class CapabilityRegistry {
         }
 
         @SubscribeEvent
-        public static void deathEvent(LivingDeathEvent event){
+        public static void deathEvent(final LivingDeathEvent event){
 
             LivingEntity killedEntity = event.getEntity();
 

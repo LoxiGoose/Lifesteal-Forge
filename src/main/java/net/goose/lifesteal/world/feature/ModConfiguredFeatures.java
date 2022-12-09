@@ -17,7 +17,7 @@ import java.util.function.Supplier;
 
 public class ModConfiguredFeatures {
 
-    public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES =
+    /*public static final DeferredRegister<ConfiguredFeature<?, ?>> CONFIGURED_FEATURES =
             DeferredRegister.create(Registry.CONFIGURED_FEATURE_REGISTRY, LifeSteal.MOD_ID);
 
     public static final Supplier<List<OreConfiguration.TargetBlockState>> OVERWORLD_HEART_ORES = Suppliers.memoize(() -> List.of(
@@ -34,5 +34,5 @@ public class ModConfiguredFeatures {
 
     public static void register(IEventBus eventbus){
         CONFIGURED_FEATURES.register(eventbus);
-    }
+    }*/
 }
