@@ -9,5 +9,8 @@
 
   "enchantment.lifesteal.lifesteal": "Lifesteal",
 
-  "itemGroup.lifesteal": "Lifesteal"
+  "itemGroup.lifesteal": "Lifesteal",
+
+  "advancements.lifesteal.get_fragment.title": "Bloody Shard",
+  "advancements.lifesteal.get_fragment.desc": "Get a heart fragment."
 }

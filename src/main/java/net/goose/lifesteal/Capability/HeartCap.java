@@ -26,7 +26,7 @@ public class HeartCap implements IHeartCap {
     private int heartDifference = defaultheartDifference;
 
     private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.minimumamountofheartscanlose.get();
+    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.maximumamountofheartsloseable.get();
     private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
     private int lives = defaultLives;
     public HeartCap(@Nullable final LivingEntity entity) {

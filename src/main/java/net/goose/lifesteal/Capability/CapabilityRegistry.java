@@ -137,17 +137,17 @@ public class CapabilityRegistry {
 
                 int amountOfHealthLostUponLoss;
 
-                if(ConfigHolder.SERVER.minimumamountofheartscanlose.get() < 0 ){
+                if(ConfigHolder.SERVER.maximumamountofheartsloseable.get() < 0 ){
                     if(20 + HeartDifference.get() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= 0 || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()){
                         amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
                     }else{
                         amountOfHealthLostUponLoss = 20 + HeartDifference.get();
                     }
                 }else {
-                    if (20 + HeartDifference.get() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= (20 + ConfigHolder.SERVER.startingHeartDifference.get()) - ConfigHolder.SERVER.minimumamountofheartscanlose.get() || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()) {
+                    if (20 + HeartDifference.get() - ConfigHolder.SERVER.amountOfHealthLostUponLoss.get() >= (20 + ConfigHolder.SERVER.startingHeartDifference.get()) - ConfigHolder.SERVER.maximumamountofheartsloseable.get() || ConfigHolder.SERVER.playersGainHeartsifKillednoHeart.get()) {
                         amountOfHealthLostUponLoss = ConfigHolder.SERVER.amountOfHealthLostUponLoss.get();
                     } else {
-                        amountOfHealthLostUponLoss = HeartDifference.get() + ConfigHolder.SERVER.minimumamountofheartscanlose.get();
+                        amountOfHealthLostUponLoss = HeartDifference.get() + ConfigHolder.SERVER.maximumamountofheartsloseable.get();
                     }
                 }
 
@@ -166,8 +166,8 @@ public class CapabilityRegistry {
                                 } else {
 
                                     if (!ConfigHolder.SERVER.disableHeartLoss.get()) {
-                                        if (ConfigHolder.SERVER.minimumamountofheartscanlose.get() > -1) {
-                                            if (ConfigHolder.SERVER.startingHeartDifference.get() + HeartDifference.get() > -ConfigHolder.SERVER.minimumamountofheartscanlose.get()) {
+                                        if (ConfigHolder.SERVER.maximumamountofheartsloseable.get() > -1) {
+                                            if (ConfigHolder.SERVER.startingHeartDifference.get() + HeartDifference.get() > -ConfigHolder.SERVER.maximumamountofheartsloseable.get()) {
                                                 getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
                                                 getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);

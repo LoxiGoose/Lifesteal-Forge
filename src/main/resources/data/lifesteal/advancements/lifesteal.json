@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": {
+      "item": "lifesteal:heart_crystal"
+    },
+    "title": "Bloody Shard",
+    "description": "Get a heart fragment.",
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "parent": "lifesteal:lifesteal",
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "lifesteal:heart_fragment"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

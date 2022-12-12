@@ -7,8 +7,6 @@ import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.Enchantments.ModEnchantments;
-import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
-import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -34,13 +32,11 @@ public class LifeSteal
 
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(ModCreativeModeTab::registerTabItems);
+        modEventBus.addListener(ModCreativeModeTab::registerTab);
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModEnchantments.register(modEventBus);
-
-        //ModConfiguredFeatures.register(modEventBus);
-        //ModPlacedFeatures.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
         MinecraftForge.EVENT_BUS.register(this);
