@@ -1,9 +1,9 @@
 package net.goose.lifesteal.Commands;
 
-import com.mojang.logging.LogUtils;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,11 +16,7 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
 
-import org.slf4j.Logger;
-
 public class setLives {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -48,7 +44,7 @@ public class setLives {
         getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
 
         if(sourceTextName.matches("Server")){
-            LOGGER.info("Set "+ chosenentity.getName().getString() +"'s lives to "+amount);
+            LifeSteal.LOGGER.info("Set "+ chosenentity.getName().getString() +"'s lives to "+amount);
         }else{
             LivingEntity playerthatsentcommand = source.getPlayerOrException();
 

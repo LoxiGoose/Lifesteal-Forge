@@ -22,7 +22,7 @@ public class LifeSteal
 {
     // Directly reference a slf4j logger
     public static final String MOD_ID = "lifesteal";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public LifeSteal()
     {

@@ -3,6 +3,7 @@ package net.goose.lifesteal.Commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -14,12 +15,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
-
 public class getLives {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -43,7 +39,7 @@ public class getLives {
         String sourceTextName = source.getTextName();
 
         if(sourceTextName.matches("Server")){
-            getHeart(chosenentity).ifPresent(HeartCap -> LOGGER.info(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."));
+            getHeart(chosenentity).ifPresent(HeartCap -> LifeSteal.LOGGER.info(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."));
         }else{
             LivingEntity playerthatsentcommand = source.getPlayerOrException();
             getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendMessage(Component.nullToEmpty(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."), playerthatsentcommand.getUUID()));
