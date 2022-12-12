@@ -1,11 +1,17 @@
 package net.goose.lifesteal.Capability;
 
 import com.mojang.authlib.GameProfile;
+import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.advancements.AdvancementList;
+import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.PlayerAdvancements;
+import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.packs.resources.PreparableReloadListener;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +19,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameType;
+import org.apache.logging.log4j.core.jmx.Server;
 
 import javax.annotation.Nullable;
 import java.util.Date;
@@ -92,6 +99,10 @@ public class HeartCap implements IHeartCap {
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
                 Attribute.addPermanentModifier(attributeModifier);
+            }
+
+            if(this.heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer){
+                LSAdvancementTriggerRegistry.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
             if(livingEntity.getHealth() > livingEntity.getMaxHealth()){

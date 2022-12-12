@@ -1,6 +1,7 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
+import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
@@ -46,6 +47,7 @@ public class LifeSteal
     {
         // Some common setup code
         LOGGER.info("Lifestealers are on the loose!");
+        LSAdvancementTriggerRegistry.init();
     }
 
 }

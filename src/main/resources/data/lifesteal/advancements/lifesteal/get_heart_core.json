@@ -1,15 +1,19 @@
 {
   "display": {
     "icon": {
-      "item": "lifesteal:heart_crystal"
+      "item": "lifesteal:heart_core"
     },
-    "title": "Bloody Shard",
-    "description": "Get a heart fragment.",
+    "title": {
+      "translate": "advancements.lifesteal.get_heart_core.title"
+    },
+    "description": {
+      "translate": "advancements.lifesteal.get_heart_core.desc"
+    },
     "frame": "task",
     "show_toast": true,
     "announce_to_chat": true
   },
-  "parent": "lifesteal:lifesteal",
+  "parent": "lifesteal:lifesteal/root",
   "criteria": {
     "requirement": {
       "trigger": "minecraft:inventory_changed",
@@ -17,7 +21,7 @@
         "items": [
           {
             "items": [
-              "lifesteal:heart_fragment"
+              "lifesteal:heart_core"
             ]
           }
         ]
