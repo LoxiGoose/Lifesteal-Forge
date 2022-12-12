@@ -11,12 +11,12 @@ public class ModPlacedFeatures {
 
     public static final Holder<PlacedFeature> HEART_ORE_PLACED = PlacementUtils.register("heart_ore_placed",
             ModConfiguredFeatures.HEART_ORE,
-                    commonOrePlacement(12, //VeinsPerChunk
+                    commonOrePlacement(4, //VeinsPerChunk
                             HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-50), VerticalAnchor.aboveBottom(70))));
 
     public static final Holder<PlacedFeature> NETHER_HEART_ORE_PLACED = PlacementUtils.register("nether_heart_ore_placed",
             ModConfiguredFeatures.NETHER_HEART_ORE,
-                    commonOrePlacement(14, // VeinsPerChunk
+                    commonOrePlacement(6, // VeinsPerChunk
                             HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(20), VerticalAnchor.aboveBottom(100))));
 
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
@@ -30,5 +30,15 @@ public class ModPlacedFeatures {
     public static List<PlacementModifier> rareOrePlacement(int p_195350_, PlacementModifier p_195351_) {
         return orePlacement(RarityFilter.onAverageOnceEvery(p_195350_), p_195351_);
     }
+
+    public static final Holder<PlacedFeature> HEART_GEODE_PLACED = PlacementUtils.register("heart_geode_placed",
+        ModConfiguredFeatures.HEART_GEODE,
+            new PlacementModifier[]{RarityFilter.onAverageOnceEvery(35),
+                InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
+                BiomeFilter.biome()}
+
+
+    );
 
 }

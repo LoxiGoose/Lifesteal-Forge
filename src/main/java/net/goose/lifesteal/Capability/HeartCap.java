@@ -1,6 +1,7 @@
 package net.goose.lifesteal.Capability;
 
 import com.mojang.authlib.GameProfile;
+import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +27,7 @@ public class HeartCap implements IHeartCap {
     private int heartDifference = defaultheartDifference;
 
     private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.minimumamountofheartscanlose.get();
+    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.maximumamountofheartsloseable.get();
     private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
     private int lives = defaultLives;
 
@@ -97,6 +98,10 @@ public class HeartCap implements IHeartCap {
 
             if(livingEntity.getHealth() > livingEntity.getMaxHealth()){
                 livingEntity.setHealth(livingEntity.getMaxHealth());
+            }
+
+            if(heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer){
+                LSAdvancementTriggerRegistry.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
             if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){

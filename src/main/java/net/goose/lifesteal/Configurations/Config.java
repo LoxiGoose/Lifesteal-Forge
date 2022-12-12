@@ -10,7 +10,7 @@ public class Config {
     public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByPlayer;
     public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
     public final ForgeConfigSpec.IntValue maximumamountofheartsgainable;
-    public final ForgeConfigSpec.IntValue minimumamountofheartscanlose
+    public final ForgeConfigSpec.IntValue maximumamountofheartsloseable
 ;
     public final ForgeConfigSpec.BooleanValue disableLifesteal;
     public final ForgeConfigSpec.BooleanValue disableHeartCrystals;
@@ -33,7 +33,7 @@ public class Config {
         this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:",  false, "When this is false, you will lose hearts when killed by anything. Otherwise, you can only lose max hearts when killed by a player.");
         this.loseHeartsOnlyWhenKilledByMob = buildBoolean(builder, "Lose Hearts Only When Killed By a Mob:",  false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss =  buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:",  2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
-        this.bannedUponLosingAllHeartsOrLives = buildBoolean(builder, "Should Players get Banned When They Lose all Lives/Hearts:", false, "When this is false, players that lose all lives/hearts will go into spectator mode. Otherwise, they'll be banned until unbanned.");
+        this.bannedUponLosingAllHeartsOrLives = buildBoolean(builder, "Should Players get Banned When They Lose all Lives/Hearts:", true, "When this is false, players that lose all lives/hearts will go into spectator mode. Otherwise, they'll be banned until unbanned.");
 
         builder.pop();
 
@@ -49,14 +49,14 @@ public class Config {
         builder.comment("This category is everything related to life stealing from someone.");
         builder.push("Lifesteal Related");
         this.disableLifesteal = buildBoolean(builder, "Disable Lifesteal:", false, "This option changes the entire mod into more of a permanent heart gaining system. This makes it so nobody can gain hearts from lifestealing but ONLY through Heart Crystals. MOBS can still take your hearts away if they kill you though, UNLESS you have that option disabled.");
-        this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave or disableHeartLoss settings");
+        this.playersGainHeartsifKillednoHeart = buildBoolean(builder, "Players Gain Hearts From No Heart Players:", false, "This value determines if a player should still earn hearts from a player they killed even if the player doesn't have hearts to spare. EX: MinimumHeartHave settings");
 
         builder.pop();
         builder.comment("This category will hold the maximums for certain values");
         builder.push("Maximums and Minimums");
         this.maximumamountofheartsgainable = buildInt(builder, "Maximum Amount of Health/Hitpoints a Player can get:",  -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit SET after your Starting HitPoint Difference for how many hit points/hearts a player can get. 2 hit points = 1 heart. Set this to less than 1 to disable the feature.");
-        this.minimumamountofheartscanlose
- = buildInt(builder,"Minimum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
+        this.maximumamountofheartsloseable
+ = buildInt(builder,"Maximum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
         builder.pop();
         builder.comment("This category holds values that aren't intended for gameplay and aren't polished, but can be used to test certain aspects of the mod easily or just for good fun.");
         builder.push("MISC/FUN");
@@ -70,7 +70,6 @@ public class Config {
     private static ForgeConfigSpec.DoubleValue buildDouble(ForgeConfigSpec.Builder builder, String name, double defaultValue, double min, double max, String comment){
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
-
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment){
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }

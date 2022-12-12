@@ -1,11 +1,12 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
+import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Items.ModItems;
-import net.goose.lifesteal.enchantment.ModEnchantments;
+import net.goose.lifesteal.Enchantment.ModEnchantments;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -45,5 +46,6 @@ public class LifeSteal
     {
         // some preinit code
         LOGGER.info("Lifestealers are on the loose!");
+        LSAdvancementTriggerRegistry.init();
     }
 }
