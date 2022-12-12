@@ -3,6 +3,7 @@ package net.goose.lifesteal.Commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -14,12 +15,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
-import com.mojang.logging.LogUtils;
-import org.slf4j.Logger;
 
 public class setLives {
-
-    private static final Logger LOGGER = LogUtils.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -48,7 +45,7 @@ public class setLives {
         if(chosenentity != playerthatsentcommand && source.isPlayer()){
             playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s lives to "+amount));
         }else if(!source.isPlayer()) {
-            LOGGER.info("Set " + chosenentity.getName().getString() + "'s lives to " + amount);
+            LifeSteal.LOGGER.info("Set " + chosenentity.getName().getString() + "'s lives to " + amount);
         }
 
         chosenentity.sendSystemMessage(Component.translatable("Your lives has been set to "+amount));

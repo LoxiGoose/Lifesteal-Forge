@@ -23,7 +23,7 @@ import org.slf4j.Logger;
 public class LifeSteal
 {
     public static final String MOD_ID = "lifesteal";
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public LifeSteal()
     {
