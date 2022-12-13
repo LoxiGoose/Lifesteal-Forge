@@ -1,10 +1,12 @@
 package net.goose.lifesteal;
 
+import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Items.ModItems;
-import net.goose.lifesteal.enchantment.ModEnchantments;
+import net.goose.lifesteal.Enchantments.ModEnchantments;
+import net.goose.lifesteal.Structures.ModStructures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 public class LifeSteal
 {
     public static final String MOD_ID = "lifesteal";
-    private static final Logger LOGGER = LogManager.getLogger();
+    public static final Logger LOGGER = LogManager.getLogger();
 
     public LifeSteal() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -29,8 +31,9 @@ public class LifeSteal
         ModEnchantments.register(modEventBus);
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModStructures.register(modEventBus);
 
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        modEventBus.addListener(this::setup);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
         // Register ourselves for server and other game events we are interested in
@@ -42,5 +45,10 @@ public class LifeSteal
     {
         // some preinit code
         LOGGER.info("Lifestealers are on the loose!");
+        LSAdvancementTriggerRegistry.init();
+
+        event.enqueueWork(() -> {
+           ModStructures.setupStructures();
+        });
     }
 }

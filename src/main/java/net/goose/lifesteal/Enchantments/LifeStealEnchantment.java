@@ -1,4 +1,4 @@
-package net.goose.lifesteal.enchantment;
+package net.goose.lifesteal.Enchantments;
 
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.enchantment.Enchantment;

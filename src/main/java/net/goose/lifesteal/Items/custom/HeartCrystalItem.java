@@ -4,6 +4,8 @@ import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -35,7 +37,9 @@ public class HeartCrystalItem extends Item {
 
                 serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
 
-                serverPlayer.heal(serverPlayer.getMaxHealth());
+                // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
+                int TickTime = (int) (serverPlayer.getMaxHealth() * 50) / 4;
+                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, TickTime, 3));
 
             }else{
                 entity.sendMessage(Component.nullToEmpty("Heart Crystals have been disabled in the configurations."), entity.getUUID());

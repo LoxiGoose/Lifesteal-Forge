@@ -110,7 +110,7 @@ public class ModOreGeneration {
     private static ConfiguredFeature<?, ?> registerOreFeature(OreType ore, OreConfiguration oreFeatureConfig,
                                                               RangeDecoratorConfiguration configuredDecorator) {
         return Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, ore.getBlock().get().getRegistryName(),
-                Feature.ORE.configured(oreFeatureConfig).range(configuredDecorator)
+                Feature.SCATTERED_ORE.configured(oreFeatureConfig).range(configuredDecorator)
                         .squared().count(ore.getVeinsPerChunk()));
     }
 }

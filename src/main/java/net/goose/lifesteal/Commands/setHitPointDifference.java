@@ -3,6 +3,7 @@ package net.goose.lifesteal.Commands;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -14,12 +15,8 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.util.LazyOptional;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 public class setHitPointDifference {
-
-    private static final Logger LOGGER = LogManager.getLogger();
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
 
@@ -47,7 +44,7 @@ public class setHitPointDifference {
         getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
 
         if(sourceTextName.matches("Server")){
-            LOGGER.info("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount);
+            LifeSteal.LOGGER.info("Set "+ chosenentity.getName().getString() +"'s HitPoint difference to "+amount);
         }else{
             LivingEntity playerthatsentcommand = source.getPlayerOrException();
 
