@@ -3,6 +3,8 @@ package net.goose.lifesteal.Items.custom;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
@@ -25,8 +27,10 @@ public class HeartCoreItem extends Item {
             if(!ConfigHolder.SERVER.disableHeartCores.get() && entity.getHealth() < entity.getMaxHealth()){
 
                 float MaxHealth = entity.getMaxHealth();
+                float AmountThatWillBeHealed = (float) (MaxHealth * ConfigHolder.SERVER.HeartCoreHeal.get());
 
-                entity.heal((float) (MaxHealth * ConfigHolder.SERVER.HeartCoreHeal.get()));
+                int TickTime = (int) (AmountThatWillBeHealed * 50) / 2;
+                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, TickTime, 1));
 
             }else{
 
