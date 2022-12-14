@@ -11,7 +11,7 @@ public class ModPlacedFeatures {
 
     public static final Holder<PlacedFeature> HEART_ORE_PLACED = PlacementUtils.register("heart_ore_placed",
             ModConfiguredFeatures.HEART_ORE,
-                    commonOrePlacement(7, //VeinsPerChunk
+                    commonOrePlacement(6, //VeinsPerChunk
                             HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70))));
 
     public static final Holder<PlacedFeature> NETHER_HEART_ORE_PLACED = PlacementUtils.register("nether_heart_ore_placed",
