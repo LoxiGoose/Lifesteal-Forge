@@ -1,12 +1,9 @@
 package net.goose.lifesteal.Blocks;
 
-import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.EnchantedBookItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
@@ -38,7 +35,7 @@ public class ModBlocks {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);
         return toReturn;
-    };
+    }
 
     private static <T extends  Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));

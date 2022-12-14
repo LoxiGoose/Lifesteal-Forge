@@ -3,11 +3,11 @@ package net.goose.lifesteal;
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.Enchantments.ModEnchantments;
+import net.goose.lifesteal.Events.EventHandler;
 import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
-import net.goose.lifesteal.Enchantments.ModEnchantments;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -15,7 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-
 import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -39,7 +38,7 @@ public class LifeSteal
         ModBlocks.register(modEventBus);
         ModEnchantments.register(modEventBus);
 
-        MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
