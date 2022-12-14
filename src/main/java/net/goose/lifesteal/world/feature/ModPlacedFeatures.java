@@ -33,12 +33,11 @@ public class ModPlacedFeatures {
 
     public static final Holder<PlacedFeature> HEART_GEODE_PLACED = PlacementUtils.register("heart_geode_placed",
         ModConfiguredFeatures.HEART_GEODE,
-            new PlacementModifier[]{RarityFilter.onAverageOnceEvery(35),
-                InSquarePlacement.spread(),
-                    HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
-                BiomeFilter.biome()}
 
 
-    );
+            RarityFilter.onAverageOnceEvery(35),
+            InSquarePlacement.spread(),
+            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
+            BiomeFilter.biome());
 
 }
