@@ -1,6 +1,6 @@
 package net.goose.lifesteal.Advancements;
 import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.ResourceLocation;
 
 public class LSAdvancementTriggerRegistry {
 

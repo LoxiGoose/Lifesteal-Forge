@@ -1,18 +1,23 @@
+
 package net.goose.lifesteal.Commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.util.LazyOptional;
 public class getLives {
 
-    public getLives(CommandDispatcher<CommandSourceStack> dispatcher){
+    public getLives(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(
                 Commands.literal("getLives")
                         .requires((commandSource) -> {return commandSource.hasPermission(2);})
@@ -21,14 +26,15 @@ public class getLives {
                         )));
     }
 
-    private int getLive(CommandSourceStack source, Entity chosenentity) throws CommandSyntaxException{
+    private int getLive(CommandSource source, Entity chosenentity) throws CommandSyntaxException{
 
-        LivingEntity playerthatsentcommand = source.getPlayer();
+        String sourceTextName = source.getTextName();
 
-        if(!source.isPlayer()){
+        if(sourceTextName.matches("Server")){
             CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> LifeSteal.LOGGER.info(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."));
         }else{
-            CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives.")));
+            LivingEntity playerthatsentcommand = source.getPlayerOrException();
+            CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendMessage(ITextComponent.nullToEmpty(chosenentity.getName().getString() +" has "+ HeartCap.getLives() + " lives."), playerthatsentcommand.getUUID()));
         }
 
 

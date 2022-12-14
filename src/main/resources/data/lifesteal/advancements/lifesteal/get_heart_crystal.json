@@ -1,4 +1,4 @@
-{
+  {
   "display": {
     "icon": {
       "item": "lifesteal:heart_crystal"
@@ -15,17 +15,20 @@
   },
   "parent": "lifesteal:lifesteal/get_heart_core",
   "criteria": {
-    "requirement": {
+    "get_heart_crystal": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "lifesteal:heart_crystal"
-            ]
+            "item": "lifesteal:heart_crystal"
           }
         ]
       }
     }
-  }
+  },
+    "requirements": [
+    [
+      "get_heart_crystal"
+    ]
+  ]
 }

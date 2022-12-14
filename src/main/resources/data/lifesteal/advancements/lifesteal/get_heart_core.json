@@ -15,17 +15,20 @@
   },
   "parent": "lifesteal:lifesteal/root",
   "criteria": {
-    "requirement": {
+    "get_heart_core": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "lifesteal:heart_core"
-            ]
+            "item": "lifesteal:heart_core"
           }
         ]
       }
     }
-  }
+  },
+  "requirements": [
+    [
+      "get_heart_core"
+    ]
+  ]
 }

@@ -5,16 +5,20 @@ import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
+import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.util.LazyOptional;
 
 public class setLives {
 
-    public setLives(CommandDispatcher<CommandSourceStack> dispatcher){
+    public setLives(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(
                 Commands.literal("setLives")
                         .requires((commandSource) -> {return commandSource.hasPermission(2);})
@@ -24,20 +28,24 @@ public class setLives {
                                 ))));
     }
 
-    private int setLives(CommandSourceStack source, Entity chosenentity, int amount) throws CommandSyntaxException{
+    private int setLives(CommandSource source, Entity chosenentity, int amount) throws CommandSyntaxException{
 
-        LivingEntity playerthatsentcommand = source.getPlayer();
+        String sourceTextName = source.getTextName();
 
-        CapabilityRegistry.getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setLives(amount));
+        CapabilityRegistry.getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
+        CapabilityRegistry.getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
 
-        if(chosenentity != playerthatsentcommand && source.isPlayer()){
-            playerthatsentcommand.sendSystemMessage(Component.translatable("Set "+ chosenentity.getName().getString() +"'s lives to "+amount));
-        }else if(!source.isPlayer()) {
-            LifeSteal.LOGGER.info("Set " + chosenentity.getName().getString() + "'s lives to " + amount);
+        if(sourceTextName.matches("Server")){
+            LifeSteal.LOGGER.info("Set "+ chosenentity.getName().getString() +"'s lives to "+amount);
+        }else{
+            LivingEntity playerthatsentcommand = source.getPlayerOrException();
+
+            if(chosenentity != playerthatsentcommand){
+                playerthatsentcommand.sendMessage(ITextComponent.nullToEmpty("Set "+ chosenentity.getName().getString() +"'s lives to "+amount), playerthatsentcommand.getUUID());
+            }
         }
 
-        chosenentity.sendSystemMessage(Component.translatable("Your lives has been set to "+amount));
-
+        chosenentity.sendMessage(ITextComponent.nullToEmpty("Your lives has been set to "+amount), chosenentity.getUUID());
         return 1;
     }
 }

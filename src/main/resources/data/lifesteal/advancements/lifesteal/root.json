@@ -15,17 +15,20 @@
     "announce_to_chat": false
   },
   "criteria": {
-    "requirement": {
+    "get_heart_fragment": {
       "trigger": "minecraft:inventory_changed",
       "conditions": {
         "items": [
           {
-            "items": [
-              "lifesteal:heart_fragment"
-            ]
+            "item": "lifesteal:heart_fragment"
           }
         ]
       }
     }
-  }
+  },
+  "requirements": [
+    [
+      "get_heart_fragment"
+    ]
+  ]
 }

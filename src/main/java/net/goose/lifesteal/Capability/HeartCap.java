@@ -4,18 +4,19 @@ import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.server.players.UserBanList;
-import net.minecraft.server.players.UserBanListEntry;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.AttributeInstance;
-import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.level.GameType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.Attributes;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.server.management.BanList;
+import net.minecraft.server.management.ProfileBanEntry;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.world.GameType;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -26,9 +27,14 @@ public class HeartCap implements IHeartCap {
     private int heartDifference = defaultheartDifference;
 
     private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.maximumamountofheartsloseable.get();
+    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.minimumamountofheartsloseable.get();
     private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
     private int lives = defaultLives;
+
+    public HeartCap(){
+        this.livingEntity = null;
+    }
+
     public HeartCap(@Nullable final LivingEntity entity) {
         this.livingEntity = entity;
     }
@@ -45,14 +51,13 @@ public class HeartCap implements IHeartCap {
     public void refreshHearts(){
 
         if(!livingEntity.level.isClientSide){
-            AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
-            Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
+            Set<AttributeModifier> attributemodifiers = livingEntity.getAttribute(Attributes.MAX_HEALTH).getModifiers();
 
             if(maximumheartsGainable > 0){
                 if(this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
 
-                    livingEntity.sendSystemMessage(Component.translatable("You have reached max hearts."));
+                    livingEntity.sendMessage(ITextComponent.nullToEmpty("You have reached max hearts."), livingEntity.getUUID());
                 }
             }
 
@@ -73,11 +78,11 @@ public class HeartCap implements IHeartCap {
                     if (attributeModifier != null && attributeModifier.getName().equals("LifeStealHealthModifier")) {
                         FoundAttribute = true;
 
-                        Attribute.removeModifier(attributeModifier);
+                        livingEntity.getAttribute(Attributes.MAX_HEALTH).removeModifier(attributeModifier);
 
                         AttributeModifier newmodifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
-                        Attribute.addPermanentModifier(newmodifier);
+                        livingEntity.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(newmodifier);
                     }
                 }
 
@@ -85,55 +90,58 @@ public class HeartCap implements IHeartCap {
 
                     AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
-                    Attribute.addPermanentModifier(attributeModifier);
+                    livingEntity.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(attributeModifier);
                 }
             }else{
 
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
-                Attribute.addPermanentModifier(attributeModifier);
-            }
-
-            if(this.heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer){
-                LSAdvancementTriggerRegistry.GET_10_MAX_HEARTS.trigger(serverPlayer);
+                livingEntity.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(attributeModifier);
             }
 
             if(livingEntity.getHealth() > livingEntity.getMaxHealth()){
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
+            if(heartDifference >= 20 && livingEntity instanceof ServerPlayerEntity){
+                ServerPlayerEntity serverPlayer = (ServerPlayerEntity) livingEntity;
+                LSAdvancementTriggerRegistry.GET_10_MAX_HEARTS.trigger(serverPlayer);
+            }
+
             if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
+
 
                 if(defaultLives > 0 && maximumheartsGainable <= 0 && minimumamountofheartscanlose < 0){
                     if(this.lives <= 0){
+                        if (livingEntity instanceof ServerPlayerEntity){
 
-                        this.heartDifference = defaultheartDifference;
-                        this.lives = defaultLives;
+                            ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) livingEntity;
 
-                        refreshHearts();
+                            this.heartDifference = defaultheartDifference;
+                            this.lives = defaultLives;
 
-                        if (livingEntity instanceof ServerPlayer serverPlayer){
+                            refreshHearts();
 
                             if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
 
-                                @Nullable Component component = Component.translatable("You have lost all your lives and max hearts, you are now permanently banned till further notice.");
+                                @Nullable ITextComponent component = ITextComponent.nullToEmpty("You have lost all your lives and max hearts, you are now permanently banned till further notice.");
 
-                                UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
+                                BanList userbanlist = serverPlayerEntity.getServer().getPlayerList().getBans();
 
-                                serverPlayer.getGameProfile();
+                                serverPlayerEntity.getGameProfile();
 
-                                GameProfile gameprofile = serverPlayer.getGameProfile();
+                                GameProfile gameprofile = serverPlayerEntity.getGameProfile();
 
-                                UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
-                                userbanlist.add(userbanlistentry);
+                                ProfileBanEntry profileBanEntry = new ProfileBanEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
+                                userbanlist.add(profileBanEntry);
 
-                                if (serverPlayer != null) {
-                                    serverPlayer.connection.disconnect(Component.translatable("You have lost all your lives and max hearts, you are now permanently banned till further notice."));
+                                if (serverPlayerEntity != null) {
+                                    serverPlayerEntity.connection.disconnect(ITextComponent.nullToEmpty("You have lost all your lives and max hearts, you are now permanently banned till further notice."));
                                 }
-                            }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                                serverPlayer.setGameMode(GameType.SPECTATOR);
+                            }else if(serverPlayerEntity.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                                serverPlayerEntity.setGameMode(GameType.SPECTATOR);
 
-                                livingEntity.sendSystemMessage(Component.translatable("You have lost all your lives and max hearts. You are now permanently dead."));
+                                livingEntity.sendMessage(ITextComponent.nullToEmpty("You have lost all your lives and max hearts. You are now permanently dead."), livingEntity.getUUID());
                             }
                         }
                     }else{
@@ -142,38 +150,38 @@ public class HeartCap implements IHeartCap {
                         this.heartDifference = defaultheartDifference;
                         refreshHearts();
 
-                        livingEntity.sendSystemMessage(Component.translatable("You have lost a life. Your lives count is now "+ this.lives));
+                        livingEntity.sendMessage(ITextComponent.nullToEmpty("You have lost a life. Your lives count is now "+ this.lives), livingEntity.getUUID());
                     }
                 }else{
-                    if (livingEntity instanceof ServerPlayer serverPlayer){
+                    if (livingEntity instanceof ServerPlayerEntity){
+                        ServerPlayerEntity serverPlayerEntity = (ServerPlayerEntity) livingEntity;
 
                         this.heartDifference = defaultheartDifference;
                         this.lives = defaultLives;
-
+                        
                         refreshHearts();
 
                         if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
 
-                            @Nullable Component component = Component.translatable("You have lost all max hearts, you are now permanently banned till further notice.");
+                            @Nullable ITextComponent component = ITextComponent.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice.");
 
-                            UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
+                            BanList userbanlist = serverPlayerEntity.getServer().getPlayerList().getBans();
 
-                            serverPlayer.getGameProfile();
+                            serverPlayerEntity.getGameProfile();
 
-                            GameProfile gameprofile = serverPlayer.getGameProfile();
+                            GameProfile gameprofile = serverPlayerEntity.getGameProfile();
 
-                            UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
-                            userbanlist.add(userbanlistentry);
+                            ProfileBanEntry profileBanEntry = new ProfileBanEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
+                            userbanlist.add(profileBanEntry);
 
-                            if (serverPlayer != null) {
-                                serverPlayer.connection.disconnect(Component.translatable("You have lost all max hearts, you are now permanently banned till further notice."));
+                            if (serverPlayerEntity != null) {
+                                serverPlayerEntity.connection.disconnect(ITextComponent.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice."));
                             }
-                        }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                                serverPlayer.setGameMode(GameType.SPECTATOR);
+                        }else if(serverPlayerEntity.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                            serverPlayerEntity.setGameMode(GameType.SPECTATOR);
 
-                                livingEntity.sendSystemMessage(Component.translatable("You have lost all max hearts, you are now permanently dead."));
+                            livingEntity.sendMessage(ITextComponent.nullToEmpty("You have lost all max hearts. You are now permanently dead."), livingEntity.getUUID());
                         }
-
                     }
                 }
 
@@ -182,7 +190,7 @@ public class HeartCap implements IHeartCap {
 
                 this.heartDifference = defaultheartDifference;
 
-                livingEntity.sendSystemMessage(Component.translatable("Your lives count has increased to "+ this.lives));
+                livingEntity.sendMessage(ITextComponent.nullToEmpty("Your lives count has increased to "+ this.lives), livingEntity.getUUID());
                 refreshHearts();
             }
         }
@@ -197,17 +205,21 @@ public class HeartCap implements IHeartCap {
     @Override
     public void setLives(int lives) {if(!livingEntity.level.isClientSide){this.lives = lives;}}
 
+    @Nonnull
     @Override
-    public CompoundTag serializeNBT() {
-        CompoundTag tag = new CompoundTag();
+    public CompoundNBT serializeNBT() {
+
+        CompoundNBT tag = new CompoundNBT();
+
         tag.putInt("heartdifference", getHeartDifference());
         tag.putInt("lives", getLives());
         return tag;
     }
 
     @Override
-    public void deserializeNBT(CompoundTag tag) {
-        setHeartDifference(tag.getInt("heartdifference"));
-        setLives(tag.getInt("lives"));
+    public void deserializeNBT(@Nonnull final CompoundNBT nbt) {
+        setHeartDifference(nbt.getInt("heartdifference"));
+        setLives(nbt.getInt("lives"));
     }
+
 }

@@ -4,31 +4,37 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.commands.arguments.EntityArgument;
-import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-
+import net.goose.lifesteal.api.IHeartCap;
+import net.minecraft.command.CommandSource;
+import net.minecraft.command.Commands;
+import net.minecraft.command.arguments.EntityArgument;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityInject;
+import net.minecraftforge.common.util.LazyOptional;
 public class getHitPointDifference {
-    public getHitPointDifference(CommandDispatcher<CommandSourceStack> dispatcher){
+
+    public getHitPointDifference(CommandDispatcher<CommandSource> dispatcher){
         dispatcher.register(
                 Commands.literal("getHitPointDifference")
                         .requires((commandSource) -> {return commandSource.hasPermission(2);})
                         .then(Commands.argument("Player", EntityArgument.entity()).executes((command) -> {
-                                    return getHitPoint(command.getSource(), EntityArgument.getEntity(command, "Player"));}
-                                )));
+                            return getHitPoint(command.getSource(), EntityArgument.getEntity(command, "Player"));}
+                        )));
     }
 
-    private int getHitPoint(CommandSourceStack source, Entity chosenentity) throws CommandSyntaxException{
+    private int getHitPoint(CommandSource source, Entity chosenentity) throws CommandSyntaxException{
 
-        LivingEntity playerthatsentcommand = source.getPlayer();
+        String sourceTextName = source.getTextName();
 
-        if(!source.isPlayer()){
+        if(sourceTextName.matches("Server")){
             CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> LifeSteal.LOGGER.info(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference() + "."));
         }else{
-            CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendSystemMessage(Component.translatable(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference() + ".")));
+            ServerPlayerEntity playerthatsentcommand = source.getPlayerOrException();
+
+            CapabilityRegistry.getHeart(chosenentity).ifPresent(HeartCap -> playerthatsentcommand.sendMessage(ITextComponent.nullToEmpty(chosenentity.getName().getString() +"'s HitPoint difference is "+ HeartCap.getHeartDifference() + "."), playerthatsentcommand.getUUID()));
         }
 
 
