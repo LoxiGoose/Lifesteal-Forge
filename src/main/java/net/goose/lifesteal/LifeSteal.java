@@ -4,8 +4,9 @@ import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.Enchantments.ModEnchantments;
+import net.goose.lifesteal.Events.EventHandler;
+import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.Structures.ModStructures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -37,7 +38,8 @@ public class LifeSteal
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
         // Register ourselves for server and other game events we are interested in
-        MinecraftForge.EVENT_BUS.register(CapabilityRegistry.class);
+        MinecraftForge.EVENT_BUS.register(CapabilityRegistry.EventCapHandler.class);
+        MinecraftForge.EVENT_BUS.register(EventHandler.class);
         MinecraftForge.EVENT_BUS.register(this);
     }
 

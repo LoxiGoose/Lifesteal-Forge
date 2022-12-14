@@ -27,7 +27,6 @@ import net.minecraft.world.level.levelgen.structure.NoiseAffectingStructureStart
 import net.minecraft.world.level.levelgen.structure.PoolElementStructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
-import org.apache.logging.log4j.Level;
 
 import java.util.List;
 

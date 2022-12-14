@@ -9,7 +9,8 @@ import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfigur
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.event.world.BiomeLoadingEvent;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 import java.util.function.Supplier;
 
 public class ModStructureGeneration {

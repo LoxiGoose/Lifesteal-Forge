@@ -54,8 +54,7 @@ public class ModWorldEvents {
     private static Method GETCODEC_METHOD;
     @SubscribeEvent
     public static void addDimensionalSpacing(final WorldEvent.Load event) {
-        if(event.getWorld() instanceof ServerLevel){
-            ServerLevel serverWorld = (ServerLevel)event.getWorld();
+        if(event.getWorld() instanceof ServerLevel serverWorld){
 
             /*
              * Skip Terraforged's chunk generator as they are a special case of a mod locking down their chunkgenerator.

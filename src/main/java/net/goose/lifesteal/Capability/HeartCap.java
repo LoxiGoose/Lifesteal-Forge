@@ -125,7 +125,7 @@ public class HeartCap implements IHeartCap {
 
                                 GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                                UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, (Date)null, "Lifesteal", (Date)null, component == null ? null : component.getString());
+                                UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
                                 userbanlist.add(userbanlistentry);
 
                                 if (serverPlayer != null) {
@@ -163,7 +163,7 @@ public class HeartCap implements IHeartCap {
 
                             GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                            UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, (Date)null, "Lifesteal", (Date)null, component == null ? null : component.getString());
+                            UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
                             userbanlist.add(userbanlistentry);
 
                             if (serverPlayer != null) {
