@@ -39,11 +39,11 @@ public class HeartCrystalItem extends Item {
                 serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
 
                 // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
-                int TickTime = (int) (serverPlayer.getMaxHealth() * 50) / 4;
-                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, TickTime, 3));
+                int tickTime = (int) (serverPlayer.getMaxHealth() * 50) / 4;
+                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
 
             }else{
-                entity.sendSystemMessage(Component.translatable("Heart Crystals have been disabled in the configurations."));
+                serverPlayer.displayClientMessage(Component.translatable("Heart Crystals have been disabled in the configurations"), true);
                     item.shrink(-1);
                     serverPlayer.containerMenu.broadcastChanges();
 
