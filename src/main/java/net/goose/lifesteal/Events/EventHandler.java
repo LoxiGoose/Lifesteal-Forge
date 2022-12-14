@@ -40,19 +40,6 @@ public class EventHandler {
 
         ConfigCommand.register(event.getDispatcher());
     }
-
-    @SubscribeEvent
-    public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
-        if (event.getObject() instanceof Player) {
-            HeartCapAttacher.attach(event);
-        }
-    }
-
-    @SubscribeEvent
-    public static void registerCapabilities(final RegisterCapabilitiesEvent event) {
-        event.register(IHeartCap.class);
-    }
-
     @SubscribeEvent
     public static void playerJoinEvent(final PlayerEvent.PlayerLoggedInEvent event){
         Player newPlayer = event.getEntity();

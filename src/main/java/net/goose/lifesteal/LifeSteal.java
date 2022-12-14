@@ -3,6 +3,7 @@ package net.goose.lifesteal;
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
+import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
 import net.goose.lifesteal.Enchantments.ModEnchantments;
 import net.goose.lifesteal.Events.EventHandler;
@@ -39,6 +40,7 @@ public class LifeSteal
         ModEnchantments.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
+        MinecraftForge.EVENT_BUS.register(CapabilityRegistry.EventCapHandler.class);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
