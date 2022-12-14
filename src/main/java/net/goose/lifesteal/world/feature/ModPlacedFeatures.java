@@ -11,13 +11,13 @@ public class ModPlacedFeatures {
 
     public static final Holder<PlacedFeature> HEART_ORE_PLACED = PlacementUtils.register("heart_ore_placed",
             ModConfiguredFeatures.HEART_ORE,
-                    commonOrePlacement(4, //VeinsPerChunk
-                            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(-50), VerticalAnchor.aboveBottom(70))));
+                    commonOrePlacement(7, //VeinsPerChunk
+                            HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70))));
 
     public static final Holder<PlacedFeature> NETHER_HEART_ORE_PLACED = PlacementUtils.register("nether_heart_ore_placed",
             ModConfiguredFeatures.NETHER_HEART_ORE,
                     commonOrePlacement(6, // VeinsPerChunk
-                            HeightRangePlacement.triangle(VerticalAnchor.aboveBottom(20), VerticalAnchor.aboveBottom(100))));
+                            HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100))));
 
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());
