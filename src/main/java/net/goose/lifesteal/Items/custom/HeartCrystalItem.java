@@ -42,7 +42,7 @@ public class HeartCrystalItem extends Item {
                 entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, TickTime, 3));
 
             }else{
-                entity.sendMessage(Component.nullToEmpty("Heart Crystals have been disabled in the configurations."), entity.getUUID());
+                serverPlayer.displayClientMessage(Component.nullToEmpty("Heart Crystals have been disabled in the configurations"), true);
                 item.shrink(-1);
                 serverPlayer.containerMenu.broadcastChanges();
 

@@ -26,20 +26,30 @@ public class HeartCoreItem extends Item {
 
             if(!ConfigHolder.SERVER.disableHeartCores.get() && entity.getHealth() < entity.getMaxHealth()){
 
-                float MaxHealth = entity.getMaxHealth();
-                float AmountThatWillBeHealed = (float) (MaxHealth * ConfigHolder.SERVER.HeartCoreHeal.get());
+                float maxHealth = entity.getMaxHealth();
+                float amountThatWillBeHealed = (float) (maxHealth * ConfigHolder.SERVER.HeartCoreHeal.get());
+                float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
+                if(differenceInHealth <= amountThatWillBeHealed){
+                    amountThatWillBeHealed = differenceInHealth;
+                }
 
-                int TickTime = (int) (AmountThatWillBeHealed * 50) / 2;
-                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, TickTime, 1));
+                int oldDuration = 0;
+                if(entity.hasEffect(MobEffects.REGENERATION)){
+                    MobEffectInstance mobEffect = entity.getEffect(MobEffects.REGENERATION);
 
+                    oldDuration = mobEffect.getDuration();
+                }
+
+                int tickTime = (int) ((amountThatWillBeHealed * 50) / 2) + oldDuration;
+                entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 1));
             }else{
 
                 if(ConfigHolder.SERVER.disableHeartCores.get()){
-                    entity.sendMessage(Component.nullToEmpty("Heart Cores have been disabled in the configurations."), entity.getUUID());
+                    serverPlayer.displayClientMessage(Component.nullToEmpty("Heart Cores have been disabled in the configurations"), true);
                     item.shrink(-1);
                     serverPlayer.containerMenu.broadcastChanges();
                 }else{
-                    entity.sendMessage(Component.nullToEmpty("You are already at max health."), entity.getUUID());
+                    serverPlayer.displayClientMessage(Component.nullToEmpty("You are already at max health"), true);
                     item.shrink(-1);
                     serverPlayer.containerMenu.broadcastChanges();
                 }
