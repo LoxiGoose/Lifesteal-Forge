@@ -73,7 +73,6 @@ public class Config {
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment){
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
-
 }
 
 

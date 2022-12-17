@@ -1,5 +1,6 @@
 package net.goose.lifesteal.Blocks;
 
+import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -38,7 +39,7 @@ public class ModBlocks {
     }
 
     private static <T extends  Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block){
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()));
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(ModCreativeModeTab.LIFESTEAL_TAB)));
     }
 
     public static void register(IEventBus eventBus){
