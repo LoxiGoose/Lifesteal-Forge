@@ -47,15 +47,15 @@ public class ModConfiguredFeatures {
                             BlockStateProvider.simple(Blocks.AIR),
                             BlockStateProvider.simple(Blocks.DEEPSLATE),
                             BlockStateProvider.simple(ModBlocks.HEART_ORE.get()),
-                            BlockStateProvider.simple(Blocks.CALCITE),
+                            BlockStateProvider.simple(Blocks.DIRT),
                             BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
-                            List.of(Blocks.DIRT.defaultBlockState()),
+                            List.of(Blocks.CALCITE.defaultBlockState()),
                             BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
-                            new GeodeLayerSettings(1.7D, 1.2D, 2.5D, 3.5D),
-                            new GeodeCrackSettings(0.25D, 1.5D, 1), 0.5D, 0.1D,
-                            true, UniformInt.of(3, 8),
-                            UniformInt.of(2, 6), UniformInt.of(1, 2),
-                            -18, 18, 0.075D, 1)));
+                            new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
+                            new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
+                            true, UniformInt.of(4, 6),
+                            UniformInt.of(3, 4), UniformInt.of(1, 2),
+                            -16, 16, 0.05D, 1)));
     public static void register(IEventBus eventBus){
         CONFIGURED_FEATURES.register(eventBus);
     }
