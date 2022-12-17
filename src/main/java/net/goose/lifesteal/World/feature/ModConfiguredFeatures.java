@@ -39,7 +39,7 @@ public class ModConfiguredFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> HEART_ORE = CONFIGURED_FEATURES.register("heart_ore",
             () -> new ConfiguredFeature<>(Feature.SCATTERED_ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 12)));
     public static final RegistryObject<ConfiguredFeature<?, ?>> NETHER_HEART_ORE = CONFIGURED_FEATURES.register("nether_heart_ore",
-            () -> new ConfiguredFeature<>(Feature.SCATTERED_ORE, new OreConfiguration(OVERWORLD_HEART_ORES.get(), 14)));
+            () -> new ConfiguredFeature<>(Feature.SCATTERED_ORE, new OreConfiguration(NETHER_HEART_ORES.get(), 14)));
 
     public static final RegistryObject<ConfiguredFeature<?, ?>> HEART_GEODE = CONFIGURED_FEATURES.register("heart_geode",
             () -> new ConfiguredFeature<>(Feature.GEODE,
