@@ -1,38 +1,39 @@
-package net.goose.lifesteal.Configurations;
+package net.goose.lifesteal.configuration;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 
 public class Config {
-
-    public final ForgeConfigSpec.IntValue amountOfLives;
     public final ForgeConfigSpec.IntValue startingHeartDifference;
     public final ForgeConfigSpec.BooleanValue shouldAllMobsGiveHearts;
     public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByPlayer;
+    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByMob;
     public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
-    public final ForgeConfigSpec.IntValue maximumamountofheartsgainable;
-    public final ForgeConfigSpec.IntValue maximumamountofheartsloseable;
+    public final ForgeConfigSpec.IntValue maximumamountofheartsGainable;
+    public final ForgeConfigSpec.IntValue maximumamountofheartsLoseable;
     public final ForgeConfigSpec.BooleanValue disableLifesteal;
+    public final ForgeConfigSpec.BooleanValue preventFromUsingCrystalIfMax;
+    public final ForgeConfigSpec.BooleanValue preventFromUsingCoreIfMax;
     public final ForgeConfigSpec.BooleanValue disableHeartCrystals;
     public final ForgeConfigSpec.BooleanValue disableHeartCores;
     public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
     public final ForgeConfigSpec.BooleanValue disableHeartLoss;
     public final ForgeConfigSpec.IntValue HeartCrystalAmountGain;
     public final ForgeConfigSpec.DoubleValue HeartCoreHeal;
-    public final ForgeConfigSpec.BooleanValue disableEnchantments;
-    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByMob;
-
-    public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHeartsOrLives;
+    public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
+    public final ForgeConfigSpec.ConfigValue advancementUsedForWithdrawing;
+    public final ForgeConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
+    public final ForgeConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
+    public final ForgeConfigSpec.BooleanValue bannedUponLosingAllHearts;
 
     public Config(final ForgeConfigSpec.Builder builder) {
         builder.comment("It's recommended to edit the config BEFORE you make/play a world. While editing the config in an already generated world can work sometimes, there may be visual bugs or just bugs in general.");
         builder.comment("This category holds general values that will mostly be customized by most.");
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:",  0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
-        this.amountOfLives = buildInt(builder, "Starting Lives:",  -1, -1, Integer.MAX_VALUE,  "This introduces a new lives system where when a player loses all their max hearts, they will lose a life and their max hearts will reset. When they lose all their lives, they permanently die. You can gain a life if your max hearts are double your starting hearts. Setting this to -1 will disable this feature.");
         this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:",  false, "When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)");
         this.loseHeartsOnlyWhenKilledByMob = buildBoolean(builder, "Lose Hearts Only When Killed By a Mob:",  false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss =  buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:",  2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
-        this.bannedUponLosingAllHeartsOrLives = buildBoolean(builder, "Should Players get Banned When They Lose all Lives/Hearts:", true, "When this is false, players that lose all lives/hearts will go into spectator mode. Otherwise, they'll be banned until unbanned.");
+        this.bannedUponLosingAllHearts = buildBoolean(builder, "Should Players get Banned When They Lose all Hearts:", true, "When this is false, players that lose all lives/hearts will go into spectator mode. Otherwise, they'll be banned until unbanned.");
 
         builder.pop();
 
@@ -40,9 +41,10 @@ public class Config {
         builder.push("Items and Enchantments");
         this.HeartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
         this.HeartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.25, 0.01, 1, "The percentage of max health a heart core should heal when used.");
+        this.preventFromUsingCrystalIfMax = buildBoolean(builder, "Prevent Players From Using Heart Crystals If At Max Hearts:", true, "If a max is set for the amount of hearts you can get, this option when true, makes it so players can't eat heart crystals if they're already at the max.");
+        this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent Players From Using Heart Cores If At Max Health:", true, "If this option is true, a player cannot eat heart cores if they are already at their max health.");
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
-        this.disableEnchantments = buildBoolean(builder, "Disable Enchantments:", false, "This value determines whether modded enchantments from this mod should be disabled or not.");
 
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");
@@ -52,13 +54,23 @@ public class Config {
 
         builder.pop();
         builder.comment("This category will hold the maximums for certain values");
-        builder.push("Maximums and Minimums");
-        this.maximumamountofheartsgainable = buildInt(builder, "Maximum Amount of Health/Hitpoints a Player can get:",  -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit SET after your Starting HitPoint Difference for how many hit points/hearts a player can get. 2 hit points = 1 heart. Set this to less than 1 to disable the feature.");
-        this.maximumamountofheartsloseable = buildInt(builder,"Maximum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "WARNING: THIS IS INCOMPATIBLE WITH LIVES. IF YOU ENABLE BOTH, LIVES WILL AUTOMATICALLY BE DISABLED. This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
+        builder.push("Maximums");
+        this.maximumamountofheartsGainable = buildInt(builder, "Maximum Amount of Health/Hitpoints a Player can get:",  -1, -1, Integer.MAX_VALUE, "This value makes a limit SET after your Starting HitPoint Difference for how many hit points/hearts a player can get. 2 hit points = 1 heart. Set this to less than 1 to disable the feature.");
+        this.maximumamountofheartsLoseable = buildInt(builder,"Maximum Amount Of Health/Hitpoints a Player can Lose:", -1, -1, Integer.MAX_VALUE, "This value makes a limit set on how many hit points/hearts a player can lose, this value is actually set depending on the Starting Health Difference. EX: Starting Health Difference - MinimumHeartHave. Set this to less than 0 to disable the feature.");
+        this.tellPlayersIfReachedMaxHearts = buildBoolean(builder,"Tell Players if They Have Reached max Hearts:", true, "When a player has reached max hearts or attempt to go higher than the max, if this value is true, a message will let them know indicating they cannot go higher.");
 
         builder.pop();
-        builder.comment("This category holds values that aren't intended for gameplay and aren't polished, but can be used to test certain aspects of the mod easily or just for good fun.");
-        builder.push("MISC/FUN");
+        builder.comment("This category holds values related to commands.");
+        builder.push("Commands");
+        this.tellPlayersIfHitPointChanged = buildBoolean(builder, "Tell Players if Their HitPoint Difference Changed:",  true, "This just makes it so when an admin changed a person's hitpoints, this value would determine if the game should tell the person in chat that their hitpoints was changed.");
+        builder.push("Withdrawing");
+        this.advancementUsedForWithdrawing = buildString(builder, "The Advancement Needed to Unlock Withdrawing:",  "lifesteal:lifesteal/get_heart_crystal", "This value determines the advancement used to unlock withdrawing. You would find the advancement you want to use by using the ID of the advancement which is found with the /advancement command. If the value is empty, withdraw will be unlocked automatically.");
+        this.textUsedForRequirementOnWithdrawing = buildString(builder, "The Text Shown When Withdrawing Isn't Unlocked:",  "You need to at least have gotten one heart crystal in this world to withdraw", "This value determines what text will pop up when a player hasn't unlocked withdrawing. If this value is empty, no text will pop up.");
+
+        builder.pop();
+        builder.pop();
+        builder.comment("This category holds values that don't fit in other categories OR are not made for gameplay usage.");
+        builder.push("Misc/Fun");
         this.shouldAllMobsGiveHearts = buildBoolean(builder, "Killing any Mobs Gives Hearts:",  false, "When this is false, you can only gain hearts from killing players. Otherwise, any mob will give you hearts.");
     }
 
@@ -70,10 +82,12 @@ public class Config {
         return builder.comment(comment).translation(name).defineInRange(name, defaultValue, min, max);
     }
 
+    private static ForgeConfigSpec.ConfigValue buildString(ForgeConfigSpec.Builder builder, String name, String defaultValue, String comment){
+        return builder.comment(comment).translation(name).define(name, defaultValue);
+    }
+
     private static ForgeConfigSpec.BooleanValue buildBoolean(ForgeConfigSpec.Builder builder, String name, boolean defaultValue, String comment){
         return builder.comment(comment).translation(name).define(name, defaultValue);
     }
 
 }
-
-

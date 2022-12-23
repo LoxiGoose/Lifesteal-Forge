@@ -1,6 +1,6 @@
-package net.goose.lifesteal.Blocks;
+package net.goose.lifesteal.block;
 
-import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.item.ModItems;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;

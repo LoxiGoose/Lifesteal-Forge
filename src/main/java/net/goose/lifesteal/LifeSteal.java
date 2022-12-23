@@ -1,14 +1,14 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Blocks.ModBlocks;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantments.ModEnchantments;
-import net.goose.lifesteal.Events.EventHandler;
-import net.goose.lifesteal.Items.ModCreativeModeTab;
-import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.advancement.ModCriteria;
+import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.configuration.Config;
+import net.goose.lifesteal.configuration.ConfigHolder;
+import net.goose.lifesteal.event.EventHandler;
+import net.goose.lifesteal.item.ModCreativeModeTab;
+import net.goose.lifesteal.item.ModItems;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -24,11 +24,12 @@ public class LifeSteal
 {
     public static final String MOD_ID = "lifesteal";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static Config config;
 
     public LifeSteal()
     {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
-
+        config = ConfigHolder.SERVER;
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         modEventBus.addListener(this::commonSetup);
@@ -37,7 +38,6 @@ public class LifeSteal
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModEnchantments.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.EventCapHandler.class);
@@ -48,7 +48,7 @@ public class LifeSteal
     {
         // Some common setup code
         LOGGER.info("Lifestealers are on the loose!");
-        LSAdvancementTriggerRegistry.init();
+        ModCriteria.init();
     }
 
 }
