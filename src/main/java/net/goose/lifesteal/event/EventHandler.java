@@ -61,13 +61,15 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void totemofUndyingEvent(final LivingUseTotemEvent event) {
-        LivingEntity entityUsed = event.getEntity();
-        if (entityUsed instanceof ServerPlayer serverPlayer) {
-            AtomicInteger HeartDifference = new AtomicInteger();
-            CapabilityRegistry.getHeart(entityUsed).ifPresent(HeartCap -> HeartDifference.set(HeartCap.getHeartDifference()));
+        if(!event.isCanceled()){
+            LivingEntity entityUsed = event.getEntity();
+            if (entityUsed instanceof ServerPlayer serverPlayer) {
+                AtomicInteger HeartDifference = new AtomicInteger();
+                CapabilityRegistry.getHeart(entityUsed).ifPresent(HeartCap -> HeartDifference.set(HeartCap.getHeartDifference()));
 
-            if (HeartDifference.get() >= 20) {
-                ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.trigger(serverPlayer);
+                if (HeartDifference.get() >= 20) {
+                    ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.trigger(serverPlayer);
+                }
             }
         }
     }
