@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Capability;
+package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
