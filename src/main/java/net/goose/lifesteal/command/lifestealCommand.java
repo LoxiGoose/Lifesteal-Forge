@@ -9,13 +9,17 @@ import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.item.ModItems;
 import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.AdvancementProgress;
+import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -53,16 +57,17 @@ public class lifestealCommand {
             final int maximumheartsLoseable = LifeSteal.config.maximumamountofheartsLoseable.get();
             final int startingHitPointDifference = LifeSteal.config.startingHeartDifference.get();
 
-            LivingEntity playerthatsentcommand = source.getPlayerOrException(););
+            LivingEntity playerthatsentcommand = source.getPlayerOrException();
             if (playerthatsentcommand instanceof Player player) {
+                ServerPlayer serverPlayer = (ServerPlayer) player;
                 String advancementUsed = (String) LifeSteal.config.advancementUsedForWithdrawing.get();
 
-                if (playerthatsentcommand.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty()) {
+                if (serverPlayer.getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty()) {
                     AtomicInteger heartDifference = new AtomicInteger();
                     CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> heartDifference.set(HeartCap.getHeartDifference() - (LifeSteal.config.HeartCrystalAmountGain.get() * amount)));
                     if (maximumheartsLoseable >= 0) {
                         if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
-                            player.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
+                            player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                             return 1;
                         }
                     }
@@ -72,12 +77,12 @@ public class lifestealCommand {
                     ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
                     CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
                     compoundTag.putBoolean("Fresh", false);
-                    heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
+                    heartCrystal.setHoverName(Component.nullToEmpty("item.lifesteal.heart_crystal.unnatural"));
                     player.getInventory().add(heartCrystal);
                 } else {
                     String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
                     if (!text.isEmpty()) {
-                        player.displayClientMessage(Component.literal((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
+                        player.displayClientMessage(Component.nullToEmpty((String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get()), true);
                     }
                 }
             }
