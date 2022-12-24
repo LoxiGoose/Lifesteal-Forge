@@ -5,9 +5,7 @@ import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.Blocks.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantments.ModEnchantments;
 import net.goose.lifesteal.Events.EventHandler;
-import net.goose.lifesteal.Items.ModCreativeModeTab;
 import net.goose.lifesteal.Items.ModItems;
 import net.goose.lifesteal.World.feature.ModConfiguredFeatures;
 import net.goose.lifesteal.World.feature.ModPlacedFeatures;
@@ -37,7 +35,6 @@ public class LifeSteal
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModEnchantments.register(modEventBus);
         ModConfiguredFeatures.register(modEventBus);
         ModPlacedFeatures.register(modEventBus);
 
