@@ -5,7 +5,12 @@ import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.command.lifestealCommand;
+import net.minecraft.advancements.Advancement;
+import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.advancements.CriterionTrigger;
+import net.minecraft.advancements.critereon.UsedTotemTrigger;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,9 +38,12 @@ public class EventHandler {
 
     @SubscribeEvent
     public static void playerJoinEvent(final PlayerEvent.PlayerLoggedInEvent event) {
-        Entity newPlayer = event.getEntity();
+        LivingEntity newPlayer = event.getEntityLiving();
+        ServerPlayer serverPlayer = (ServerPlayer) newPlayer;
 
         CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+
+        CriteriaTriggers.USED_TOTEM.addPlayerListener(serverPlayer.getAdvancements(), new CriterionTrigger.Listener<>(CriteriaTriggers.USED_TOTEM, Advancement.Builder.advancement().build(new ResourceLocation("lifesteal:lifesteal/")), ));
     }
 
     @SubscribeEvent
@@ -60,7 +68,6 @@ public class EventHandler {
         oldPlayer.invalidateCaps();
     }
 
-    @SubscribeEvent
     public static void totemofUndyingEvent(final LivingUseTotemEvent event) {
         LivingEntity entityUsed = event.getEntityLiving();
         if (entityUsed instanceof ServerPlayer serverPlayer) {

@@ -8,6 +8,7 @@ import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.event.EventHandler;
 import net.goose.lifesteal.item.ModItems;
 import net.goose.lifesteal.advancement.ModCriteria;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
