@@ -22,10 +22,15 @@ public class ModPlacedFeatures {
             () -> new PlacedFeature(ModConfiguredFeatures.NETHER_HEART_ORE.getHolder().get(), commonOrePlacement(6, // VeinsPerChunk
                     HeightRangePlacement.uniform(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100)))));
 
-    public static final RegistryObject<PlacedFeature> HEART_GEODE_PLACED = PLACED_FEATURES.register("heart_geode_placed",
-            () -> new PlacedFeature(ModConfiguredFeatures.HEART_GEODE.getHolder().get(), List.of(
-                    RarityFilter.onAverageOnceEvery(35), InSquarePlacement.spread(),
-                    HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
+    public static final RegistryObject<PlacedFeature> DEEPSLATE_HEART_GEODE_PLACED = PLACED_FEATURES.register("deepslate_heart_geode_placed",
+            () -> new PlacedFeature(ModConfiguredFeatures.DEEPSLATE_HEART_GEODE.getHolder().get(), List.of(
+                    RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.absolute(-45), VerticalAnchor.absolute(0)),
+                    BiomeFilter.biome())));
+    public static final RegistryObject<PlacedFeature> NETHER_HEART_GEODE_PLACED = PLACED_FEATURES.register("nether_heart_geode_placed",
+            () -> new PlacedFeature(ModConfiguredFeatures.DEEPSLATE_HEART_GEODE.getHolder().get(), List.of(
+                    RarityFilter.onAverageOnceEvery(30), InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(30)),
                     BiomeFilter.biome())));
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());

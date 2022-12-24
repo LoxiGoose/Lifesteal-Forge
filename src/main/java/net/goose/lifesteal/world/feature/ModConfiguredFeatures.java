@@ -41,15 +41,30 @@ public class ModConfiguredFeatures {
     public static final RegistryObject<ConfiguredFeature<?, ?>> NETHER_HEART_ORE = CONFIGURED_FEATURES.register("nether_heart_ore",
             () -> new ConfiguredFeature<>(Feature.SCATTERED_ORE, new OreConfiguration(NETHER_HEART_ORES.get(), 14)));
 
-    public static final RegistryObject<ConfiguredFeature<?, ?>> HEART_GEODE = CONFIGURED_FEATURES.register("heart_geode",
+    public static final RegistryObject<ConfiguredFeature<?, ?>> DEEPSLATE_HEART_GEODE = CONFIGURED_FEATURES.register("deepslate_heart_geode",
             () -> new ConfiguredFeature<>(Feature.GEODE,
                     new GeodeConfiguration(new GeodeBlockSettings(
                             BlockStateProvider.simple(Blocks.AIR),
                             BlockStateProvider.simple(Blocks.DEEPSLATE),
-                            BlockStateProvider.simple(ModBlocks.HEART_ORE.get()),
+                            BlockStateProvider.simple(ModBlocks.DEEPSLATE_HEART_ORE.get()),
                             BlockStateProvider.simple(Blocks.DIRT),
                             BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
                             List.of(Blocks.CALCITE.defaultBlockState()),
+                            BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
+                            new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
+                            new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
+                            true, UniformInt.of(4, 6),
+                            UniformInt.of(3, 4), UniformInt.of(1, 2),
+                            -16, 16, 0.05D, 1)));
+    public static final RegistryObject<ConfiguredFeature<?, ?>> NETHER_HEART_GEODE = CONFIGURED_FEATURES.register("nether_heart_geode",
+            () -> new ConfiguredFeature<>(Feature.GEODE,
+                    new GeodeConfiguration(new GeodeBlockSettings(
+                            BlockStateProvider.simple(Blocks.AIR),
+                            BlockStateProvider.simple(Blocks.NETHERRACK),
+                            BlockStateProvider.simple(ModBlocks.NETHERRACK_HEART_ORE.get()),
+                            BlockStateProvider.simple(Blocks.MAGMA_BLOCK),
+                            BlockStateProvider.simple(Blocks.BLACKSTONE),
+                            List.of(Blocks.NETHER_GOLD_ORE.defaultBlockState(), Blocks.SOUL_SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()),
                             BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
                             new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
                             new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
