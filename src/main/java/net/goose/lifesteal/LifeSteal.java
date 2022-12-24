@@ -1,14 +1,14 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Blocks.ModBlocks;
+import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
+import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.Capability.CapabilityRegistry;
 import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Events.EventHandler;
-import net.goose.lifesteal.Items.ModItems;
-import net.goose.lifesteal.World.feature.ModConfiguredFeatures;
-import net.goose.lifesteal.World.feature.ModPlacedFeatures;
+import net.goose.lifesteal.event.EventHandler;
+import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
+import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;

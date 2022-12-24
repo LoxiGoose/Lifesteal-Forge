@@ -1,4 +1,4 @@
-package net.goose.lifesteal.World.feature;
+package net.goose.lifesteal.world.feature;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.core.Registry;

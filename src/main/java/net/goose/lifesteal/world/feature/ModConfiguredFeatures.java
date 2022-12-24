@@ -1,7 +1,7 @@
-package net.goose.lifesteal.World.feature;
+package net.goose.lifesteal.world.feature;
 
 import com.google.common.base.Suppliers;
-import net.goose.lifesteal.Blocks.ModBlocks;
+import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
