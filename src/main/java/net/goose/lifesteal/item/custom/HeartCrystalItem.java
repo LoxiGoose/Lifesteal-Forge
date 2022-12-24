@@ -2,6 +2,7 @@ package net.goose.lifesteal.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -22,9 +23,6 @@ public class HeartCrystalItem extends Item {
 
     public static final FoodProperties HeartCrystal = (new FoodProperties.Builder()).alwaysEat().build();
 
-    public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
-    });
-
     public HeartCrystalItem(Properties pProperties) {
         super(pProperties);
     }
@@ -42,7 +40,7 @@ public class HeartCrystalItem extends Item {
 
             if (!LifeSteal.config.disableHeartCrystals.get()) {
                 AtomicInteger currentheartDifference = new AtomicInteger();
-                serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(diff -> currentheartDifference.set(diff.getHeartDifference()));
+                serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(diff -> currentheartDifference.set(diff.getHeartDifference()));
 
                 if (LifeSteal.config.maximumamountofheartsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofheartsGainable.get();
@@ -56,8 +54,8 @@ public class HeartCrystalItem extends Item {
 
                 int newheartDifference = currentheartDifference.get() + LifeSteal.config.HeartCrystalAmountGain.get();
 
-                serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(diff -> diff.setHeartDifference(newheartDifference));
-                serverPlayer.getCapability(HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
+                serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(diff -> diff.setHeartDifference(newheartDifference));
+                serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
 
                 // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
                 CompoundTag compoundTag = item.getTagElement("lifesteal");
