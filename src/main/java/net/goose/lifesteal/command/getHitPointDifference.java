@@ -2,7 +2,7 @@ package net.goose.lifesteal.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

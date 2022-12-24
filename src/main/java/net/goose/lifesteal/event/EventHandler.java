@@ -1,6 +1,6 @@
 package net.goose.lifesteal.event;
 
-import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.command.getHitPointDifference;
 import net.goose.lifesteal.command.getLives;
 import net.goose.lifesteal.command.setHitPointDifference;

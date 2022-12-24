@@ -3,7 +3,7 @@ package net.goose.lifesteal;
 import com.mojang.logging.LogUtils;
 import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
 import net.goose.lifesteal.block.ModBlocks;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.event.EventHandler;
 import net.goose.lifesteal.item.ModItems;
