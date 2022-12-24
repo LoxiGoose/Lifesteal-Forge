@@ -1,13 +1,11 @@
 package net.goose.lifesteal.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.configuration.ConfigHolder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -17,24 +15,24 @@ public class HeartCoreItem extends Item {
 
     public static final FoodProperties HeartCore = (new FoodProperties.Builder()).alwaysEat().build();
 
-    public HeartCoreItem(Properties pProperties){
+    public HeartCoreItem(Properties pProperties) {
         super(pProperties);
     }
 
     @Override
     public ItemStack finishUsingItem(ItemStack item, Level level, LivingEntity entity) {
-        if(!level.isClientSide() && entity instanceof ServerPlayer serverPlayer){
-            if(!LifeSteal.config.disableHeartCores.get()){
-                if(entity.getHealth() < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()){
+        if (!level.isClientSide() && entity instanceof ServerPlayer serverPlayer) {
+            if (!LifeSteal.config.disableHeartCores.get()) {
+                if (entity.getHealth() < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
                     float maxHealth = entity.getMaxHealth();
                     float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.HeartCoreHeal.get());
                     float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
-                    if(differenceInHealth <= amountThatWillBeHealed){
+                    if (differenceInHealth <= amountThatWillBeHealed) {
                         amountThatWillBeHealed = differenceInHealth;
                     }
 
                     int oldDuration = 0;
-                    if(entity.hasEffect(MobEffects.REGENERATION)){
+                    if (entity.hasEffect(MobEffects.REGENERATION)) {
                         MobEffectInstance mobEffect = entity.getEffect(MobEffects.REGENERATION);
 
                         oldDuration = mobEffect.getDuration();
@@ -42,12 +40,12 @@ public class HeartCoreItem extends Item {
 
                     int tickTime = (int) ((amountThatWillBeHealed * 50) / 2) + oldDuration;
                     entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 1));
-                }else{
+                } else {
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
                     item.grow(1);
                     serverPlayer.containerMenu.broadcastChanges();
                 }
-            }else{
+            } else {
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_disabled"), true);
                 item.grow(1);
                 serverPlayer.containerMenu.broadcastChanges();

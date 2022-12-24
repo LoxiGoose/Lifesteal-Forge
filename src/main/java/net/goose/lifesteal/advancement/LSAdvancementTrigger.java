@@ -39,7 +39,6 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
         }
 
 
-
         public JsonObject serializeToJson(SerializationContext p_230240_1_) {
             JsonObject lvt_2_1_ = super.serializeToJson(p_230240_1_);
             return lvt_2_1_;

@@ -20,14 +20,12 @@ import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LifeSteal.MOD_ID)
-public class LifeSteal
-{
+public class LifeSteal {
     public static final String MOD_ID = "lifesteal";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static Config config;
 
-    public LifeSteal()
-    {
+    public LifeSteal() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         config = ConfigHolder.SERVER;
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -44,8 +42,7 @@ public class LifeSteal
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void commonSetup(final FMLCommonSetupEvent event)
-    {
+    private void commonSetup(final FMLCommonSetupEvent event) {
         // Some common setup code
         LOGGER.info("Lifestealers are on the loose!");
         ModCriteria.init();

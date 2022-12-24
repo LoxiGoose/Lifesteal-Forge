@@ -28,7 +28,7 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
-    public static class EventCapHandler{
+    public static class EventCapHandler {
         @SubscribeEvent
         public static void attachCapabilities(final AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof Player) {
