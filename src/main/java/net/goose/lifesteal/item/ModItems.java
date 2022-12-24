@@ -18,11 +18,10 @@ public class ModItems {
 
     public static final RegistryObject<Item> HEART_FRAGMENT = ITEMS.register("heart_fragment",
             () -> new Item(new Item.Properties()));
-
     public static final RegistryObject<Item> HEART_CRYSTAL = ITEMS.register("heart_crystal",
             () -> new HeartCrystalItem(new Item.Properties().stacksTo(1).fireResistant().food(HeartCrystalItem.HeartCrystal)));
-    public static final RegistryObject<Item> REVIVE_ITEM = ITEMS.register("revive_item",
-            () -> new ReviveItem(new Item.Properties().stacksTo(1).fireResistant()));
+    /*public static final RegistryObject<Item> REVIVE_ITEM = ITEMS.register("revive_item",
+            () -> new ReviveItem(new Item.Properties().stacksTo(1).fireResistant()));*/
 
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

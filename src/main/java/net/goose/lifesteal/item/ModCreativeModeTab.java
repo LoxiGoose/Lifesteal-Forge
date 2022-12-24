@@ -30,6 +30,7 @@ public class ModCreativeModeTab {
             event.accept(ModBlocks.HEART_CORE_BLOCK.get());
         }
         if(event.getTab() == CreativeModeTabs.INGREDIENTS){
+            event.accept(ModItems.HEART_CORE.get());
             event.accept(ModBlocks.HEART_CORE_BLOCK.get());
             event.accept(ModItems.HEART_FRAGMENT.get());
         }
