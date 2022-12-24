@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Configurations;
+package net.goose.lifesteal.configuration;
 
 import net.minecraftforge.common.ForgeConfigSpec;
 

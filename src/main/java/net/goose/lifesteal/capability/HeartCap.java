@@ -2,7 +2,7 @@ package net.goose.lifesteal.Capability;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

@@ -1,11 +1,11 @@
 package net.goose.lifesteal.event;
 
 import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Commands.getHitPointDifference;
-import net.goose.lifesteal.Commands.getLives;
-import net.goose.lifesteal.Commands.setHitPointDifference;
-import net.goose.lifesteal.Commands.setLives;
-import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.command.getHitPointDifference;
+import net.goose.lifesteal.command.getLives;
+import net.goose.lifesteal.command.setHitPointDifference;
+import net.goose.lifesteal.command.setLives;
+import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.network.chat.Component;

@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Commands;
+package net.goose.lifesteal.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
