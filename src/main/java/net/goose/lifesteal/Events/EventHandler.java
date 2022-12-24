@@ -17,6 +17,7 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -96,7 +97,7 @@ public class EventHandler {
     }
 
     @SubscribeEvent
-    public static void deathEvent(LivingDeathEvent event) {
+    public static void deathEvent(LivingDropsEvent event) {
 
         LivingEntity killedEntity = event.getEntityLiving();
 
