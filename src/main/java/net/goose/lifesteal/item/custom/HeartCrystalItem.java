@@ -68,7 +68,7 @@ public class HeartCrystalItem extends Item {
 
             }else{
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_crystal_disabled"), true);
-                item.shrink(-1);
+                item.grow(1);
                 serverPlayer.containerMenu.broadcastChanges();
 
             }

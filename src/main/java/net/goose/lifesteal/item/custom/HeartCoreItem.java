@@ -44,12 +44,12 @@ public class HeartCoreItem extends Item {
                     entity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 1));
                 }else{
                     serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_at_max_health"), true);
-                    item.shrink(-1);
+                    item.grow(1);
                     serverPlayer.containerMenu.broadcastChanges();
                 }
             }else{
                 serverPlayer.displayClientMessage(Component.translatable("gui.lifesteal.heart_core_disabled"), true);
-                item.shrink(-1);
+                item.grow(1);
                 serverPlayer.containerMenu.broadcastChanges();
             }
         }
