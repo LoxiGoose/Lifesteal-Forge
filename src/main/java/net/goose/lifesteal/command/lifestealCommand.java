@@ -140,7 +140,9 @@ public class lifestealCommand {
             }
         }
 
-        chosenentity.sendMessage(Component.nullToEmpty("Your HitPoint difference has been set to "+amount), chosenentity.getUUID());
+        if(LifeSteal.config.tellPlayersIfHitPointChanged.get()){
+            chosenentity.sendMessage(Component.nullToEmpty("Your HitPoint difference has been set to "+amount), chosenentity.getUUID());
+        }
         return 1;
     }
 }

@@ -8,16 +8,14 @@ import net.goose.lifesteal.command.lifestealCommand;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.UsedTotemTrigger;
+import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingUseTotemEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -42,8 +40,6 @@ public class EventHandler {
         ServerPlayer serverPlayer = (ServerPlayer) newPlayer;
 
         CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
-
-        CriteriaTriggers.USED_TOTEM.addPlayerListener(serverPlayer.getAdvancements(), new CriterionTrigger.Listener<>(CriteriaTriggers.USED_TOTEM, Advancement.Builder.advancement().build(new ResourceLocation("lifesteal:lifesteal/")), ));
     }
 
     @SubscribeEvent
@@ -66,18 +62,6 @@ public class EventHandler {
         }
 
         oldPlayer.invalidateCaps();
-    }
-
-    public static void totemofUndyingEvent(final LivingUseTotemEvent event) {
-        LivingEntity entityUsed = event.getEntityLiving();
-        if (entityUsed instanceof ServerPlayer serverPlayer) {
-            AtomicInteger HeartDifference = new AtomicInteger();
-            CapabilityRegistry.getHeart(entityUsed).ifPresent(HeartCap -> HeartDifference.set(HeartCap.getHeartDifference()));
-
-            if (HeartDifference.get() >= 20) {
-                ModCriteria.USE_TOTEM_WHILE_20_MAX_HEARTS.trigger(serverPlayer);
-            }
-        }
     }
 
     @SubscribeEvent

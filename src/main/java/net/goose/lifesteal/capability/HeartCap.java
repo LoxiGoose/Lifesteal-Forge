@@ -1,6 +1,7 @@
 package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
@@ -22,13 +23,11 @@ import java.util.Set;
 public class HeartCap implements IHeartCap {
     private final LivingEntity livingEntity;
 
-    private final int defaultheartDifference = ConfigHolder.SERVER.startingHeartDifference.get();
+    private final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
     private int heartDifference = defaultheartDifference;
 
-    private final int maximumheartsGainable = ConfigHolder.SERVER.maximumamountofheartsgainable.get();
-    private final int minimumamountofheartscanlose = ConfigHolder.SERVER.maximumamountofheartsloseable.get();
-    private final int defaultLives = ConfigHolder.SERVER.amountOfLives.get();
-    private int lives = defaultLives;
+    private final int maximumheartsGainable = LifeSteal.config.maximumamountofheartsGainable.get();
+    private final int minimumamountofheartscanlose = LifeSteal.config.maximumamountofheartsLoseable.get();
 
     public HeartCap(@Nullable final LivingEntity entity) {
         this.livingEntity = entity;
@@ -52,8 +51,9 @@ public class HeartCap implements IHeartCap {
             if(maximumheartsGainable > 0){
                 if(this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
-
-                    livingEntity.sendMessage(Component.nullToEmpty("You have reached max hearts."), livingEntity.getUUID());
+                    if(LifeSteal.config.tellPlayersIfReachedMaxHearts.get()){
+                        livingEntity.sendMessage(Component.nullToEmpty("You have reached max hearts."), livingEntity.getUUID());
+                    }
                 }
             }
 
@@ -104,110 +104,47 @@ public class HeartCap implements IHeartCap {
             }
 
             if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
+                if (livingEntity instanceof ServerPlayer serverPlayer){
 
-                if(defaultLives > 0 && maximumheartsGainable <= 0 && minimumamountofheartscanlose < 0){
-                    if(this.lives <= 0){
+                    this.heartDifference = defaultheartDifference;
+                    refreshHearts();
 
-                        this.heartDifference = defaultheartDifference;
-                        this.lives = defaultLives;
+                    if(LifeSteal.config.bannedUponLosingAllHearts.get()){
 
-                        refreshHearts();
+                        @Nullable Component component = Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice.");
 
-                        if (livingEntity instanceof ServerPlayer serverPlayer){
-                            if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
+                        UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
 
-                                @Nullable Component component = Component.nullToEmpty("You have lost all your lives and max hearts, you are now permanently banned till further notice.");
+                        serverPlayer.getGameProfile();
 
-                                UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
+                        GameProfile gameprofile = serverPlayer.getGameProfile();
 
-                                serverPlayer.getGameProfile();
+                        UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
+                        userbanlist.add(userbanlistentry);
 
-                                GameProfile gameprofile = serverPlayer.getGameProfile();
-
-                                UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
-                                userbanlist.add(userbanlistentry);
-
-                                if (serverPlayer != null) {
-                                    serverPlayer.connection.disconnect(Component.nullToEmpty("You have lost all your lives and max hearts, you are now permanently banned till further notice."));
-                                }
-                            }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                                serverPlayer.setGameMode(GameType.SPECTATOR);
-
-                                livingEntity.sendMessage(Component.nullToEmpty("You have lost all your lives and max hearts. You are now permanently dead."), livingEntity.getUUID());
-                            }
+                        if (serverPlayer != null) {
+                            serverPlayer.connection.disconnect(Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice."));
                         }
-                    }else{
-                        this.lives--;
+                    }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                        serverPlayer.setGameMode(GameType.SPECTATOR);
 
-                        this.heartDifference = defaultheartDifference;
-                        refreshHearts();
-
-                        livingEntity.sendMessage(Component.nullToEmpty("You have lost a life. Your lives count is now "+ this.lives), livingEntity.getUUID());
-                    }
-                }else{
-                    if (livingEntity instanceof ServerPlayer serverPlayer){
-
-                        this.heartDifference = defaultheartDifference;
-                        this.lives = defaultLives;
-
-                        refreshHearts();
-
-                        if(ConfigHolder.SERVER.bannedUponLosingAllHeartsOrLives.get()){
-
-                            @Nullable Component component = Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice.");
-
-                            UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
-
-                            serverPlayer.getGameProfile();
-
-                            GameProfile gameprofile = serverPlayer.getGameProfile();
-
-                            UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
-                            userbanlist.add(userbanlistentry);
-
-                            if (serverPlayer != null) {
-                                serverPlayer.connection.disconnect(Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice."));
-                            }
-                        }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
-                            serverPlayer.setGameMode(GameType.SPECTATOR);
-
-                            livingEntity.sendMessage(Component.nullToEmpty("You have lost all max hearts, you are now permanently dead."), livingEntity.getUUID());
-                        }
+                        livingEntity.sendMessage(Component.nullToEmpty("You have lost all max hearts, you are now permanently dead."), livingEntity.getUUID());
                     }
                 }
-
-            }else if(this.heartDifference + 20 >= (defaultheartDifference + 20) * 2 && defaultLives > 0 && maximumheartsGainable < 0 && minimumamountofheartscanlose
- <= 0 ){
-                this.lives++;
-
-                this.heartDifference = defaultheartDifference;
-
-                livingEntity.sendMessage(Component.nullToEmpty("Your lives count has increased to "+ this.lives), livingEntity.getUUID());
-                refreshHearts();
             }
         }
 
     }
 
     @Override
-    public int getLives() {
-        return this.lives;
-    }
-
-    @Override
-    public void setLives(int lives) {if(!livingEntity.level.isClientSide){this.lives = lives;}}
-
-    @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("heartdifference", getHeartDifference());
-        tag.putInt("lives", getLives());
         return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
         setHeartDifference(tag.getInt("heartdifference"));
-        setLives(tag.getInt("lives"));
     }
 }
