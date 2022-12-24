@@ -1,9 +1,9 @@
-package net.goose.lifesteal.Commands;
+package net.goose.lifesteal.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.commands.CommandSourceStack;

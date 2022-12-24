@@ -1,13 +1,13 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Blocks.ModBlocks;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantment.ModEnchantments;
-import net.goose.lifesteal.Events.EventHandler;
-import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.configuration.Config;
+import net.goose.lifesteal.configuration.ConfigHolder;
+import net.goose.lifesteal.event.EventHandler;
+import net.goose.lifesteal.item.ModItems;
+import net.goose.lifesteal.advancement.ModCriteria;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -24,19 +24,20 @@ public class LifeSteal
     // Directly reference a slf4j logger
     public static final String MOD_ID = "lifesteal";
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static Config config;
 
     public LifeSteal()
     {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
+        config = ConfigHolder.SERVER;
         // Register the setup method for modloading
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModEnchantments.register(modEventBus);
 
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         // Register the enqueueIMC method for modloading
-        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
@@ -48,6 +49,6 @@ public class LifeSteal
     {
         // some preinit code
         LOGGER.info("Lifestealers are on the loose!");
-        LSAdvancementTriggerRegistry.init();
+        ModCriteria.init();
     }
 }

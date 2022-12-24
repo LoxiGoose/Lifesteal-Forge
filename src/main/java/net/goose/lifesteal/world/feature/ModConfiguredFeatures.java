@@ -1,6 +1,6 @@
 package net.goose.lifesteal.world.feature;
 
-import net.goose.lifesteal.Blocks.ModBlocks;
+import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.features.FeatureUtils;
 import net.minecraft.data.worldgen.features.OreFeatures;
@@ -33,21 +33,36 @@ public class ModConfiguredFeatures {
 
     public static final Holder<ConfiguredFeature<OreConfiguration, ?>> NETHER_HEART_ORE = FeatureUtils.register("nether_heart_ore",
             Feature.SCATTERED_ORE, new OreConfiguration(NETHERRACK_HEART_ORES, 14)); // Max Vein Size
-
-    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> HEART_GEODE = FeatureUtils.register("heart_geode",
+    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> DEEPSLATE_HEART_GEODE = FeatureUtils.register("deepslate_heart_geode",
             Feature.GEODE,
-                    new GeodeConfiguration(new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR),
+                    new GeodeConfiguration(new GeodeBlockSettings(
+                            BlockStateProvider.simple(Blocks.AIR),
                             BlockStateProvider.simple(Blocks.DEEPSLATE),
-                            BlockStateProvider.simple(ModBlocks.HEART_ORE.get()),
+                            BlockStateProvider.simple(ModBlocks.DEEPSLATE_HEART_ORE.get()),
                             BlockStateProvider.simple(Blocks.DIRT),
                             BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
                             List.of(Blocks.CALCITE.defaultBlockState()),
                             BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
-                            new GeodeLayerSettings(1.7D, 1.2D, 2.5D, 3.5D),
-                            new GeodeCrackSettings(0.25D, 1.5D, 1), 0.5D, 0.1D,
-                            true, UniformInt.of(3, 8),
-                            UniformInt.of(2, 6), UniformInt.of(1, 2),
-                            -18, 18, 0.075D, 1));
+                            new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
+                            new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
+                            true, UniformInt.of(4, 6),
+                            UniformInt.of(3, 4), UniformInt.of(1, 2),
+                            -16, 16, 0.05D, 1));
+    public static final Holder<ConfiguredFeature<GeodeConfiguration, ?>> NETHER_HEART_GEODE = FeatureUtils.register("nether_heart_geode",
+            Feature.GEODE,
+                    new GeodeConfiguration(new GeodeBlockSettings(
+                            BlockStateProvider.simple(Blocks.AIR),
+                            BlockStateProvider.simple(Blocks.NETHERRACK),
+                            BlockStateProvider.simple(ModBlocks.NETHERRACK_HEART_ORE.get()),
+                            BlockStateProvider.simple(Blocks.MAGMA_BLOCK),
+                            BlockStateProvider.simple(Blocks.BLACKSTONE),
+                            List.of(Blocks.NETHER_GOLD_ORE.defaultBlockState(), Blocks.SOUL_SAND.defaultBlockState(), Blocks.GRAVEL.defaultBlockState()),
+                            BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
+                            new GeodeLayerSettings(1.7D, 2.2D, 3.2D, 4.2D),
+                            new GeodeCrackSettings(0.95D, 2.0D, 2), 0.35D, 0.083D,
+                            true, UniformInt.of(4, 6),
+                            UniformInt.of(3, 4), UniformInt.of(1, 2),
+                            -16, 16, 0.05D, 1));
 
 
 }

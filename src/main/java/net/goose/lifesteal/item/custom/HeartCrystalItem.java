@@ -1,6 +1,6 @@
-package net.goose.lifesteal.Items.custom;
+package net.goose.lifesteal.item.custom;
 
-import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;

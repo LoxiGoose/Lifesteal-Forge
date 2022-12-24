@@ -1,5 +1,5 @@
 
-package net.goose.lifesteal.Capability;
+package net.goose.lifesteal.capability;
 
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;

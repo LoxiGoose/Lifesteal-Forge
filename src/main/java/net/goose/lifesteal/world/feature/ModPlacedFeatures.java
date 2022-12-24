@@ -4,6 +4,7 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
+import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
@@ -31,13 +32,15 @@ public class ModPlacedFeatures {
         return orePlacement(RarityFilter.onAverageOnceEvery(p_195350_), p_195351_);
     }
 
-    public static final Holder<PlacedFeature> HEART_GEODE_PLACED = PlacementUtils.register("heart_geode_placed",
-        ModConfiguredFeatures.HEART_GEODE,
-
-
-            RarityFilter.onAverageOnceEvery(35),
-            InSquarePlacement.spread(),
-            HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
-            BiomeFilter.biome());
+    public static final Holder<PlacedFeature> DEEPSLATE_HEART_GEODE_PLACED = PlacementUtils.register("deepslate_heart_geode_placed",
+            ModConfiguredFeatures.DEEPSLATE_HEART_GEODE, List.of(
+                    RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.absolute(-45), VerticalAnchor.absolute(0)),
+                    BiomeFilter.biome()));
+    public static final Holder<PlacedFeature> NETHER_HEART_GEODE_PLACED = PlacementUtils.register("nether_heart_geode_placed",
+            ModConfiguredFeatures.DEEPSLATE_HEART_GEODE, List.of(
+                    RarityFilter.onAverageOnceEvery(30), InSquarePlacement.spread(),
+                    HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(30)),
+                    BiomeFilter.biome()));
 
 }

@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Items;
+package net.goose.lifesteal.item;
 
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;

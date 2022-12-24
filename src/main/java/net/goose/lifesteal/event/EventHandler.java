@@ -1,21 +1,15 @@
-package net.goose.lifesteal.Events;
+package net.goose.lifesteal.event;
 
-import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Commands.getHitPointDifference;
-import net.goose.lifesteal.Commands.getLives;
-import net.goose.lifesteal.Commands.setHitPointDifference;
-import net.goose.lifesteal.Commands.setLives;
-import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantment.ModEnchantments;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.command.getHitPointDifference;
+import net.goose.lifesteal.command.setHitPointDifference;
+import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.event.RegisterCommandsEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -41,34 +35,6 @@ public class EventHandler {
         LivingEntity newPlayer = event.getEntityLiving();
 
         CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
-    }
-
-    @SubscribeEvent
-    public static void livingDamageEvent(LivingDamageEvent event){
-
-        if(!ConfigHolder.SERVER.disableEnchantments.get()){
-            Entity Attacker = event.getSource().getEntity();
-
-            if(Attacker != null){
-
-                if(Attacker instanceof LivingEntity _Attacker){
-
-                    float damage = event.getAmount();
-
-                    int level = EnchantmentHelper.getEnchantmentLevel(ModEnchantments.LIFESTEAL.get(), _Attacker);
-
-                    if(level > 0){
-
-                        damage *= ((float) level / (float) ModEnchantments.LIFESTEAL.get().getMaxLevel()) * 0.5f;
-                        _Attacker.heal(damage);
-
-                    }
-
-                }
-
-            }
-        }
-
     }
 
     @SubscribeEvent

@@ -20,7 +20,10 @@ public class ModGeodeGeneration {
         Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(key);
 
         if(types.contains(BiomeDictionary.Type.OVERWORLD)){
-            base.add(ModPlacedFeatures.HEART_GEODE_PLACED);
+            base.add(ModPlacedFeatures.DEEPSLATE_HEART_GEODE_PLACED);
+        }
+        if(types.contains(BiomeDictionary.Type.NETHER)){
+            base.add(ModPlacedFeatures.NETHER_HEART_GEODE_PLACED);
         }
     }
 }

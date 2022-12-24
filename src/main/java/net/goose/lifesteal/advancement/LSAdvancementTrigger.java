@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Advancements;
+package net.goose.lifesteal.advancement;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.critereon.*;
@@ -37,7 +37,6 @@ public class LSAdvancementTrigger extends SimpleCriterionTrigger<LSAdvancementTr
         public static ConstructBeaconTrigger.TriggerInstance forLevel(MinMaxBounds.Ints p_203912_0_) {
             return new ConstructBeaconTrigger.TriggerInstance(EntityPredicate.Composite.ANY, p_203912_0_);
         }
-
 
 
         public JsonObject serializeToJson(SerializationContext p_230240_1_) {

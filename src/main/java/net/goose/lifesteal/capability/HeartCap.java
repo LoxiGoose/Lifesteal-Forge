@@ -1,8 +1,8 @@
-package net.goose.lifesteal.Capability;
+package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.configuration.ConfigHolder;
+import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -16,7 +16,6 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.level.GameType;
 
 import javax.annotation.Nullable;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -101,7 +100,7 @@ public class HeartCap implements IHeartCap {
             }
 
             if(heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer){
-                LSAdvancementTriggerRegistry.GET_10_MAX_HEARTS.trigger(serverPlayer);
+                ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
             if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
