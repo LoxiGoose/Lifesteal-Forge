@@ -1,10 +1,7 @@
 package net.goose.lifesteal.event;
 
 import net.goose.lifesteal.capability.CapabilityRegistry;
-import net.goose.lifesteal.command.getHitPointDifference;
-import net.goose.lifesteal.command.getLives;
-import net.goose.lifesteal.command.setHitPointDifference;
-import net.goose.lifesteal.command.setLives;
+import net.goose.lifesteal.command.lifestealCommand;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
@@ -27,10 +24,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class EventHandler {
     @SubscribeEvent
     public static void OnCommandsRegister(RegisterCommandsEvent event){
-        new getHitPointDifference(event.getDispatcher());
-        new setHitPointDifference(event.getDispatcher());
-        new getLives(event.getDispatcher());
-        new setLives(event.getDispatcher());
+        new lifestealCommand(event.getDispatcher());
 
         ConfigCommand.register(event.getDispatcher());
     }
