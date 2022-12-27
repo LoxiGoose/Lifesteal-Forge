@@ -129,8 +129,6 @@ public class lifestealCommand {
         if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
             chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         }
-
-        chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         return 1;
     }
 }
