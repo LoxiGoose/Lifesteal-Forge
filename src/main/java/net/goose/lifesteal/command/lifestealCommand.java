@@ -130,7 +130,6 @@ public class lifestealCommand {
             chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         }
 
-        chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         return 1;
     }
 }

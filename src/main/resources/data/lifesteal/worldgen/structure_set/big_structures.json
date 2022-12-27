@@ -3,6 +3,10 @@
     {
       "structure": "lifesteal:collapsed_mineshaft",            //<= structure
       "weight": 1                                    //<= weight
+    },
+    {
+      "structure": "lifesteal:ruined_library",
+      "weight": 1
     }
   ],
   "placement": {
