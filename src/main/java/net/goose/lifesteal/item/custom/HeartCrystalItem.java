@@ -52,7 +52,7 @@ public class HeartCrystalItem extends Item {
                 int newheartDifference = currentheartDifference.get() + LifeSteal.config.HeartCrystalAmountGain.get();
 
                 serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(diff -> diff.setHeartDifference(newheartDifference));
-                serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(IHeartCap::refreshHearts);
+                serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
 
                 // Formula, for every hit point, increase duration of the regeneration by 50 ticks: TickDuration = MaxHealth * 50
                 CompoundTag compoundTag = item.getTagElement("lifesteal");

@@ -42,7 +42,7 @@ public class HeartCap implements IHeartCap {
     public void setHeartDifference(int hearts) { if (!livingEntity.level.isClientSide){ this.heartDifference = hearts;}}
 
     @Override
-    public void refreshHearts(){
+    public void refreshHearts(boolean healtoMax){
 
         if(!livingEntity.level.isClientSide){
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
@@ -107,33 +107,29 @@ public class HeartCap implements IHeartCap {
                 if (livingEntity instanceof ServerPlayer serverPlayer){
 
                     this.heartDifference = defaultheartDifference;
-                    refreshHearts();
+                    refreshHearts(true);
 
-                    if(LifeSteal.config.bannedUponLosingAllHearts.get()){
+                    if (LifeSteal.config.bannedUponLosingAllHearts.get() && !livingEntity.level.getServer().isSingleplayer()) {
 
-                        @Nullable Component component = Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice.");
-
+                        @Nullable Component component = Component.nullToEmpty("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
-
                         serverPlayer.getGameProfile();
-
                         GameProfile gameprofile = serverPlayer.getGameProfile();
 
                         UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
                         userbanlist.add(userbanlistentry);
 
                         if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(Component.nullToEmpty("You have lost all max hearts, you are now permanently banned till further notice."));
+                            serverPlayer.connection.disconnect(Component.nullToEmpty("bannedmessage.lifesteal.lost_max_hearts"));
                         }
-                    }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR){
+                    } else if (serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
                         serverPlayer.setGameMode(GameType.SPECTATOR);
 
-                        livingEntity.sendMessage(Component.nullToEmpty("You have lost all max hearts, you are now permanently dead."), livingEntity.getUUID());
+                        livingEntity.sendMessage(Component.nullToEmpty("chat.message.lifesteal.lost_max_hearts"), livingEntity.getUUID());
                     }
                 }
             }
         }
-
     }
 
     @Override
