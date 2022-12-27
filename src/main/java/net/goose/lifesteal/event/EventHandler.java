@@ -34,7 +34,7 @@ public class EventHandler {
     public static void playerJoinEvent(final PlayerEvent.PlayerLoggedInEvent event) {
         Player newPlayer = event.getEntity();
 
-        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
     }
 
     @SubscribeEvent
@@ -50,7 +50,7 @@ public class EventHandler {
                 newHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference())
         ));
 
-        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap::refreshHearts);
+        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
 
         if (wasDeath) {
             newPlayer.heal(newPlayer.getMaxHealth());
@@ -110,7 +110,7 @@ public class EventHandler {
                             if (LifeSteal.config.playersGainHeartsifKillednoHeart.get() || LifeSteal.config.shouldAllMobsGiveHearts.get()) {
                                 CapabilityRegistry.getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                                CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
+                                CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                             } else {
 
                                 if (!LifeSteal.config.disableHeartLoss.get()) {
@@ -118,7 +118,7 @@ public class EventHandler {
                                         if (LifeSteal.config.startingHeartDifference.get() + HeartDifference.get() > -LifeSteal.config.maximumamountofheartsLoseable.get()) {
                                             CapabilityRegistry.getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                                            CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
+                                            CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                                         } else {
                                             serverPlayer.displayClientMessage(Component.translatable("chat.message.lifesteal.no_more_hearts_to_steal"), true);
                                         }
@@ -126,12 +126,12 @@ public class EventHandler {
                                     } else {
                                         CapabilityRegistry.getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                                        CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
+                                        CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                                     }
                                 } else {
                                     CapabilityRegistry.getHeart(killerEntity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(newHeartDifference.getHeartDifference() + amountOfHealthLostUponLoss));
 
-                                    CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap::refreshHearts);
+                                    CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                                 }
                             }
 
@@ -142,24 +142,24 @@ public class EventHandler {
                                 if (killerEntity instanceof Player) {
                                     CapabilityRegistry.getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
 
-                                    CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
+                                    CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                                 }
                             } else {
                                 CapabilityRegistry.getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
 
-                                CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
+                                CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                             }
                         }
                     } else {
                         CapabilityRegistry.getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
 
-                        CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
+                        CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                     }
                 } else {
                     if (!LifeSteal.config.loseHeartsOnlyWhenKilledByMob.get() && !LifeSteal.config.loseHeartsOnlyWhenKilledByPlayer.get()) {
                         CapabilityRegistry.getHeart(killedEntity).ifPresent(oldHeartDifference -> oldHeartDifference.setHeartDifference(oldHeartDifference.getHeartDifference() - amountOfHealthLostUponLoss));
 
-                        CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap::refreshHearts);
+                        CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                     }
                 }
 

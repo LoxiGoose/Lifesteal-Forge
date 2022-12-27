@@ -40,7 +40,7 @@ public class HeartCap implements IHeartCap {
     }
 
     @Override
-    public void refreshHearts() {
+    public void refreshHearts(boolean healtoMax) {
 
         if (!livingEntity.level.isClientSide) {
             final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
@@ -102,7 +102,7 @@ public class HeartCap implements IHeartCap {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
-            if (livingEntity.getHealth() > livingEntity.getMaxHealth()) {
+            if (livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax) {
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
@@ -111,8 +111,7 @@ public class HeartCap implements IHeartCap {
 
                     this.heartDifference = defaultheartDifference;
 
-                    refreshHearts();
-                    livingEntity.setHealth(livingEntity.getMaxHealth());
+                    refreshHearts(true);
 
                     if (LifeSteal.config.bannedUponLosingAllHearts.get() && !livingEntity.level.getServer().isSingleplayer()) {
 
