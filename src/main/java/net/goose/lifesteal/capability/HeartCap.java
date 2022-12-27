@@ -40,7 +40,7 @@ public class HeartCap implements IHeartCap {
     }
 
     @Override
-    public void refreshHearts() {
+    public void refreshHearts(boolean healtoMax) {
 
         if (!livingEntity.level.isClientSide) {
             final int defaultheartDifference = LifeSteal.config.startingHeartDifference.get();
@@ -102,7 +102,7 @@ public class HeartCap implements IHeartCap {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
-            if (livingEntity.getHealth() > livingEntity.getMaxHealth()) {
+            if (livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax) {
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
@@ -111,16 +111,13 @@ public class HeartCap implements IHeartCap {
 
                     this.heartDifference = defaultheartDifference;
 
-                    refreshHearts();
+                    refreshHearts(true);
 
-                    if (LifeSteal.config.bannedUponLosingAllHearts.get()) {
+                    if (LifeSteal.config.bannedUponLosingAllHearts.get() && !livingEntity.level.getServer().isSingleplayer()) {
 
                         @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
-
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
-
                         serverPlayer.getGameProfile();
-
                         GameProfile gameprofile = serverPlayer.getGameProfile();
 
                         UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
@@ -134,7 +131,6 @@ public class HeartCap implements IHeartCap {
 
                         livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.lost_max_hearts"));
                     }
-
                 }
             }
         }

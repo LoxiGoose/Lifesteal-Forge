@@ -64,7 +64,7 @@ public class lifestealCommand {
                         }
                     }
                     CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> HeartCap.setHeartDifference(heartDifference.get()));
-                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap::refreshHearts);
+                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
 
                     ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
                     CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
@@ -106,7 +106,7 @@ public class lifestealCommand {
         if (source.isPlayer()) {
             LivingEntity playerthatsentcommand = source.getPlayer();
             CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
-            CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap::refreshHearts);
+            CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
 
             playerthatsentcommand.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         }
@@ -118,7 +118,7 @@ public class lifestealCommand {
         LivingEntity playerthatsentcommand = source.getPlayer();
 
         CapabilityRegistry.getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
-        CapabilityRegistry.getHeart(chosenentity).ifPresent(IHeartCap::refreshHearts);
+        CapabilityRegistry.getHeart(chosenentity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
 
         if (chosenentity != playerthatsentcommand && source.isPlayer()) {
             playerthatsentcommand.sendSystemMessage(Component.translatable("Set " + chosenentity.getName().getString() + "'s HitPoint difference to " + amount));
