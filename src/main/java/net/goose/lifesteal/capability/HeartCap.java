@@ -113,27 +113,23 @@ public class HeartCap implements IHeartCap {
 
                     this.heartDifference = defaultheartDifference;
 
-                    ItemStack reviveItem = new ItemStack(ModBlocks.REVIVE_BLOCK.get());
-                    CompoundTag skullOwner = new CompoundTag();
-                    skullOwner.putString("Name", serverPlayer.getName().getString());
-                    skullOwner.putUUID("Id", serverPlayer.getUUID());
-
-                    CompoundTag compoundTag = new CompoundTag();
-                    compoundTag.put("SkullOwner", skullOwner);
-                    reviveItem.setTag(compoundTag);
-
-                    ((ServerPlayer) livingEntity).drop(reviveItem, true);
-
                     refreshHearts(true);
 
-                    if (LifeSteal.config.bannedUponLosingAllHearts.get() && !livingEntity.level.getServer().isSingleplayer()) {
+                    if(!livingEntity.level.getServer().isSingleplayer()) {
+
+                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
+                        CompoundTag skullOwner = new CompoundTag();
+                        skullOwner.putString("Name", serverPlayer.getName().getString());
+                        skullOwner.putUUID("Id", serverPlayer.getUUID());
+
+                        CompoundTag compoundTag = new CompoundTag();
+                        compoundTag.put("SkullOwner", skullOwner);
+                        playerHead.setTag(compoundTag);
+                        serverPlayer.drop(playerHead, true);
 
                         @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
-
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
-
                         serverPlayer.getGameProfile();
-
                         GameProfile gameprofile = serverPlayer.getGameProfile();
 
                         UserBanListEntry userbanlistentry = new UserBanListEntry(gameprofile, null, "Lifesteal", null, component == null ? null : component.getString());
@@ -142,9 +138,8 @@ public class HeartCap implements IHeartCap {
                         if (serverPlayer != null) {
                             serverPlayer.connection.disconnect(Component.translatable("bannedmessage.lifesteal.lost_max_hearts"));
                         }
-                    } else if (serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
+                    }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
                         serverPlayer.setGameMode(GameType.SPECTATOR);
-
                         livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.lost_max_hearts"));
                     }
 
