@@ -8,6 +8,8 @@
   "block.lifesteal.heart_ore": "Heart Ore",
   "block.lifesteal.deepslate_heart_ore": "Deepslate Heart Ore",
   "block.lifesteal.netherrack_heart_ore": "Netherrack Heart Ore",
+  "block.lifesteal.revive_block": "Revive Head",
+  "block.lifesteal.revive_block.named": "%'s Revive Head",
 
   "gui.lifesteal.heart_core_disabled": "Heart Cores have been disabled in the configurations",
   "gui.lifesteal.heart_crystal_disabled": "Heart Crystals have been disabled in the configurations",

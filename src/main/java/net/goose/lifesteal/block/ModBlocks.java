@@ -1,6 +1,7 @@
 package net.goose.lifesteal.block;
 
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.block.custom.ReviveBlock;
 import net.goose.lifesteal.item.ModItems;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -30,6 +31,8 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)));
+    public static final RegistryObject<Block> REVIVE_BLOCK = registerBlock("revive_block", () ->
+            new ReviveBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F)));
 
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);

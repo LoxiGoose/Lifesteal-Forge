@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -13,7 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -38,7 +41,6 @@ public class HeartCap implements IHeartCap {
             this.heartDifference = hearts;
         }
     }
-
     @Override
     public void refreshHearts(boolean healtoMax) {
 
@@ -110,6 +112,17 @@ public class HeartCap implements IHeartCap {
                 if (livingEntity instanceof ServerPlayer serverPlayer) {
 
                     this.heartDifference = defaultheartDifference;
+
+                    ItemStack reviveItem = new ItemStack(ModBlocks.REVIVE_BLOCK.get());
+                    CompoundTag skullOwner = new CompoundTag();
+                    skullOwner.putString("Name", serverPlayer.getName().getString());
+                    skullOwner.putUUID("Id", serverPlayer.getUUID());
+
+                    CompoundTag compoundTag = new CompoundTag();
+                    compoundTag.put("SkullOwner", skullOwner);
+                    reviveItem.setTag(compoundTag);
+
+                    ((ServerPlayer) livingEntity).drop(reviveItem, true);
 
                     refreshHearts(true);
 
