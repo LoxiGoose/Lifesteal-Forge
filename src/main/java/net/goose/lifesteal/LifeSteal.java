@@ -8,8 +8,6 @@ import net.goose.lifesteal.configuration.Config;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.event.EventHandler;
 import net.goose.lifesteal.item.ModItems;
-import net.goose.lifesteal.world.feature.ModConfiguredFeatures;
-import net.goose.lifesteal.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -35,8 +33,6 @@ public class LifeSteal {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
-        ModConfiguredFeatures.register(modEventBus);
-        ModPlacedFeatures.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(EventHandler.class);
         MinecraftForge.EVENT_BUS.register(CapabilityRegistry.EventCapHandler.class);

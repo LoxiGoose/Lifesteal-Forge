@@ -113,7 +113,7 @@ public class HeartCap implements IHeartCap {
 
                     refreshHearts(true);
 
-                    if (LifeSteal.config.bannedUponLosingAllHearts.get() && !livingEntity.level.getServer().isSingleplayer()) {
+                    if (!livingEntity.level.getServer().isSingleplayer()) {
 
                         @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
