@@ -1,6 +1,7 @@
 package net.goose.lifesteal.capability;
 
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.api.ILevelCap;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,6 +18,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public class CapabilityRegistry {
     public static final Capability<IHeartCap> HEART_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
+    public static final Capability<ILevelCap> LEVEL_CAP_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     public static LazyOptional<IHeartCap> getHeart(final LivingEntity entity) {
         if (entity == null)
@@ -30,11 +33,24 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
+    public static LazyOptional<ILevelCap> getLevel(final Level level){
+        if(level == null)
+            return LazyOptional.empty();
+        return level.getCapability(LEVEL_CAP_CAPABILITY);
+    }
+
     public static class EventCapHandler {
         @SubscribeEvent
         public static void attachentityCapabilities(final AttachCapabilitiesEvent<Entity> event) {
             if (event.getObject() instanceof Player) {
                 HeartCapAttacher.attach(event);
+            }
+        }
+
+        @SubscribeEvent
+        public static void attachlevelCapabilities(final AttachCapabilitiesEvent<Level> event) {
+            if (event.getObject() instanceof Level) {
+                LevelCapAttacher.attach(event);
             }
         }
 

@@ -3,13 +3,19 @@ package net.goose.lifesteal.event;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.api.ILevelCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.command.lifestealCommand;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.lighting.LevelLightEngine;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingUseTotemEvent;
@@ -18,6 +24,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unused")
@@ -34,10 +41,31 @@ public class EventHandler {
     @SubscribeEvent
     public static void playerJoinEvent(final PlayerEvent.PlayerLoggedInEvent event) {
         Player newPlayer = event.getEntity();
+        ServerPlayer serverPlayer = (ServerPlayer) newPlayer;
+        newPlayer.getServer().getAllLevels().forEach((level) -> CapabilityRegistry.getLevel(level).ifPresent(ILevelCap -> {
+            if(!serverPlayer.getLevel().isClientSide){
+                HashMap hashMap = ILevelCap.getMap();
+                BlockPos blockPos = (BlockPos) hashMap.get(serverPlayer.getUUID());
 
-        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
+                if(blockPos != null){
+                    ILevelCap.removeBannedUUIDanditsBlockPos(serverPlayer.getUUID(), blockPos);
+                    if(serverPlayer.getLevel() == level){
+                        serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    }else{
+                        serverPlayer.teleportTo(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    }
+                    serverPlayer.jumpFromGround();
+                    serverPlayer.syncPacketPositionCodec(blockPos.getX(), blockPos.getY(), blockPos.getZ());
+                }
+            }
+        }));
+
+        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> {
+            if(!serverPlayer.getLevel().isClientSide){
+                IHeartCap.refreshHearts(false);
+            }
+        });
     }
-
     @SubscribeEvent
     public static void playerCloneEvent(final PlayerEvent.Clone event) {
 

@@ -4,8 +4,10 @@ import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.api.ILevelCap;
 import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagVisitor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -25,11 +27,11 @@ import java.util.Set;
 public class HeartCap implements IHeartCap {
     private final LivingEntity livingEntity;
     private int heartDifference = LifeSteal.config.startingHeartDifference.get();
+    private boolean wasBanned = false;
 
     public HeartCap(@Nullable final LivingEntity entity) {
         this.livingEntity = entity;
     }
-
     @Override
     public int getHeartDifference() {
         return this.heartDifference;

@@ -2,6 +2,7 @@ package net.goose.lifesteal.item.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.api.ILevelCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.capability.HeartCap;
 import net.minecraft.ChatFormatting;
@@ -11,6 +12,7 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -30,6 +32,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.core.LifeCycle;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,17 +56,21 @@ public class ReviveCrystalItem extends Item {
             BlockPos blockPos = useOnContext.getClickedPos();
             Block block = level.getBlockState(blockPos).getBlock();
 
-            if (block == Blocks.PLAYER_HEAD) {
+            if (block == Blocks.PLAYER_HEAD || block == Blocks.PLAYER_WALL_HEAD) {
                 BlockEntity blockEntity = level.getBlockEntity(blockPos);
                 CompoundTag compoundTag = blockEntity.getUpdateTag();
 
-                GameProfile gameprofile = null;
+                GameProfile gameprofile;
                 if (compoundTag != null) {
                     if (compoundTag.contains("SkullOwner", 10)) {
                         gameprofile = NbtUtils.readGameProfile(compoundTag.getCompound("SkullOwner"));
                     } else if (compoundTag.contains("SkullOwner", 8) && !StringUtils.isBlank(compoundTag.getString("SkullOwner"))) {
                         gameprofile = new GameProfile(null, compoundTag.getString("SkullOwner"));
+                    } else {
+                        gameprofile = null;
                     }
+                } else {
+                    gameprofile = null;
                 }
                 if (gameprofile != null) {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
@@ -75,6 +82,9 @@ public class ReviveCrystalItem extends Item {
                         level.addFreshEntity(entity);
                         userBanList.remove(gameprofile);
                         itemStack.shrink(1);
+
+                        CapabilityRegistry.getLevel(level).ifPresent(ILevelCap ->
+                                ILevelCap.setBannedUUIDanditsBlockPos(gameprofile.getId(), blockPos));
 
                         if(!LifeSteal.config.silentlyRevivePlayer.get()){
                             MutableComponent mutableComponent = Component.translatable("chat.message.lifesteal.revived_player");
