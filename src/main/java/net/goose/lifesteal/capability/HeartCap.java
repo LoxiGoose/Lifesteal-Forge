@@ -125,7 +125,8 @@ public class HeartCap implements IHeartCap {
                         CompoundTag compoundTag = new CompoundTag();
                         compoundTag.put("SkullOwner", skullOwner);
                         playerHead.setTag(compoundTag);
-                        serverPlayer.drop(playerHead, true);
+                        serverPlayer.getInventory().add(playerHead);
+                        serverPlayer.getInventory().dropAll();
 
                         @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();

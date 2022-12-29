@@ -17,6 +17,8 @@
   "gui.lifesteal.can't_withdraw_less_than_minimum": "You can't withdraw over the minimum amount of hearts you can lose",
   "gui.lifesteal.invaild_revive_block": "You need to right click a specified player's head to revive them.",
   "gui.lifesteal.already_unbanned": "This player is already unbanned or is alive.",
+  "gui.lifesteal.unbanned": "This player has successfully been revived!",
+  "gui.lifesteal.singleplayer": "This item can only be used in multiplayer!",
 
   "bannedmessage.lifesteal.lost_max_hearts": "You have lost all your max hearts, you are now permanently banned till further notice.",
 

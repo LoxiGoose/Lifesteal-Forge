@@ -5,6 +5,7 @@ import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.command.lifestealCommand;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;

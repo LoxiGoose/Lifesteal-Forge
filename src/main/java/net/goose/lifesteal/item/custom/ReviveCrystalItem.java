@@ -1,12 +1,17 @@
 package net.goose.lifesteal.item.custom;
 
 import com.mojang.authlib.GameProfile;
+import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.HeartCap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
@@ -23,8 +28,10 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.core.LifeCycle;
 
 import java.util.List;
+import java.util.UUID;
 
 public class ReviveCrystalItem extends Item {
     public ReviveCrystalItem(Properties properties) {
@@ -36,6 +43,12 @@ public class ReviveCrystalItem extends Item {
         if (!useOnContext.getLevel().isClientSide) {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();
+
+            if(level.getServer().isSingleplayer()){
+                player.displayClientMessage(Component.translatable("gui.lifesteal.singleplayer"), true);
+                return super.useOn(useOnContext);
+            }
+
             ItemStack itemStack = useOnContext.getItemInHand();
             BlockPos blockPos = useOnContext.getClickedPos();
             Block block = level.getBlockState(blockPos).getBlock();
@@ -62,20 +75,25 @@ public class ReviveCrystalItem extends Item {
                         level.addFreshEntity(entity);
                         userBanList.remove(gameprofile);
                         itemStack.shrink(1);
-                        MutableComponent mutableComponent = Component.translatable("chat.message.lifesteal.revived_player");
-                        MutableComponent mutableComponent1 = Component.literal(gameprofile.getName());
-                        String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
-                        PlayerList playerlist = level.getServer().getPlayerList();
-                        List<ServerPlayer> playerList = playerlist.getPlayers();
-                        for (ServerPlayer serverPlayer : playerList) {
-                            serverPlayer.getCamera().sendSystemMessage(Component.literal(combinedMessage));
+
+                        if(!LifeSteal.config.silentlyRevivePlayer.get()){
+                            MutableComponent mutableComponent = Component.translatable("chat.message.lifesteal.revived_player");
+                            MutableComponent mutableComponent1 = Component.literal(gameprofile.getName());
+                            String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
+                            PlayerList playerlist = level.getServer().getPlayerList();
+                            List<ServerPlayer> playerList = playerlist.getPlayers();
+                            for (ServerPlayer serverPlayer : playerList) {
+                                serverPlayer.getCamera().sendSystemMessage(Component.literal(combinedMessage));
+                            }
+                        }else{
+                            player.displayClientMessage(Component.translatable("gui.lifesteal.unbanned"), true);
                         }
                     }else{
-                        player.sendSystemMessage(Component.translatable("gui.lifesteal.already_unbanned"));
+                        player.displayClientMessage(Component.translatable("gui.lifesteal.already_unbanned"), true);
                     }
                 }
             }else{
-                player.sendSystemMessage(Component.translatable("gui.lifesteal.invaild_revive_block"));
+                player.displayClientMessage(Component.translatable("gui.lifesteal.invaild_revive_block"), true);
             }
         }
         return super.useOn(useOnContext);
