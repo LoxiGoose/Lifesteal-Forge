@@ -4,7 +4,10 @@ import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.api.ILevelCap;
+import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagVisitor;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
@@ -13,7 +16,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -22,11 +27,11 @@ import java.util.Set;
 public class HeartCap implements IHeartCap {
     private final LivingEntity livingEntity;
     private int heartDifference = LifeSteal.config.startingHeartDifference.get();
+    private boolean wasBanned = false;
 
     public HeartCap(@Nullable final LivingEntity entity) {
         this.livingEntity = entity;
     }
-
     @Override
     public int getHeartDifference() {
         return this.heartDifference;
@@ -38,7 +43,6 @@ public class HeartCap implements IHeartCap {
             this.heartDifference = hearts;
         }
     }
-
     @Override
     public void refreshHearts(boolean healtoMax) {
 
@@ -113,7 +117,18 @@ public class HeartCap implements IHeartCap {
 
                     refreshHearts(true);
 
-                    if (!livingEntity.level.getServer().isSingleplayer()) {
+                    if(!livingEntity.level.getServer().isSingleplayer()) {
+
+                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
+                        CompoundTag skullOwner = new CompoundTag();
+                        skullOwner.putString("Name", serverPlayer.getName().getString());
+                        skullOwner.putUUID("Id", serverPlayer.getUUID());
+
+                        CompoundTag compoundTag = new CompoundTag();
+                        compoundTag.put("SkullOwner", skullOwner);
+                        playerHead.setTag(compoundTag);
+                        serverPlayer.getInventory().add(playerHead);
+                        serverPlayer.getInventory().dropAll();
 
                         @Nullable Component component = Component.translatable("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
@@ -126,11 +141,11 @@ public class HeartCap implements IHeartCap {
                         if (serverPlayer != null) {
                             serverPlayer.connection.disconnect(Component.translatable("bannedmessage.lifesteal.lost_max_hearts"));
                         }
-                    } else if (serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
+                    }else if(serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
                         serverPlayer.setGameMode(GameType.SPECTATOR);
-
                         livingEntity.sendSystemMessage(Component.translatable("chat.message.lifesteal.lost_max_hearts"));
                     }
+
                 }
             }
         }
