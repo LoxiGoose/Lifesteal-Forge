@@ -95,7 +95,7 @@ public class HeartCap implements IHeartCap {
                 Attribute.addPermanentModifier(attributeModifier);
             }
 
-            if(livingEntity.getHealth() > livingEntity.getMaxHealth()){
+            if(livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax){
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
