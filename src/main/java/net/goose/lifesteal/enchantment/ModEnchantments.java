@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Enchantments;
+package net.goose.lifesteal.enchantment;
 
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.enchantment.Enchantment;

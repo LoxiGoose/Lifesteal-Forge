@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Advancements;
+package net.goose.lifesteal.advancement;
 
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.criterion.*;

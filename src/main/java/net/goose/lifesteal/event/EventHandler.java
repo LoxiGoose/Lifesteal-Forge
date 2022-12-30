@@ -1,12 +1,12 @@
-package net.goose.lifesteal.Events;
+package net.goose.lifesteal.event;
 
-import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Commands.getHitPointDifference;
-import net.goose.lifesteal.Commands.getLives;
-import net.goose.lifesteal.Commands.setHitPointDifference;
-import net.goose.lifesteal.Commands.setLives;
-import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantments.ModEnchantments;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.command.getHitPointDifference;
+import net.goose.lifesteal.command.getLives;
+import net.goose.lifesteal.command.setHitPointDifference;
+import net.goose.lifesteal.command.setLives;
+import net.goose.lifesteal.configuration.ConfigHolder;
+import net.goose.lifesteal.enchantment.ModEnchantments;
 import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -16,7 +16,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;

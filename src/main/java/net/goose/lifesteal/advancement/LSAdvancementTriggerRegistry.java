@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Advancements;
+package net.goose.lifesteal.advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.util.ResourceLocation;
 

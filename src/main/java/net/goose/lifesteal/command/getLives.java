@@ -1,20 +1,18 @@
 
-package net.goose.lifesteal.Commands;
+package net.goose.lifesteal.command;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
+import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.command.arguments.EntityArgument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityInject;
-import net.minecraftforge.common.util.LazyOptional;
+
 public class getLives {
 
     public getLives(CommandDispatcher<CommandSource> dispatcher){

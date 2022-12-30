@@ -1,12 +1,12 @@
 package net.goose.lifesteal;
 
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Blocks.ModBlocks;
-import net.goose.lifesteal.Capability.CapabilityRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
-import net.goose.lifesteal.Enchantments.ModEnchantments;
-import net.goose.lifesteal.Events.EventHandler;
-import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
+import net.goose.lifesteal.block.ModBlocks;
+import net.goose.lifesteal.capability.CapabilityRegistry;
+import net.goose.lifesteal.configuration.ConfigHolder;
+import net.goose.lifesteal.enchantment.ModEnchantments;
+import net.goose.lifesteal.event.EventHandler;
+import net.goose.lifesteal.item.ModItems;
 import net.goose.lifesteal.world.structure.ModStructures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;

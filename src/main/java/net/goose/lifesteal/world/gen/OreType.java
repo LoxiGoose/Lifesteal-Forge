@@ -1,6 +1,6 @@
 package net.goose.lifesteal.world.gen;
 
-import net.goose.lifesteal.Blocks.ModBlocks;
+import net.goose.lifesteal.block.ModBlocks;
 import net.minecraft.block.Block;
 import net.minecraftforge.common.util.Lazy;
 

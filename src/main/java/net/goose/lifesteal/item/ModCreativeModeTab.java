@@ -1,4 +1,4 @@
-package net.goose.lifesteal.Items;
+package net.goose.lifesteal.item;
 
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;

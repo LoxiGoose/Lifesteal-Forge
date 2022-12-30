@@ -1,8 +1,8 @@
-package net.goose.lifesteal.Capability;
+package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
-import net.goose.lifesteal.Advancements.LSAdvancementTriggerRegistry;
-import net.goose.lifesteal.Configurations.ConfigHolder;
+import net.goose.lifesteal.advancement.LSAdvancementTriggerRegistry;
+import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -16,7 +16,6 @@ import net.minecraft.world.GameType;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 

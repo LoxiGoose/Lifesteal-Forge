@@ -1,7 +1,7 @@
-package net.goose.lifesteal.Items;
+package net.goose.lifesteal.item;
 
-import net.goose.lifesteal.Items.custom.HeartCoreItem;
-import net.goose.lifesteal.Items.custom.HeartCrystalItem;
+import net.goose.lifesteal.item.custom.HeartCoreItem;
+import net.goose.lifesteal.item.custom.HeartCrystalItem;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;

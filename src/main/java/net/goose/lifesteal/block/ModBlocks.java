@@ -1,8 +1,8 @@
 
-package net.goose.lifesteal.Blocks;
+package net.goose.lifesteal.block;
 
-import net.goose.lifesteal.Items.ModCreativeModeTab;
-import net.goose.lifesteal.Items.ModItems;
+import net.goose.lifesteal.item.ModCreativeModeTab;
+import net.goose.lifesteal.item.ModItems;
 import net.goose.lifesteal.LifeSteal;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
