@@ -5,7 +5,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraftforge.common.util.INBTSerializable;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.UUID;
 
 public interface ILevelCap extends INBTSerializable<CompoundTag> {

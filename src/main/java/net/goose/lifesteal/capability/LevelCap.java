@@ -1,6 +1,5 @@
 package net.goose.lifesteal.capability;
 
-import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.api.ILevelCap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -9,7 +8,8 @@ import net.minecraft.nbt.NbtUtils;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class LevelCap implements ILevelCap {
     private final Level level;

@@ -2,7 +2,6 @@ package net.goose.lifesteal.capability;
 
 import net.goose.lifesteal.api.IHeartCap;
 import net.goose.lifesteal.api.ILevelCap;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;

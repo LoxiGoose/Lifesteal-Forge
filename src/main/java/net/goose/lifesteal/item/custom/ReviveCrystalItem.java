@@ -2,18 +2,13 @@ package net.goose.lifesteal.item.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.api.ILevelCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
-import net.goose.lifesteal.capability.HeartCap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
@@ -30,11 +25,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.core.LifeCycle;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 public class ReviveCrystalItem extends Item {
     public ReviveCrystalItem(Properties properties) {
