@@ -35,8 +35,6 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), null);
-    public static final RegistryObject<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
-            new PlayerHeadBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).explosionResistance(999f)), new Item.Properties().fireResistant().stacksTo(1));
     public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, @Nullable Item.Properties properties){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, properties);

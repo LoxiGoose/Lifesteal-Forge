@@ -51,7 +51,7 @@ public class ReviveCrystalItem extends Item {
             BlockPos blockPos = useOnContext.getClickedPos();
             Block block = level.getBlockState(blockPos).getBlock();
 
-            if (block == ModBlocks.REVIVE_HEAD.get() || block == Blocks.PLAYER_WALL_HEAD) {
+            if (block == Blocks.PLAYER_HEAD || block == Blocks.PLAYER_WALL_HEAD) {
                 BlockEntity blockEntity = level.getBlockEntity(blockPos);
                 CompoundTag compoundTag = blockEntity.getUpdateTag();
 

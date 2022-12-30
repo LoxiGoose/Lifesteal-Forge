@@ -115,7 +115,7 @@ public class HeartCap implements IHeartCap {
 
                     if (!livingEntity.level.getServer().isSingleplayer()) {
 
-                        ItemStack playerHead = new ItemStack(ModBlocks.REVIVE_HEAD.get());
+                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
                         CompoundTag skullOwner = new CompoundTag();
                         skullOwner.putString("Name", serverPlayer.getName().getString());
                         skullOwner.putUUID("Id", serverPlayer.getUUID());
