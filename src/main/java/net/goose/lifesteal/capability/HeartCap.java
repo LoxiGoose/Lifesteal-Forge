@@ -14,7 +14,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.block.Blocks;
 
 import javax.annotation.Nullable;
 import java.util.Iterator;
@@ -110,6 +112,17 @@ public class HeartCap implements IHeartCap {
                     refreshHearts(true);
 
                     if (!livingEntity.level.getServer().isSingleplayer()) {
+
+                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
+                        CompoundTag skullOwner = new CompoundTag();
+                        skullOwner.putString("Name", serverPlayer.getName().getString());
+                        skullOwner.putUUID("Id", serverPlayer.getUUID());
+
+                        CompoundTag compoundTag = new CompoundTag();
+                        compoundTag.put("SkullOwner", skullOwner);
+                        playerHead.setTag(compoundTag);
+                        serverPlayer.getInventory().add(playerHead);
+                        serverPlayer.getInventory().dropAll();
 
                         @Nullable Component component = Component.nullToEmpty("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();

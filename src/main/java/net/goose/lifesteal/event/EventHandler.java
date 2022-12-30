@@ -9,6 +9,7 @@ import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -21,6 +22,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.server.command.ConfigCommand;
 
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @SuppressWarnings("unused")
@@ -39,7 +41,28 @@ public class EventHandler {
         LivingEntity newPlayer = event.getEntityLiving();
         ServerPlayer serverPlayer = (ServerPlayer) newPlayer;
 
-        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
+        newPlayer.getServer().getAllLevels().forEach((level) -> CapabilityRegistry.getLevel(level).ifPresent(ILevelCap -> {
+            if(!serverPlayer.getLevel().isClientSide){
+                HashMap hashMap = ILevelCap.getMap();
+                BlockPos blockPos = (BlockPos) hashMap.get(serverPlayer.getUUID());
+
+                if(blockPos != null){
+                    ILevelCap.removeBannedUUIDanditsBlockPos(serverPlayer.getUUID(), blockPos);
+                    if(serverPlayer.getLevel() == level){
+                        serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    }else{
+                        serverPlayer.teleportTo(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    }
+                    serverPlayer.jumpFromGround();
+                }
+            }
+        }));
+
+        CapabilityRegistry.getHeart(newPlayer).ifPresent(IHeartCap -> {
+            if(!serverPlayer.getLevel().isClientSide){
+                IHeartCap.refreshHearts(false);
+            }
+        });
     }
 
     @SubscribeEvent
