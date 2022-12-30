@@ -2,6 +2,7 @@ package net.goose.lifesteal.item.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
@@ -50,7 +51,7 @@ public class ReviveCrystalItem extends Item {
             BlockPos blockPos = useOnContext.getClickedPos();
             Block block = level.getBlockState(blockPos).getBlock();
 
-            if (block == Blocks.PLAYER_HEAD || block == Blocks.PLAYER_WALL_HEAD) {
+            if (block == ModBlocks.REVIVE_HEAD.get() || block == Blocks.PLAYER_WALL_HEAD) {
                 BlockEntity blockEntity = level.getBlockEntity(blockPos);
                 CompoundTag compoundTag = blockEntity.getUpdateTag();
 

@@ -10,12 +10,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.OreBlock;
+import net.minecraft.world.level.block.PlayerHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Supplier;
 
@@ -23,25 +25,30 @@ public class ModBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, LifeSteal.MOD_ID);
 
     public static final RegistryObject<Block> HEART_CORE_BLOCK = registerBlock("heart_core_block", () ->
-            new Block(BlockBehaviour.Properties.of(Material.METAL).strength(6f).requiresCorrectToolForDrops()), ModCreativeModeTab.LIFE_TAB);
+            new Block(BlockBehaviour.Properties.of(Material.METAL).strength(6f).requiresCorrectToolForDrops()), null);
 
     public static final RegistryObject<Block> HEART_ORE = registerBlock("heart_ore", () ->
-            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), ModCreativeModeTab.LIFE_TAB);
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(4f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), null);
 
     public static final RegistryObject<Block> DEEPSLATE_HEART_ORE = registerBlock("deepslate_heart_ore", () ->
-            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), ModCreativeModeTab.LIFE_TAB);
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(5f).requiresCorrectToolForDrops(), UniformInt.of(3, 7)), null);
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
-            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), ModCreativeModeTab.LIFE_TAB);
-
-    public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
+            new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), null);
+    public static final RegistryObject<Block> REVIVE_HEAD = registerBlock("revive_head", () ->
+            new PlayerHeadBlock(BlockBehaviour.Properties.of(Material.DECORATION).strength(1.0F).explosionResistance(999f)), new Item.Properties().fireResistant().stacksTo(1));
+    public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, @Nullable Item.Properties properties){
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
-        registerBlockItem(name, toReturn, tab);
+        registerBlockItem(name, toReturn, properties);
         return toReturn;
     }
 
-    private static <T extends  Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, CreativeModeTab tab){
-        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties().tab(tab)));
+    private static <T extends  Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, @Nullable Item.Properties properties){
+        if(properties == null){
+            properties = new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB);
+        }
+        Item.Properties finalProperties = properties;
+        return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), finalProperties));
     }
 
     public static void register(IEventBus eventBus){

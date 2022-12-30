@@ -2,6 +2,7 @@ package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
+import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
@@ -114,7 +115,7 @@ public class HeartCap implements IHeartCap {
 
                     if (!livingEntity.level.getServer().isSingleplayer()) {
 
-                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
+                        ItemStack playerHead = new ItemStack(ModBlocks.REVIVE_HEAD.get());
                         CompoundTag skullOwner = new CompoundTag();
                         skullOwner.putString("Name", serverPlayer.getName().getString());
                         skullOwner.putUUID("Id", serverPlayer.getUUID());
