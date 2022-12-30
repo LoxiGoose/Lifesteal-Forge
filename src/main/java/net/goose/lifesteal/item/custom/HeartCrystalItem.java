@@ -5,6 +5,7 @@ import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -42,7 +43,7 @@ public class HeartCrystalItem extends Item {
                 if (LifeSteal.config.maximumamountofheartsGainable.get() > -1 && LifeSteal.config.preventFromUsingCrystalIfMax.get()) {
                     int maximumheartDifference = LifeSteal.config.startingHeartDifference.get() + LifeSteal.config.maximumamountofheartsGainable.get();
                     if (currentheartDifference.get() == maximumheartDifference) {
-                        serverPlayer.displayClientMessage(Component.nullToEmpty("gui.lifesteal.heart_crystal_reaching_max"), true);
+                        serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_crystal_reaching_max"), true);
                         item.setCount(item.getCount() + 1);
                         serverPlayer.containerMenu.broadcastChanges();
                         return super.finishUsingItem(item, level, entity);
@@ -63,7 +64,7 @@ public class HeartCrystalItem extends Item {
                 }
 
             } else {
-                serverPlayer.displayClientMessage(Component.nullToEmpty("gui.lifesteal.heart_crystal_disabled"), true);
+                serverPlayer.displayClientMessage(new TranslatableComponent("gui.lifesteal.heart_crystal_disabled"), true);
                 item.grow(1);
                 serverPlayer.containerMenu.broadcastChanges();
 

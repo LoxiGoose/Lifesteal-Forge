@@ -11,6 +11,7 @@ import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.ItemPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
@@ -133,7 +134,7 @@ public class EventHandler {
 
                                             CapabilityRegistry.getHeart(killerEntity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
                                         } else {
-                                            serverPlayer.displayClientMessage(Component.nullToEmpty("chat.message.lifesteal.no_more_hearts_to_steal"), true);
+                                            serverPlayer.displayClientMessage(new TranslatableComponent("chat.message.lifesteal.no_more_hearts_to_steal"), true);
                                         }
 
                                     } else {

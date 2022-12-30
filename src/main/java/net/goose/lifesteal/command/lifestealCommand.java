@@ -16,6 +16,7 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.ServerAdvancementManager;
 import net.minecraft.server.level.ServerPlayer;
@@ -67,7 +68,7 @@ public class lifestealCommand {
                     CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> heartDifference.set(HeartCap.getHeartDifference() - (LifeSteal.config.HeartCrystalAmountGain.get() * amount)));
                     if (maximumheartsLoseable >= 0) {
                         if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
-                            player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
+                            player.displayClientMessage(new TranslatableComponent("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                             return 1;
                         }
                     }
@@ -77,7 +78,7 @@ public class lifestealCommand {
                     ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
                     CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
                     compoundTag.putBoolean("Fresh", false);
-                    heartCrystal.setHoverName(Component.nullToEmpty("item.lifesteal.heart_crystal.unnatural"));
+                    heartCrystal.setHoverName(new TranslatableComponent("item.lifesteal.heart_crystal.unnatural"));
                     player.getInventory().add(heartCrystal);
                 } else {
                     String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();

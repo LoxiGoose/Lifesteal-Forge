@@ -7,6 +7,7 @@ import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
@@ -54,7 +55,7 @@ public class HeartCap implements IHeartCap {
                 if(this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
                     if(LifeSteal.config.tellPlayersIfReachedMaxHearts.get()){
-                        livingEntity.sendMessage(Component.nullToEmpty("You have reached max hearts."), livingEntity.getUUID());
+                        livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.reached_max_hearts"), livingEntity.getUUID());
                     }
                 }
             }
@@ -124,7 +125,7 @@ public class HeartCap implements IHeartCap {
                         serverPlayer.getInventory().add(playerHead);
                         serverPlayer.getInventory().dropAll();
 
-                        @Nullable Component component = Component.nullToEmpty("bannedmessage.lifesteal.lost_max_hearts");
+                        @Nullable Component component = new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts");
                         UserBanList userbanlist = serverPlayer.getServer().getPlayerList().getBans();
                         serverPlayer.getGameProfile();
                         GameProfile gameprofile = serverPlayer.getGameProfile();
@@ -133,12 +134,12 @@ public class HeartCap implements IHeartCap {
                         userbanlist.add(userbanlistentry);
 
                         if (serverPlayer != null) {
-                            serverPlayer.connection.disconnect(Component.nullToEmpty("bannedmessage.lifesteal.lost_max_hearts"));
+                            serverPlayer.connection.disconnect(new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts"));
                         }
                     } else if (serverPlayer.gameMode.getGameModeForPlayer() != GameType.SPECTATOR) {
                         serverPlayer.setGameMode(GameType.SPECTATOR);
 
-                        livingEntity.sendMessage(Component.nullToEmpty("chat.message.lifesteal.lost_max_hearts"), livingEntity.getUUID());
+                        livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.lost_max_hearts"), livingEntity.getUUID());
                     }
                 }
             }

@@ -9,6 +9,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
 import net.minecraft.server.players.UserBanList;
@@ -41,7 +42,7 @@ public class ReviveCrystalItem extends Item {
             Player player = useOnContext.getPlayer();
 
             if(level.getServer().isSingleplayer()){
-                player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.singleplayer"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.singleplayer"), true);
                 return super.useOn(useOnContext);
             }
 
@@ -81,7 +82,7 @@ public class ReviveCrystalItem extends Item {
                                 ILevelCap.setBannedUUIDanditsBlockPos(gameprofile.getId(), blockPos));
 
                         if(!LifeSteal.config.silentlyRevivePlayer.get()){
-                            Component mutableComponent = Component.nullToEmpty("chat.message.lifesteal.revived_player");
+                            Component mutableComponent = new TranslatableComponent("chat.message.lifesteal.revived_player");
                             Component mutableComponent1 = Component.nullToEmpty(gameprofile.getName());
                             String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
                             PlayerList playerlist = level.getServer().getPlayerList();
@@ -90,14 +91,14 @@ public class ReviveCrystalItem extends Item {
                                 serverPlayer.getCamera().sendMessage(Component.nullToEmpty(combinedMessage), serverPlayer.getUUID());
                             }
                         }else{
-                            player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.unbanned"), true);
+                            player.displayClientMessage(new TranslatableComponent("gui.lifesteal.unbanned"), true);
                         }
                     }else{
-                        player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.already_unbanned"), true);
+                        player.displayClientMessage(new TranslatableComponent("gui.lifesteal.already_unbanned"), true);
                     }
                 }
             }else{
-                player.displayClientMessage(Component.nullToEmpty("gui.lifesteal.invaild_revive_block"), true);
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.invaild_revive_block"), true);
             }
         }
         return super.useOn(useOnContext);
