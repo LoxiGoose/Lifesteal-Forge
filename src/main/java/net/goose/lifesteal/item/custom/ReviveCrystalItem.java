@@ -34,7 +34,7 @@ public class ReviveCrystalItem extends Item {
         super(properties);
     }
 
-    public void revivePlayer(Level level, BlockPos blockPos, GameProfile gameprofile, ItemStack itemStack, Player player, @Nullable UserBanList userBanList) {
+    public void revivePlayer(Level level, BlockPos blockPos, GameProfile gameprofile, Player player, @Nullable UserBanList userBanList) {
         level.removeBlock(blockPos, true);
         Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
         entity.setPos(blockPos.getCenter());
@@ -42,7 +42,6 @@ public class ReviveCrystalItem extends Item {
         if (userBanList != null) {
             userBanList.remove(gameprofile);
         }
-        itemStack.shrink(1);
 
         CapabilityRegistry.getLevel(level).ifPresent(ILevelCap ->
                 ILevelCap.setUUIDanditsBlockPos(gameprofile.getId(), blockPos));
@@ -101,7 +100,8 @@ public class ReviveCrystalItem extends Item {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
                     if (userBanList.isBanned(gameprofile)) {
-                        revivePlayer(level, blockPos, gameprofile, itemStack, player, userBanList);
+                        itemStack.shrink(1);
+                        revivePlayer(level, blockPos, gameprofile, player, userBanList);
                     } else {
                         player.displayClientMessage(Component.translatable("gui.lifesteal.already_revived"), true);
                     }
