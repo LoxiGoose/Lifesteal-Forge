@@ -27,7 +27,9 @@ public class LevelCap implements ILevelCap {
 
     @Override
     public void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
-        bannedMap.put(uuid, blockPos);
+        if(!bannedMap.containsKey(uuid)){
+            bannedMap.put(uuid, blockPos);
+        }
     }
 
     @Override
