@@ -23,6 +23,7 @@ public class ModItems {
 
     public static final RegistryObject<Item> REVIVE_CRYSTAL = ITEMS.register("revive_crystal",
             () -> new ReviveCrystalItem(new Item.Properties().stacksTo(1).fireResistant()));
+
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }

@@ -30,6 +30,7 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)));
+
     public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn);

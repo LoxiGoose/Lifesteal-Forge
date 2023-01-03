@@ -6,7 +6,7 @@ public class Config {
     public final ForgeConfigSpec.IntValue startingHeartDifference;
     public final ForgeConfigSpec.BooleanValue shouldAllMobsGiveHearts;
     public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByPlayer;
-    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByMob;
+    public final ForgeConfigSpec.BooleanValue loseHeartsOnlyWhenKilledByEntity;
     public final ForgeConfigSpec.IntValue amountOfHealthLostUponLoss;
     public final ForgeConfigSpec.IntValue maximumamountofheartsGainable;
     public final ForgeConfigSpec.IntValue maximumamountofheartsLoseable;
@@ -15,15 +15,17 @@ public class Config {
     public final ForgeConfigSpec.BooleanValue preventFromUsingCoreIfMax;
     public final ForgeConfigSpec.BooleanValue disableHeartCrystals;
     public final ForgeConfigSpec.BooleanValue disableHeartCores;
+    public final ForgeConfigSpec.BooleanValue disableReviveCrystals;
     public final ForgeConfigSpec.BooleanValue playersGainHeartsifKillednoHeart;
     public final ForgeConfigSpec.BooleanValue disableHeartLoss;
-    public final ForgeConfigSpec.IntValue HeartCrystalAmountGain;
-    public final ForgeConfigSpec.DoubleValue HeartCoreHeal;
+    public final ForgeConfigSpec.IntValue heartCrystalAmountGain;
+    public final ForgeConfigSpec.DoubleValue heartCoreHeal;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfHitPointChanged;
     public final ForgeConfigSpec.ConfigValue advancementUsedForWithdrawing;
     public final ForgeConfigSpec.ConfigValue textUsedForRequirementOnWithdrawing;
     public final ForgeConfigSpec.BooleanValue tellPlayersIfReachedMaxHearts;
     public final ForgeConfigSpec.BooleanValue silentlyRevivePlayer;
+    public final ForgeConfigSpec.BooleanValue playersSpawnHeadUponDeath;
 
     public Config(final ForgeConfigSpec.Builder builder) {
         builder.comment("It's recommended to edit the config BEFORE you make/play a world. While editing the config in an already generated world can work sometimes, there may be visual bugs or just bugs in general.");
@@ -31,21 +33,23 @@ public class Config {
         builder.push("Starting Configurations");
         this.startingHeartDifference = buildInt(builder, "Starting HitPoint Difference:", 0, -19, Integer.MAX_VALUE, "This value modifies how many hearts you'll start at in a world. 2 would mean 1 extra heart, -2 would mean 1 less heart. If you have lives enabled, you'll gain a life when you get max hearts double your starting hearts. EX: If 3 hearts is your starting value, you'll gain a life if you get 3 more hearts. ");
         this.loseHeartsOnlyWhenKilledByPlayer = buildBoolean(builder, "Lose Hearts Only When Killed By a Player:", false, "When this is true, you will lose hearts when killed by a player. Otherwise, you can lose max hearts just by any sorts of death.. (This is overridden by the mob value below if it's true)");
-        this.loseHeartsOnlyWhenKilledByMob = buildBoolean(builder, "Lose Hearts Only When Killed By a Mob:", false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
+        this.loseHeartsOnlyWhenKilledByEntity = buildBoolean(builder, "Lose Hearts Only When Killed By a Entity:", false, "When this is true, you will lose hearts when killed by a mob. Otherwise, you can lose max hearts just by any sorts of death.");
         this.amountOfHealthLostUponLoss = buildInt(builder, "Amount of HitPoints/Health Lost/Given Upon Death/Kill:", 2, 1, Integer.MAX_VALUE, "This values modifies the amount of hit points that should be lost when you die. The same also applies when you gain max health from lifestealing. 2 hit points = 1 health.");
         this.disableHeartLoss = buildBoolean(builder, "Disable Heart Loss:", false, "This value determines if a PLAYER should lose HEARTS AT ALL.");
         this.silentlyRevivePlayer = buildBoolean(builder, "Silently Revive Players:", false, "When a player is revived with the Revive Crystal, this value determines whether or not a chat message will be sent indicating they have been brought back from the dead.");
+        this.playersSpawnHeadUponDeath = buildBoolean(builder, "Players Spawn Their Head Upon Death:", true, "In multiplayer, this value determines whether heads spawn or not when a player dies. NOTE: In singleplayer, this value is always false.");
 
         builder.pop();
 
         builder.comment("This category is the configuration for items and enchantments in this mod");
         builder.push("Items and Enchantments");
-        this.HeartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
-        this.HeartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.25, 0.01, 1, "The percentage of max health a heart core should heal when used.");
+        this.heartCrystalAmountGain = buildInt(builder, "Amount of HitPoints Heart Crystal Permanently Gives:", 2, 1, Integer.MAX_VALUE, "This is the amount of hit points a Heart Crystal should give when used. 2 HitPoints = 1 Heart, 3 = 1.5 Heart.");
+        this.heartCoreHeal = buildDouble(builder, "Percentage of max Health Heart Core Heals", 0.25, 0.01, 1, "The percentage of max health a heart core should heal when used.");
         this.preventFromUsingCrystalIfMax = buildBoolean(builder, "Prevent Players From Using Heart Crystals If At Max Hearts:", true, "If a max is set for the amount of hearts you can get, this option when true, makes it so players can't eat heart crystals if they're already at the max.");
         this.preventFromUsingCoreIfMax = buildBoolean(builder, "Prevent Players From Using Heart Cores If At Max Health:", true, "If this option is true, a player cannot eat heart cores if they are already at their max health.");
         this.disableHeartCrystals = buildBoolean(builder, "Disable Heart Crystals:", false, "If you just want the generic Lifesteal mod, you can disable this and nobody can gain hearts through Heart Crystals but only through lifestealing.");
         this.disableHeartCores = buildBoolean(builder, "Disable Heart Cores:", false, "Heart Cores can heal on default 25% of your health if right clicked. This value determines if they should be disabled.");
+        this.disableReviveCrystals = buildBoolean(builder, "Disable Revive Crystals:", false, "This value determines whether or not revive crystals are disabled. If you're in singleplayer, this value is always true.");
 
         builder.pop();
         builder.comment("This category is everything related to life stealing from someone.");
