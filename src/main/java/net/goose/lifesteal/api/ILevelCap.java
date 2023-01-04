@@ -9,6 +9,8 @@ import java.util.UUID;
 
 public interface ILevelCap extends INBTSerializable<CompoundTag> {
     HashMap getMap();
-    void setBannedUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
-    void removeBannedUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+
+    void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
+
+    void removeUUIDanditsBlockPos(UUID uuid, BlockPos blockPos);
 }
