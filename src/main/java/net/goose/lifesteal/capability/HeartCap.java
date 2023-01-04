@@ -182,7 +182,7 @@ public class HeartCap implements IHeartCap {
                     refreshHearts(true);
 
                     MinecraftServer server = livingEntity.level.getServer();
-                    spawnPlayerHead(serverPlayer);
+
                     if (!server.isSingleplayer()) {
 
                         if (LifeSteal.config.playersSpawnHeadUponDeath.get()) {
