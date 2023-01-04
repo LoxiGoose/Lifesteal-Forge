@@ -1,8 +1,8 @@
 package net.goose.lifesteal.item;
 
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.item.custom.HeartCoreItem;
 import net.goose.lifesteal.item.custom.HeartCrystalItem;
-import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.item.custom.ReviveCrystalItem;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -24,7 +24,7 @@ public class ModItems {
     public static final RegistryObject<Item> REVIVE_CRYSTAL = ITEMS.register("revive_crystal",
             () -> new ReviveCrystalItem(new Item.Properties().stacksTo(1).fireResistant().tab(ModCreativeModeTab.LIFE_TAB)));
 
-    public static void register(IEventBus eventBus){
+    public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
     }
 }

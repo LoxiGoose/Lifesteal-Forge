@@ -19,10 +19,10 @@ public class ModGeodeGeneration {
         ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());
         Set<BiomeDictionary.Type> types = BiomeDictionary.getTypes(key);
 
-        if(types.contains(BiomeDictionary.Type.OVERWORLD)){
+        if (types.contains(BiomeDictionary.Type.OVERWORLD)) {
             base.add(ModPlacedFeatures.DEEPSLATE_HEART_GEODE_PLACED);
         }
-        if(types.contains(BiomeDictionary.Type.NETHER)){
+        if (types.contains(BiomeDictionary.Type.NETHER)) {
             base.add(ModPlacedFeatures.NETHER_HEART_GEODE_PLACED);
         }
     }

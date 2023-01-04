@@ -1,16 +1,13 @@
-
 package net.goose.lifesteal.block;
 
+import net.goose.lifesteal.LifeSteal;
 import net.goose.lifesteal.item.ModCreativeModeTab;
 import net.goose.lifesteal.item.ModItems;
-import net.goose.lifesteal.LifeSteal;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.OreBlock;
-import net.minecraft.world.level.block.PlayerHeadBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -35,21 +32,22 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> NETHERRACK_HEART_ORE = registerBlock("netherrack_heart_ore", () ->
             new OreBlock(BlockBehaviour.Properties.of(Material.STONE).strength(2f).requiresCorrectToolForDrops().explosionResistance(999f), UniformInt.of(5, 9)), null);
-    public static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, @Nullable Item.Properties properties){
+
+    public static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, @Nullable Item.Properties properties) {
         RegistryObject<T> toReturn = BLOCKS.register(name, block);
         registerBlockItem(name, toReturn, properties);
         return toReturn;
     }
 
-    private static <T extends  Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, @Nullable Item.Properties properties){
-        if(properties == null){
+    private static <T extends Block> RegistryObject<Item> registerBlockItem(String name, RegistryObject<T> block, @Nullable Item.Properties properties) {
+        if (properties == null) {
             properties = new Item.Properties().tab(ModCreativeModeTab.LIFE_TAB);
         }
         Item.Properties finalProperties = properties;
         return ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), finalProperties));
     }
 
-    public static void register(IEventBus eventBus){
+    public static void register(IEventBus eventBus) {
         BLOCKS.register(eventBus);
     }
 }

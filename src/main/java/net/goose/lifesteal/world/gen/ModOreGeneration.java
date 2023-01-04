@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 public class ModOreGeneration {
-    public static void generateOres(final BiomeLoadingEvent event){
+    public static void generateOres(final BiomeLoadingEvent event) {
         List<Holder<PlacedFeature>> base =
                 event.getGeneration().getFeatures(GenerationStep.Decoration.UNDERGROUND_ORES);
         ResourceKey<Biome> key = ResourceKey.create(Registry.BIOME_REGISTRY, event.getName());

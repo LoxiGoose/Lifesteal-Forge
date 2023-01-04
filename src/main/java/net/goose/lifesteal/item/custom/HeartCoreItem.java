@@ -1,8 +1,6 @@
 package net.goose.lifesteal.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.configuration.ConfigHolder;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -17,7 +15,7 @@ public class HeartCoreItem extends Item {
 
     public static final FoodProperties HeartCore = (new FoodProperties.Builder()).alwaysEat().build();
 
-    public HeartCoreItem(Properties pProperties){
+    public HeartCoreItem(Properties pProperties) {
         super(pProperties);
     }
 
@@ -27,7 +25,7 @@ public class HeartCoreItem extends Item {
             if (!LifeSteal.config.disableHeartCores.get()) {
                 if (entity.getHealth() < entity.getMaxHealth() || !LifeSteal.config.preventFromUsingCoreIfMax.get()) {
                     float maxHealth = entity.getMaxHealth();
-                    float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.HeartCoreHeal.get());
+                    float amountThatWillBeHealed = (float) (maxHealth * LifeSteal.config.heartCoreHeal.get());
                     float differenceInHealth = entity.getMaxHealth() - entity.getHealth();
                     if (differenceInHealth <= amountThatWillBeHealed) {
                         amountThatWillBeHealed = differenceInHealth;

@@ -32,8 +32,8 @@ public class CapabilityRegistry {
         return entity.getCapability(HEART_CAP_CAPABILITY);
     }
 
-    public static LazyOptional<ILevelCap> getLevel(final Level level){
-        if(level == null)
+    public static LazyOptional<ILevelCap> getLevel(final Level level) {
+        if (level == null)
             return LazyOptional.empty();
         return level.getCapability(LEVEL_CAP_CAPABILITY);
     }

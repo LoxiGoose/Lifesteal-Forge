@@ -1,14 +1,13 @@
 package net.goose.lifesteal;
 
 import com.mojang.logging.LogUtils;
+import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.configuration.Config;
 import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.event.EventHandler;
 import net.goose.lifesteal.item.ModItems;
-import net.goose.lifesteal.advancement.ModCriteria;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -20,15 +19,13 @@ import org.slf4j.Logger;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(LifeSteal.MOD_ID)
-public class LifeSteal
-{
+public class LifeSteal {
     // Directly reference a slf4j logger
     public static final String MOD_ID = "lifesteal";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static Config config;
 
-    public LifeSteal()
-    {
+    public LifeSteal() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ConfigHolder.SERVER_SPEC);
         config = ConfigHolder.SERVER;
@@ -46,8 +43,7 @@ public class LifeSteal
         MinecraftForge.EVENT_BUS.register(this);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
+    private void setup(final FMLCommonSetupEvent event) {
         // some preinit code
         LOGGER.info("Lifestealers are on the loose!");
         ModCriteria.init();

@@ -2,14 +2,12 @@ package net.goose.lifesteal.item.custom;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.ModBlocks;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.PlayerList;
@@ -42,7 +40,11 @@ public class ReviveCrystalItem extends Item {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();
 
-            if(level.getServer().isSingleplayer()){
+            if (LifeSteal.config.disableReviveCrystals.get()) {
+                player.displayClientMessage(new TranslatableComponent("gui.lifesteal.revive_crystal_disabled"), true);
+                return super.useOn(useOnContext);
+            }
+            if (level.getServer().isSingleplayer()) {
                 player.displayClientMessage(new TranslatableComponent("gui.lifesteal.singleplayer"), true);
                 return super.useOn(useOnContext);
             }
@@ -80,9 +82,9 @@ public class ReviveCrystalItem extends Item {
                         itemStack.shrink(1);
 
                         CapabilityRegistry.getLevel(level).ifPresent(ILevelCap ->
-                                ILevelCap.setBannedUUIDanditsBlockPos(gameprofile.getId(), blockPos));
+                                ILevelCap.setUUIDanditsBlockPos(gameprofile.getId(), blockPos));
 
-                        if(!LifeSteal.config.silentlyRevivePlayer.get()){
+                        if (!LifeSteal.config.silentlyRevivePlayer.get()) {
                             Component mutableComponent = new TranslatableComponent("chat.message.lifesteal.revived_player");
                             Component mutableComponent1 = Component.nullToEmpty(gameprofile.getName());
                             String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
@@ -91,14 +93,14 @@ public class ReviveCrystalItem extends Item {
                             for (ServerPlayer serverPlayer : playerList) {
                                 serverPlayer.getCamera().sendMessage(Component.nullToEmpty(combinedMessage), serverPlayer.getUUID());
                             }
-                        }else{
+                        } else {
                             player.displayClientMessage(new TranslatableComponent("gui.lifesteal.unbanned"), true);
                         }
-                    }else{
+                    } else {
                         player.displayClientMessage(new TranslatableComponent("gui.lifesteal.already_unbanned"), true);
                     }
                 }
-            }else{
+            } else {
                 player.displayClientMessage(new TranslatableComponent("gui.lifesteal.invaild_revive_block"), true);
             }
         }

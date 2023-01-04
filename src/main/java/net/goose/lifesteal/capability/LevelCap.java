@@ -18,20 +18,25 @@ public class LevelCap implements ILevelCap {
         this.level = level;
     }
 
-    private HashMap<UUID, BlockPos> bannedMap = new HashMap<>();
+    private final HashMap<UUID, BlockPos> bannedMap = new HashMap<>();
 
     @Override
     public HashMap getMap() {
         return bannedMap;
     }
+
     @Override
-    public void setBannedUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
-        bannedMap.put(uuid, blockPos);
+    public void setUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
+        if (!bannedMap.containsKey(uuid)) {
+            bannedMap.put(uuid, blockPos);
+        }
     }
 
     @Override
-    public void removeBannedUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
-        bannedMap.remove(uuid, blockPos);
+    public void removeUUIDanditsBlockPos(UUID uuid, BlockPos blockPos) {
+        if (bannedMap.containsKey(uuid)) {
+            bannedMap.remove(uuid, blockPos);
+        }
     }
 
     @Override
@@ -39,7 +44,7 @@ public class LevelCap implements ILevelCap {
         CompoundTag compoundTag = new CompoundTag();
         ListTag listTag = new ListTag();
 
-        for(UUID uuid: bannedMap.keySet()){
+        for (UUID uuid : bannedMap.keySet()) {
 
             CompoundTag playerCompoundTag = new CompoundTag();
             BlockPos blockPos = bannedMap.get(uuid);
@@ -56,12 +61,12 @@ public class LevelCap implements ILevelCap {
     @Override
     public void deserializeNBT(CompoundTag tag) {
         ListTag listTag = (ListTag) tag.get("Map");
-        listTag.forEach( (tag1) -> {
+        listTag.forEach((tag1) -> {
             CompoundTag compoundTag = (CompoundTag) tag1;
             UUID uuid = compoundTag.getUUID("Key");
             BlockPos blockPos = NbtUtils.readBlockPos(compoundTag.getCompound("Value"));
 
-            setBannedUUIDanditsBlockPos(uuid, blockPos);
+            setUUIDanditsBlockPos(uuid, blockPos);
         });
     }
 }

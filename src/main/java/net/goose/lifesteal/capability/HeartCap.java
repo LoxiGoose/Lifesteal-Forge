@@ -2,25 +2,35 @@ package net.goose.lifesteal.capability;
 
 import com.mojang.authlib.GameProfile;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.block.ModBlocks;
-import net.goose.lifesteal.configuration.ConfigHolder;
 import net.goose.lifesteal.advancement.ModCriteria;
 import net.goose.lifesteal.api.IHeartCap;
+import net.goose.lifesteal.api.ILevelCap;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.players.UserBanList;
 import net.minecraft.server.players.UserBanListEntry;
+import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.GameType;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SkullBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
 
 import javax.annotation.Nullable;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -38,36 +48,91 @@ public class HeartCap implements IHeartCap {
     }
 
     @Override
+    public void revivedTeleport(ServerLevel level, ILevelCap iLevelCap, boolean synchronize) {
+        if (livingEntity instanceof ServerPlayer serverPlayer) {
+            if (!level.isClientSide) {
+                HashMap hashMap = iLevelCap.getMap();
+                BlockPos blockPos = (BlockPos) hashMap.get(livingEntity.getUUID());
+
+                if (blockPos != null) {
+                    iLevelCap.removeUUIDanditsBlockPos(livingEntity.getUUID(), blockPos);
+                    if (serverPlayer.getLevel() == level) {
+                        serverPlayer.connection.teleport(blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    } else {
+                        serverPlayer.teleportTo(level, blockPos.getX(), blockPos.getY(), blockPos.getZ(), serverPlayer.getXRot(), serverPlayer.getYRot());
+                    }
+                    if (serverPlayer.isSpectator()) {
+                        serverPlayer.setGameMode(GameType.SURVIVAL);
+                    }
+                    int tickTime = 600;
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.REGENERATION, tickTime, 3));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, tickTime, 3));
+                    livingEntity.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, tickTime, 3));
+                    if (synchronize) {
+                        serverPlayer.jumpFromGround();
+                    }
+                    ModCriteria.REVIVED.trigger(serverPlayer);
+                }
+            }
+        }
+    }
+
+    @Override
+    public void revivedTeleport(ServerLevel level, ILevelCap iLevelCap) {
+        revivedTeleport(level, iLevelCap, true);
+    }
+
+    @Override
+    public void spawnPlayerHead(ServerPlayer serverPlayer) {
+        Level level = serverPlayer.level;
+        BlockPos blockPos = serverPlayer.blockPosition();
+        BlockEntity blockEntity = level.getBlockEntity(blockPos);
+        if (blockEntity != null) {
+            blockEntity.setRemoved();
+        }
+        final IntegerProperty ROTATION = BlockStateProperties.ROTATION_16;
+        BlockState playerHeadState = Blocks.PLAYER_HEAD.defaultBlockState().setValue(ROTATION, Integer.valueOf(Mth.floor((double) ((180.0F + serverPlayer.getYRot()) * 16.0F / 360.0F) + 0.5) & 15));
+        level.setBlockAndUpdate(blockPos, playerHeadState);
+        SkullBlockEntity playerHeadEntity = new SkullBlockEntity(blockPos, playerHeadState);
+        playerHeadEntity.setOwner(serverPlayer.getGameProfile());
+        level.setBlockEntity(playerHeadEntity);
+    }
+
+    @Override
     public int getHeartDifference() {
         return this.heartDifference;
     }
 
     @Override
-    public void setHeartDifference(int hearts) { if (!livingEntity.level.isClientSide){ this.heartDifference = hearts;}}
+    public void setHeartDifference(int hearts) {
+        if (!livingEntity.level.isClientSide) {
+            this.heartDifference = hearts;
+        }
+    }
 
     @Override
-    public void refreshHearts(boolean healtoMax){
+    public void refreshHearts(boolean healtoMax) {
 
-        if(!livingEntity.level.isClientSide){
+        if (!livingEntity.level.isClientSide) {
             AttributeInstance Attribute = livingEntity.getAttribute(Attributes.MAX_HEALTH);
             Set<AttributeModifier> attributemodifiers = Attribute.getModifiers();
 
-            if(maximumheartsGainable > 0){
-                if(this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
+            if (maximumheartsGainable > 0) {
+                if (this.heartDifference - defaultheartDifference >= maximumheartsGainable) {
                     this.heartDifference = maximumheartsGainable + defaultheartDifference;
-                    if(LifeSteal.config.tellPlayersIfReachedMaxHearts.get()){
+                    if (LifeSteal.config.tellPlayersIfReachedMaxHearts.get()) {
                         livingEntity.sendMessage(new TranslatableComponent("chat.message.lifesteal.reached_max_hearts"), livingEntity.getUUID());
                     }
                 }
             }
 
-            if(minimumamountofheartscanlose >= 0){
-                if(this.heartDifference < defaultheartDifference - minimumamountofheartscanlose){
+            if (minimumamountofheartscanlose >= 0) {
+                if (this.heartDifference < defaultheartDifference - minimumamountofheartscanlose) {
                     this.heartDifference = defaultheartDifference - minimumamountofheartscanlose;
                 }
             }
 
-            if(!attributemodifiers.isEmpty()){
+            if (!attributemodifiers.isEmpty()) {
                 Iterator<AttributeModifier> attributeModifierIterator = attributemodifiers.iterator();
 
                 boolean FoundAttribute = false;
@@ -86,44 +151,36 @@ public class HeartCap implements IHeartCap {
                     }
                 }
 
-                if(!FoundAttribute){
+                if (!FoundAttribute) {
 
                     AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
                     Attribute.addPermanentModifier(attributeModifier);
                 }
-            }else{
+            } else {
 
                 AttributeModifier attributeModifier = new AttributeModifier("LifeStealHealthModifier", this.heartDifference, AttributeModifier.Operation.ADDITION);
 
                 Attribute.addPermanentModifier(attributeModifier);
             }
 
-            if(livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax){
+            if (livingEntity.getHealth() > livingEntity.getMaxHealth() || healtoMax) {
                 livingEntity.setHealth(livingEntity.getMaxHealth());
             }
 
-            if(heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer){
+            if (heartDifference >= 20 && livingEntity instanceof ServerPlayer serverPlayer) {
                 ModCriteria.GET_10_MAX_HEARTS.trigger(serverPlayer);
             }
 
-            if(livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20){
-                if (livingEntity instanceof ServerPlayer serverPlayer){
+            if (livingEntity.getMaxHealth() <= 1 && this.heartDifference <= -20) {
+                if (livingEntity instanceof ServerPlayer serverPlayer) {
 
                     this.heartDifference = defaultheartDifference;
                     refreshHearts(true);
 
                     if (!livingEntity.level.getServer().isSingleplayer()) {
 
-                        ItemStack playerHead = new ItemStack(Blocks.PLAYER_HEAD);
-                        CompoundTag skullOwner = new CompoundTag();
-                        skullOwner.putString("Name", serverPlayer.getName().getString());
-                        skullOwner.putUUID("Id", serverPlayer.getUUID());
-
-                        CompoundTag compoundTag = new CompoundTag();
-                        compoundTag.put("SkullOwner", skullOwner);
-                        playerHead.setTag(compoundTag);
-                        serverPlayer.getInventory().add(playerHead);
+                        spawnPlayerHead(serverPlayer);
                         serverPlayer.getInventory().dropAll();
 
                         @Nullable Component component = new TranslatableComponent("bannedmessage.lifesteal.lost_max_hearts");

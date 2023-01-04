@@ -4,7 +4,6 @@ import net.minecraft.core.Holder;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 
@@ -12,13 +11,13 @@ public class ModPlacedFeatures {
 
     public static final Holder<PlacedFeature> HEART_ORE_PLACED = PlacementUtils.register("heart_ore_placed",
             ModConfiguredFeatures.HEART_ORE,
-                    commonOrePlacement(6, //VeinsPerChunk
-                            HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70))));
+            commonOrePlacement(6, //VeinsPerChunk
+                    HeightRangePlacement.triangle(VerticalAnchor.absolute(-50), VerticalAnchor.absolute(70))));
 
     public static final Holder<PlacedFeature> NETHER_HEART_ORE_PLACED = PlacementUtils.register("nether_heart_ore_placed",
             ModConfiguredFeatures.NETHER_HEART_ORE,
-                    commonOrePlacement(6, // VeinsPerChunk
-                            HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100))));
+            commonOrePlacement(6, // VeinsPerChunk
+                    HeightRangePlacement.triangle(VerticalAnchor.absolute(20), VerticalAnchor.absolute(100))));
 
     public static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());
@@ -38,7 +37,7 @@ public class ModPlacedFeatures {
                     HeightRangePlacement.uniform(VerticalAnchor.absolute(-45), VerticalAnchor.absolute(0)),
                     BiomeFilter.biome()));
     public static final Holder<PlacedFeature> NETHER_HEART_GEODE_PLACED = PlacementUtils.register("nether_heart_geode_placed",
-            ModConfiguredFeatures.DEEPSLATE_HEART_GEODE, List.of(
+            ModConfiguredFeatures.NETHER_HEART_GEODE, List.of(
                     RarityFilter.onAverageOnceEvery(30), InSquarePlacement.spread(),
                     HeightRangePlacement.uniform(VerticalAnchor.absolute(10), VerticalAnchor.absolute(30)),
                     BiomeFilter.biome()));

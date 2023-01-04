@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = LifeSteal.MOD_ID)
 public class ModWorldEvents {
     @SubscribeEvent
-    public static void biomeLoadingEvent(final BiomeLoadingEvent event){
+    public static void biomeLoadingEvent(final BiomeLoadingEvent event) {
         ModOreGeneration.generateOres(event);
         ModGeodeGeneration.generateGeodes(event);
     }
