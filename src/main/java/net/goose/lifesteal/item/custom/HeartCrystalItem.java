@@ -1,7 +1,6 @@
 package net.goose.lifesteal.item.custom;
 
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.api.IHeartCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -13,9 +12,6 @@ import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.CapabilityManager;
-import net.minecraftforge.common.capabilities.CapabilityToken;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -52,7 +48,7 @@ public class HeartCrystalItem extends Item {
                     }
                 }
 
-                int newheartDifference = currentheartDifference.get() + LifeSteal.config.HeartCrystalAmountGain.get();
+                int newheartDifference = currentheartDifference.get() + LifeSteal.config.heartCrystalAmountGain.get();
 
                 serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(diff -> diff.setHeartDifference(newheartDifference));
                 serverPlayer.getCapability(CapabilityRegistry.HEART_CAP_CAPABILITY).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));

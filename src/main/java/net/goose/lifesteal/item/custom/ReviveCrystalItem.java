@@ -27,11 +27,39 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public class ReviveCrystalItem extends Item {
     public ReviveCrystalItem(Properties properties) {
         super(properties);
+    }
+
+    public void revivePlayer(Level level, BlockPos blockPos, GameProfile gameprofile, Player player, @Nullable UserBanList userBanList) {
+        level.removeBlock(blockPos, true);
+        Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
+        Vec3 vec3 = new Vec3(blockPos.getX(),blockPos.getY(),blockPos.getZ());
+        entity.setPos(vec3);
+        level.addFreshEntity(entity);
+        if (userBanList != null) {
+            userBanList.remove(gameprofile);
+        }
+
+        CapabilityRegistry.getLevel(level).ifPresent(ILevelCap ->
+                ILevelCap.setUUIDanditsBlockPos(gameprofile.getId(), blockPos));
+
+        if (!LifeSteal.config.silentlyRevivePlayer.get()) {
+            MutableComponent mutableComponent = Component.translatable("chat.message.lifesteal.revived_player");
+            MutableComponent mutableComponent1 = Component.literal(gameprofile.getName());
+            String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
+            PlayerList playerlist = level.getServer().getPlayerList();
+            List<ServerPlayer> playerList = playerlist.getPlayers();
+            for (ServerPlayer serverPlayerGuys : playerList) {
+                serverPlayerGuys.getCamera().sendSystemMessage(Component.literal(combinedMessage));
+            }
+        } else {
+            player.displayClientMessage(Component.translatable("gui.lifesteal.revived"), true);
+        }
     }
 
     @Override
@@ -40,8 +68,13 @@ public class ReviveCrystalItem extends Item {
             Level level = useOnContext.getLevel();
             Player player = useOnContext.getPlayer();
 
-            if(level.getServer().isSingleplayer()){
+            if (level.getServer().isSingleplayer()) {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.singleplayer"), true);
+                return super.useOn(useOnContext);
+            }
+
+            if (LifeSteal.config.disableReviveCrystals.get()) {
+                player.displayClientMessage(Component.translatable("gui.lifesteal.revive_crystal_disabled"), true);
                 return super.useOn(useOnContext);
             }
 
@@ -69,34 +102,13 @@ public class ReviveCrystalItem extends Item {
                     UserBanList userBanList = level.getServer().getPlayerList().getBans();
 
                     if (userBanList.isBanned(gameprofile)) {
-                        level.removeBlock(blockPos, true);
-                        Entity entity = new LightningBolt(EntityType.LIGHTNING_BOLT, level);
-                        Vec3 vec3 = new Vec3(blockPos.getX(),blockPos.getY(),blockPos.getZ());
-                        entity.setPos(vec3);
-                        level.addFreshEntity(entity);
-                        userBanList.remove(gameprofile);
                         itemStack.shrink(1);
-
-                        CapabilityRegistry.getLevel(level).ifPresent(ILevelCap ->
-                                ILevelCap.setBannedUUIDanditsBlockPos(gameprofile.getId(), blockPos));
-
-                        if(!LifeSteal.config.silentlyRevivePlayer.get()){
-                            MutableComponent mutableComponent = Component.translatable("chat.message.lifesteal.revived_player");
-                            MutableComponent mutableComponent1 = Component.literal(gameprofile.getName());
-                            String combinedMessage = ChatFormatting.YELLOW + mutableComponent1.getString() + mutableComponent.getString();
-                            PlayerList playerlist = level.getServer().getPlayerList();
-                            List<ServerPlayer> playerList = playerlist.getPlayers();
-                            for (ServerPlayer serverPlayer : playerList) {
-                                serverPlayer.getCamera().sendSystemMessage(Component.literal(combinedMessage));
-                            }
-                        }else{
-                            player.displayClientMessage(Component.translatable("gui.lifesteal.unbanned"), true);
-                        }
-                    }else{
-                        player.displayClientMessage(Component.translatable("gui.lifesteal.already_unbanned"), true);
+                        revivePlayer(level, blockPos, gameprofile, player, userBanList);
+                    } else {
+                        player.displayClientMessage(Component.translatable("gui.lifesteal.already_revived"), true);
                     }
                 }
-            }else{
+            } else {
                 player.displayClientMessage(Component.translatable("gui.lifesteal.invaild_revive_block"), true);
             }
         }

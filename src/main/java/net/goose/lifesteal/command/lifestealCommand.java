@@ -4,7 +4,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.goose.lifesteal.LifeSteal;
-import net.goose.lifesteal.api.IHeartCap;
 import net.goose.lifesteal.capability.CapabilityRegistry;
 import net.goose.lifesteal.item.ModItems;
 import net.minecraft.advancements.Advancement;
@@ -56,21 +55,27 @@ public class lifestealCommand {
 
                 if (source.getPlayer().getAdvancements().getOrStartProgress(Advancement.Builder.advancement().build(new ResourceLocation(advancementUsed))).isDone() || advancementUsed.isEmpty()) {
                     AtomicInteger heartDifference = new AtomicInteger();
-                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> heartDifference.set(HeartCap.getHeartDifference() - (LifeSteal.config.HeartCrystalAmountGain.get() * amount)));
+                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> heartDifference.set(HeartCap.getHeartDifference() - (LifeSteal.config.heartCrystalAmountGain.get() * amount)));
                     if (maximumheartsLoseable >= 0) {
                         if (heartDifference.get() < startingHitPointDifference - maximumheartsLoseable) {
                             player.displayClientMessage(Component.translatable("gui.lifesteal.can't_withdraw_less_than_minimum"), true);
                             return 1;
                         }
                     }
-                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(HeartCap -> HeartCap.setHeartDifference(heartDifference.get()));
-                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
+                    CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> {
+                        IHeartCap.setHeartDifference(heartDifference.get());
+                        IHeartCap.refreshHearts(false);
+                    });
 
                     ItemStack heartCrystal = new ItemStack(ModItems.HEART_CRYSTAL.get(), amount);
                     CompoundTag compoundTag = heartCrystal.getOrCreateTagElement("lifesteal");
                     compoundTag.putBoolean("Fresh", false);
                     heartCrystal.setHoverName(Component.translatable("item.lifesteal.heart_crystal.unnatural"));
-                    player.getInventory().add(heartCrystal);
+                    if (player.getInventory().getFreeSlot() == -1) {
+                        player.drop(heartCrystal, true);
+                    } else {
+                        player.getInventory().add(heartCrystal);
+                    }
                 } else {
                     String text = (String) LifeSteal.config.textUsedForRequirementOnWithdrawing.get();
                     if (!text.isEmpty()) {
@@ -105,8 +110,10 @@ public class lifestealCommand {
     private int setHitPoint(CommandSourceStack source, int amount) throws CommandSyntaxException {
         if (source.isPlayer()) {
             LivingEntity playerthatsentcommand = source.getPlayer();
-            CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
-            CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
+            CapabilityRegistry.getHeart(playerthatsentcommand).ifPresent(IHeartCap -> {
+                IHeartCap.setHeartDifference(amount);
+                IHeartCap.refreshHearts(false);
+            });
 
             playerthatsentcommand.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         }
@@ -117,8 +124,10 @@ public class lifestealCommand {
 
         LivingEntity playerthatsentcommand = source.getPlayer();
 
-        CapabilityRegistry.getHeart(chosenentity).ifPresent(newHeartDifference -> newHeartDifference.setHeartDifference(amount));
-        CapabilityRegistry.getHeart(chosenentity).ifPresent(IHeartCap -> IHeartCap.refreshHearts(false));
+        CapabilityRegistry.getHeart(chosenentity).ifPresent(IHeartCap -> {
+            IHeartCap.setHeartDifference(amount);
+            IHeartCap.refreshHearts(false);
+        });
 
         if (chosenentity != playerthatsentcommand && source.isPlayer()) {
             playerthatsentcommand.sendSystemMessage(Component.translatable("Set " + chosenentity.getName().getString() + "'s HitPoint difference to " + amount));
@@ -129,6 +138,7 @@ public class lifestealCommand {
         if (LifeSteal.config.tellPlayersIfHitPointChanged.get()) {
             chosenentity.sendSystemMessage(Component.translatable("Your HitPoint difference has been set to " + amount));
         }
+
         return 1;
     }
 }
