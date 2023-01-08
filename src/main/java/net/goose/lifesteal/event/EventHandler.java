@@ -136,27 +136,27 @@ public class EventHandler {
                             if (!LifeSteal.config.loseHeartsOnlyWhenKilledByEntity.get() && LifeSteal.config.loseHeartsOnlyWhenKilledByPlayer.get()) {
                                 if (killerEntity instanceof Player) {
                                     CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> {
-                                        IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() + amountOfHealthLostUponLoss);
+                                        IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() - amountOfHealthLostUponLoss);
                                         IHeartCap.refreshHearts(false);
                                     });
                                 }
                             } else {
                                 CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> {
-                                    IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() + amountOfHealthLostUponLoss);
+                                    IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() - amountOfHealthLostUponLoss);
                                     IHeartCap.refreshHearts(false);
                                 });
                             }
                         }
                     } else {
                         CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> {
-                            IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() + amountOfHealthLostUponLoss);
+                            IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() - amountOfHealthLostUponLoss);
                             IHeartCap.refreshHearts(false);
                         });
                     }
                 } else {
                     if (!LifeSteal.config.loseHeartsOnlyWhenKilledByEntity.get() && !LifeSteal.config.loseHeartsOnlyWhenKilledByPlayer.get()) {
                         CapabilityRegistry.getHeart(killedEntity).ifPresent(IHeartCap -> {
-                            IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() + amountOfHealthLostUponLoss);
+                            IHeartCap.setHeartDifference(IHeartCap.getHeartDifference() - amountOfHealthLostUponLoss);
                             IHeartCap.refreshHearts(false);
                         });
                     }
